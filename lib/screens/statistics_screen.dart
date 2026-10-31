@@ -43,9 +43,9 @@ class StatisticsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: AppColors.primary.withOpacity(0.25), width: 1.2),
+                border: Border.all(color: AppColors.primary.withValues(alpha: 0.25), width: 1.2),
                 boxShadow: [
-                  BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 15, offset: const Offset(0, 5)),
+                  BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 15, offset: const Offset(0, 5)),
                 ],
               ),
               child: Column(
@@ -92,7 +92,7 @@ class StatisticsScreen extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: Colors.grey.withOpacity(0.15)),
+                  border: Border.all(color: Colors.grey.withValues(alpha: 0.15)),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -131,7 +131,7 @@ class StatisticsScreen extends StatelessWidget {
                                     shape: BoxShape.circle,
                                     boxShadow: [
                                       BoxShadow(
-                                        color: (passed ? AppColors.passedGreen : AppColors.failedRed).withOpacity(0.35),
+                                        color: (passed ? AppColors.passedGreen : AppColors.failedRed).withValues(alpha: 0.35),
                                         blurRadius: 6,
                                       ),
                                     ],
@@ -221,16 +221,16 @@ class StatisticsScreen extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: AppColors.failedRed.withOpacity(0.08),
+                      color: AppColors.failedRed.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: AppColors.failedRed.withOpacity(0.35), width: 1.2),
+                      border: Border.all(color: AppColors.failedRed.withValues(alpha: 0.35), width: 1.2),
                     ),
                     child: Row(
                       children: [
                         Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: AppColors.failedRed.withOpacity(0.15),
+                            color: AppColors.failedRed.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(14),
                           ),
                           child: const Icon(Icons.warning_amber_rounded, color: AppColors.failedRed, size: 28),
@@ -304,7 +304,7 @@ class StatisticsScreen extends StatelessWidget {
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(16),
                           border: Border.all(
-                            color: passed ? AppColors.passedGreen.withOpacity(0.3) : AppColors.failedRed.withOpacity(0.3),
+                            color: passed ? AppColors.passedGreen.withValues(alpha: 0.3) : AppColors.failedRed.withValues(alpha: 0.3),
                           ),
                         ),
                         child: Row(
@@ -312,7 +312,7 @@ class StatisticsScreen extends StatelessWidget {
                             Container(
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
-                                color: (passed ? AppColors.passedGreen : AppColors.failedRed).withOpacity(0.15),
+                                color: (passed ? AppColors.passedGreen : AppColors.failedRed).withValues(alpha: 0.15),
                                 shape: BoxShape.circle,
                               ),
                               child: Icon(
@@ -390,7 +390,7 @@ class StatisticsScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: color.withOpacity(0.2)),
+        border: Border.all(color: color.withValues(alpha: 0.2)),
       ),
       child: Column(
         children: [

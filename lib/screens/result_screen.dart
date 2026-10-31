@@ -99,7 +99,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                 borderRadius: BorderRadius.circular(28),
                 boxShadow: [
                   BoxShadow(
-                    color: (isPassed ? AppColors.passedGreen : AppColors.failedRed).withOpacity(0.4),
+                    color: (isPassed ? AppColors.passedGreen : AppColors.failedRed).withValues(alpha: 0.4),
                     blurRadius: 20,
                     offset: const Offset(0, 8),
                   ),
@@ -112,7 +112,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                     child: Container(
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
@@ -139,8 +139,8 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                             ? "امتحان میں 3 سے زیادہ غلطیاں ہو گئی ہیں۔ مشق جاری رکھیں!"
                             : (lang == 'en' ? "More than 3 errors in the exam. Keep practicing!" : "Hai fatto più di 3 errori. Non mollare, continua ad esercitarti!")),
                     style: isUrdu
-                        ? AppTheme.urduStyle(fontSize: 16, color: Colors.white.withOpacity(0.95))
-                        : GoogleFonts.inter(fontSize: 14, color: Colors.white.withOpacity(0.9)),
+                        ? AppTheme.urduStyle(fontSize: 16, color: Colors.white.withValues(alpha: 0.95))
+                        : GoogleFonts.inter(fontSize: 14, color: Colors.white.withValues(alpha: 0.9)),
                     textAlign: TextAlign.center,
                   ),
                   const Divider(color: Colors.white30, height: 26),
@@ -178,7 +178,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.orange.withOpacity(0.25)),
+                      border: Border.all(color: Colors.orange.withValues(alpha: 0.25)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +200,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColors.primary.withOpacity(0.25)),
+                      border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -224,7 +224,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: Colors.amber.shade900.withOpacity(0.12),
+                  color: Colors.amber.shade900.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(color: Colors.amber.shade700, width: 1.2),
                 ),
@@ -281,7 +281,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [Colors.purple.shade900.withOpacity(0.8), Colors.indigo.shade900.withOpacity(0.8)],
+                        colors: [Colors.purple.shade900.withValues(alpha: 0.8), Colors.indigo.shade900.withValues(alpha: 0.8)],
                       ),
                       borderRadius: BorderRadius.circular(18),
                       border: Border.all(color: Colors.purple.shade400, width: 1.2),
@@ -351,7 +351,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                     color: Theme.of(context).cardColor,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isCorrect ? AppColors.passedGreen.withOpacity(0.3) : AppColors.failedRed.withOpacity(0.3),
+                      color: isCorrect ? AppColors.passedGreen.withValues(alpha: 0.3) : AppColors.failedRed.withValues(alpha: 0.3),
                       width: 1.2,
                     ),
                   ),
@@ -364,7 +364,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                           Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: (isCorrect ? AppColors.passedGreen : AppColors.failedRed).withOpacity(0.15),
+                              color: (isCorrect ? AppColors.passedGreen : AppColors.failedRed).withValues(alpha: 0.15),
                               shape: BoxShape.circle,
                             ),
                             child: Icon(
@@ -397,7 +397,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                                     width: double.infinity,
                                     padding: const EdgeInsets.all(10),
                                     decoration: BoxDecoration(
-                                      color: Colors.black.withOpacity(0.04),
+                                      color: Colors.black.withValues(alpha: 0.04),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Directionality(

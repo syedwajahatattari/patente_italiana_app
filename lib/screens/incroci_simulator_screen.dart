@@ -200,7 +200,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
                   decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.15),
+                    color: AppColors.primary.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(14),
                   ),
                   child: Text(
@@ -247,7 +247,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xFF1E293B),
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: Colors.grey.withOpacity(0.25)),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.25)),
               ),
               child: Stack(
                 alignment: Alignment.center,
@@ -298,7 +298,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
                             shape: BoxShape.circle,
                             border: Border.all(color: Colors.white, width: 2),
                             boxShadow: [
-                              BoxShadow(color: color.withOpacity(0.5), blurRadius: 10, offset: const Offset(0, 3)),
+                              BoxShadow(color: color.withValues(alpha: 0.5), blurRadius: 10, offset: const Offset(0, 3)),
                             ],
                           ),
                           child: Text(
@@ -330,7 +330,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                       decoration: BoxDecoration(
-                        color: AppColors.passedGreen.withOpacity(0.2),
+                        color: AppColors.passedGreen.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(color: AppColors.passedGreen),
                       ),
@@ -357,7 +357,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
               Container(
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppColors.failedRed.withOpacity(0.12),
+                  color: AppColors.failedRed.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: AppColors.failedRed),
                 ),
@@ -382,7 +382,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: AppColors.passedGreen.withOpacity(0.12),
+                  color: AppColors.passedGreen.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(20),
                   border: Border.all(color: AppColors.passedGreen, width: 1.5),
                 ),
@@ -417,7 +417,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
                           child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                             decoration: BoxDecoration(
-                              color: AppColors.primary.withOpacity(0.12),
+                              color: AppColors.primary.withValues(alpha: 0.12),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Row(
@@ -456,7 +456,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
                             child: Container(
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF16A34A).withOpacity(0.12),
+                                color: const Color(0xFF16A34A).withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Row(
@@ -494,7 +494,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(20),
-                border: Border.all(color: Colors.amber.withOpacity(0.3)),
+                border: Border.all(color: Colors.amber.withValues(alpha: 0.3)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

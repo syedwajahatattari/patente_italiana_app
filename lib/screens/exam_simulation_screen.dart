@@ -183,12 +183,12 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                       decoration: BoxDecoration(
                         color: isCurrent
                             ? AppColors.primary
-                            : (answered ? AppColors.primary.withOpacity(0.25) : Colors.transparent),
+                            : (answered ? AppColors.primary.withValues(alpha: 0.25) : Colors.transparent),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: flagged
                               ? AppColors.accentGold
-                              : (isCurrent ? AppColors.primary : Colors.grey.withOpacity(0.35)),
+                              : (isCurrent ? AppColors.primary : Colors.grey.withValues(alpha: 0.35)),
                           width: flagged ? 2.5 : 1.2,
                         ),
                       ),
@@ -303,7 +303,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                   margin: const EdgeInsets.only(right: 12),
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.amber.shade900.withOpacity(0.2),
+                    color: Colors.amber.shade900.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(12),
                     border: Border.all(color: Colors.amber.shade800),
                   ),
@@ -325,8 +325,8 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: quizProvider.timerSecondsRemaining < 300
-                      ? AppColors.failedRed.withOpacity(0.2)
-                      : AppColors.primary.withOpacity(0.15),
+                      ? AppColors.failedRed.withValues(alpha: 0.2)
+                      : AppColors.primary.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: quizProvider.timerSecondsRemaining < 300 ? AppColors.failedRed : AppColors.primary,
@@ -373,9 +373,9 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.grey.withOpacity(0.25)),
+                            border: Border.all(color: Colors.grey.withValues(alpha: 0.25)),
                             boxShadow: [
-                              BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 4)),
+                              BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 10, offset: const Offset(0, 4)),
                             ],
                           ),
                           child: Stack(
@@ -416,7 +416,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: Colors.black.withOpacity(0.6),
+                                    color: Colors.black.withValues(alpha: 0.6),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: const Row(
@@ -441,7 +441,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(24),
                           boxShadow: [
-                            BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 12, offset: const Offset(0, 4)),
+                            BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: const Offset(0, 4)),
                           ],
                         ),
                         child: Column(
@@ -453,7 +453,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                                 Container(
                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                   decoration: BoxDecoration(
-                                    color: AppColors.secondary.withOpacity(0.15),
+                                    color: AppColors.secondary.withValues(alpha: 0.15),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text("🇮🇹 ITALIANO", style: GoogleFonts.outfit(fontSize: 11, fontWeight: FontWeight.bold, color: AppColors.secondary)),
@@ -499,7 +499,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                                   Switch(
                                     value: _showTranslation,
                                     onChanged: (val) => setState(() => _showTranslation = val),
-                                    activeColor: AppColors.primary,
+                                    activeThumbColor: AppColors.primary,
                                   ),
                                 ],
                               ),
@@ -509,7 +509,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                                   width: double.infinity,
                                   padding: const EdgeInsets.all(14),
                                   decoration: BoxDecoration(
-                                    color: AppColors.primary.withOpacity(0.08),
+                                    color: AppColors.primary.withValues(alpha: 0.08),
                                     borderRadius: BorderRadius.circular(14),
                                   ),
                                   child: Directionality(
@@ -550,11 +550,11 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                                   color: userChoice == true ? AppColors.primary : Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(20),
                                   border: Border.all(
-                                    color: userChoice == true ? AppColors.primary : Colors.grey.withOpacity(0.3),
+                                    color: userChoice == true ? AppColors.primary : Colors.grey.withValues(alpha: 0.3),
                                     width: 2,
                                   ),
                                   boxShadow: userChoice == true
-                                      ? [BoxShadow(color: AppColors.primary.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4))]
+                                      ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4))]
                                       : [],
                                 ),
                                 child: Column(
@@ -591,11 +591,11 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                                   color: userChoice == false ? AppColors.primary : Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(20),
                                   border: Border.all(
-                                    color: userChoice == false ? AppColors.primary : Colors.grey.withOpacity(0.3),
+                                    color: userChoice == false ? AppColors.primary : Colors.grey.withValues(alpha: 0.3),
                                     width: 2,
                                   ),
                                   boxShadow: userChoice == false
-                                      ? [BoxShadow(color: AppColors.primary.withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4))]
+                                      ? [BoxShadow(color: AppColors.primary.withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4))]
                                       : [],
                                 ),
                                 child: Column(
@@ -629,7 +629,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                 decoration: BoxDecoration(
                   color: Theme.of(context).cardColor,
-                  border: Border(top: BorderSide(color: Colors.grey.withOpacity(0.2))),
+                  border: Border(top: BorderSide(color: Colors.grey.withValues(alpha: 0.2))),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -682,7 +682,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
     return Container(
       height: 52,
       padding: const EdgeInsets.symmetric(vertical: 6),
-      color: Colors.black.withOpacity(0.04),
+      color: Colors.black.withValues(alpha: 0.04),
       child: Row(
         children: [
           IconButton(
@@ -703,7 +703,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
 
                 Color bgColor = Colors.transparent;
                 if (userAns != null) {
-                  bgColor = AppColors.primary.withOpacity(0.3);
+                  bgColor = AppColors.primary.withValues(alpha: 0.3);
                 }
 
                 return GestureDetector(
@@ -718,7 +718,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
                       color: isCurrent ? AppColors.primary : bgColor,
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                        color: isFlagged ? AppColors.accentGold : (isCurrent ? AppColors.primary : Colors.grey.withOpacity(0.3)),
+                        color: isFlagged ? AppColors.accentGold : (isCurrent ? AppColors.primary : Colors.grey.withValues(alpha: 0.3)),
                         width: isFlagged ? 2 : 1,
                       ),
                     ),

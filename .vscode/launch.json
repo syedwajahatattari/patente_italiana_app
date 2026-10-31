@@ -10,15 +10,7 @@
       ]
     },
     {
-      "name": "Patente App (Local .env)",
-      "request": "launch",
-      "type": "dart",
-      "args": [
-        "--dart-define-from-file=.env"
-      ]
-    },
-    {
-      "name": "Patente App (Safe Mode / No Keys)",
+      "name": "Patente App (Offline / Safe Mode)",
       "request": "launch",
       "type": "dart"
     }

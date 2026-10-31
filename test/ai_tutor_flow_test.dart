@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
@@ -134,6 +135,44 @@ void main() {
 
       expect(result.success, isFalse);
       expect(result.errorType, AiErrorType.noInternet);
+    });
+
+    test('OpenRouterService catches TimeoutException as timeout error', () async {
+      OpenRouterService.testApiKey = 'sk-or-v1-mock-valid-key';
+
+      OpenRouterService.testHttpClient = MockClient((request) async {
+        throw TimeoutException('Request exceeded 15 seconds');
+      });
+
+      final result = await OpenRouterService.getAiResponseDetailed(
+        'System prompt',
+        'Domanda',
+      );
+
+      expect(result.success, isFalse);
+      expect(result.errorType, AiErrorType.timeout);
+      expect(result.errorMessageIt, contains('Timeout'));
+    });
+
+    test('OpenRouterService fast-fails on 401 without making redundant fallback call', () async {
+      OpenRouterService.testApiKey = 'sk-or-v1-invalid-key';
+      int requestCount = 0;
+
+      OpenRouterService.testHttpClient = MockClient((request) async {
+        requestCount++;
+        return http.Response('Unauthorized', 401);
+      });
+
+      final result = await OpenRouterService.getAiResponseDetailed(
+        'System prompt',
+        'Domanda',
+      );
+
+      // Must fast-fail immediately on attempt 1
+      expect(requestCount, 1);
+      expect(result.success, isFalse);
+      expect(result.statusCode, 401);
+      expect(result.errorType, AiErrorType.missingKey);
     });
   });
 }

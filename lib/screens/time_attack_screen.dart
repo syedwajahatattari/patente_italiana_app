@@ -161,7 +161,7 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
             margin: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
-              color: AppColors.accentGold.withOpacity(0.18),
+              color: AppColors.accentGold.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: AppColors.accentGold),
             ),
@@ -202,7 +202,7 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
                                   gradient: const LinearGradient(colors: [Color(0xFFF59E0B), Color(0xFFEF4444)]),
                                   borderRadius: BorderRadius.circular(20),
                                   boxShadow: [
-                                    BoxShadow(color: Colors.orange.withOpacity(0.4), blurRadius: 8, offset: const Offset(0, 3)),
+                                    BoxShadow(color: Colors.orange.withValues(alpha: 0.4), blurRadius: 8, offset: const Offset(0, 3)),
                                   ],
                                 ),
                                 child: Text(
@@ -221,9 +221,9 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
                             decoration: BoxDecoration(
                               color: Theme.of(context).cardColor,
                               borderRadius: BorderRadius.circular(24),
-                              border: Border.all(color: Colors.grey.withOpacity(0.18)),
+                              border: Border.all(color: Colors.grey.withValues(alpha: 0.18)),
                               boxShadow: [
-                                BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 12, offset: const Offset(0, 4)),
+                                BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 12, offset: const Offset(0, 4)),
                               ],
                             ),
                             child: Column(
@@ -333,7 +333,7 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        border: Border(bottom: BorderSide(color: Colors.grey.withOpacity(0.12))),
+        border: Border(bottom: BorderSide(color: Colors.grey.withValues(alpha: 0.12))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -342,7 +342,7 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
             decoration: BoxDecoration(
-              color: _secondsLeft < 10 ? AppColors.failedRed.withOpacity(0.18) : AppColors.primary.withOpacity(0.15),
+              color: _secondsLeft < 10 ? AppColors.failedRed.withValues(alpha: 0.18) : AppColors.primary.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(16),
               border: Border.all(
                 color: _secondsLeft < 10 ? AppColors.failedRed : AppColors.primary,
@@ -414,7 +414,7 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
               ),
               borderRadius: BorderRadius.circular(28),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.1), blurRadius: 15, offset: const Offset(0, 6)),
+                BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 15, offset: const Offset(0, 6)),
               ],
             ),
             child: Column(

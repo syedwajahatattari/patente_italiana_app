@@ -84,7 +84,7 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
               margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 14),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 2),
               decoration: BoxDecoration(
-                color: subProvider.isPremium ? AppColors.passedGreen.withOpacity(0.15) : AppColors.accentGold.withOpacity(0.15),
+                color: subProvider.isPremium ? AppColors.passedGreen.withValues(alpha: 0.15) : AppColors.accentGold.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: subProvider.isPremium ? AppColors.passedGreen : AppColors.accentGold,
@@ -178,12 +178,12 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: predictFalse
-                  ? [AppColors.failedRed.withOpacity(0.08), AppColors.failedRed.withOpacity(0.02)]
-                  : [AppColors.passedGreen.withOpacity(0.08), AppColors.passedGreen.withOpacity(0.02)],
+                  ? [AppColors.failedRed.withValues(alpha: 0.08), AppColors.failedRed.withValues(alpha: 0.02)]
+                  : [AppColors.passedGreen.withValues(alpha: 0.08), AppColors.passedGreen.withValues(alpha: 0.02)],
             ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: predictFalse ? AppColors.failedRed.withOpacity(0.3) : AppColors.passedGreen.withOpacity(0.3),
+              color: predictFalse ? AppColors.failedRed.withValues(alpha: 0.3) : AppColors.passedGreen.withValues(alpha: 0.3),
               width: 1.5,
             ),
           ),
@@ -213,8 +213,8 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
                               color: accuracy > 85
-                                  ? AppColors.passedGreen.withOpacity(0.2)
-                                  : AppColors.accentGold.withOpacity(0.2),
+                                  ? AppColors.passedGreen.withValues(alpha: 0.2)
+                                  : AppColors.accentGold.withValues(alpha: 0.2),
                               borderRadius: BorderRadius.circular(8),
                             ),
                             child: Text(
@@ -261,13 +261,13 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: predictFalse
-                          ? AppColors.failedRed.withOpacity(0.15)
-                          : AppColors.passedGreen.withOpacity(0.15),
+                          ? AppColors.failedRed.withValues(alpha: 0.15)
+                          : AppColors.passedGreen.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
                         color: predictFalse
-                            ? AppColors.failedRed.withOpacity(0.4)
-                            : AppColors.passedGreen.withOpacity(0.4),
+                            ? AppColors.failedRed.withValues(alpha: 0.4)
+                            : AppColors.passedGreen.withValues(alpha: 0.4),
                       ),
                     ),
                     child: Text(
@@ -312,9 +312,9 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.secondary.withOpacity(0.2)),
+              border: Border.all(color: AppColors.secondary.withValues(alpha: 0.2)),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 8, offset: const Offset(0, 3)),
+                BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 8, offset: const Offset(0, 3)),
               ],
             ),
             child: Row(
@@ -385,9 +385,9 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: isZero ? AppColors.failedRed.withOpacity(0.3) : AppColors.warningOrange.withOpacity(0.3)),
+              border: Border.all(color: isZero ? AppColors.failedRed.withValues(alpha: 0.3) : AppColors.warningOrange.withValues(alpha: 0.3)),
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 8, offset: const Offset(0, 3)),
+                BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 8, offset: const Offset(0, 3)),
               ],
             ),
             child: Row(
@@ -457,9 +457,9 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
           decoration: BoxDecoration(
             color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(20),
-            border: Border.all(color: AppColors.primary.withOpacity(0.15)),
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.15)),
             boxShadow: [
-              BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 8, offset: const Offset(0, 3)),
+              BoxShadow(color: Colors.black.withValues(alpha: 0.03), blurRadius: 8, offset: const Offset(0, 3)),
             ],
           ),
           child: Row(
@@ -508,10 +508,10 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
         gradient: LinearGradient(
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
-          colors: [color.withOpacity(0.15), color.withOpacity(0.05)],
+          colors: [color.withValues(alpha: 0.15), color.withValues(alpha: 0.05)],
         ),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3)),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
       ),
       child: Row(
         children: [
@@ -536,9 +536,9 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.accentGold.withOpacity(0.1),
+        color: AppColors.accentGold.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.accentGold.withOpacity(0.4)),
+        border: Border.all(color: AppColors.accentGold.withValues(alpha: 0.4)),
       ),
       child: Text(text, style: GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.w600, height: 1.4)),
     );
@@ -557,9 +557,9 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
         decoration: BoxDecoration(
           color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.amber.withOpacity(0.4), width: 1.5),
+          border: Border.all(color: Colors.amber.withValues(alpha: 0.4), width: 1.5),
           boxShadow: [
-            BoxShadow(color: Colors.amber.withOpacity(0.06), blurRadius: 10, offset: const Offset(0, 4)),
+            BoxShadow(color: Colors.amber.withValues(alpha: 0.06), blurRadius: 10, offset: const Offset(0, 4)),
           ],
         ),
         child: Row(
@@ -567,7 +567,7 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.amber.withOpacity(0.15),
+                color: Colors.amber.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Icon(Icons.lock_rounded, color: Colors.amber, size: 28),

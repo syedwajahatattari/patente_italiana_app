@@ -70,7 +70,7 @@ class TheoryManualScreen extends StatelessWidget {
                   ),
                   borderRadius: BorderRadius.circular(20),
                   boxShadow: [
-                    BoxShadow(color: const Color(0xFF4F46E5).withOpacity(0.25), blurRadius: 10, offset: const Offset(0, 4)),
+                    BoxShadow(color: const Color(0xFF4F46E5).withValues(alpha: 0.25), blurRadius: 10, offset: const Offset(0, 4)),
                   ],
                 ),
                 child: Row(
@@ -196,7 +196,7 @@ class TheoryManualScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: color.withOpacity(0.3), width: 1.2),
+        border: Border.all(color: color.withValues(alpha: 0.3), width: 1.2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -206,7 +206,7 @@ class TheoryManualScreen extends StatelessWidget {
           Text(description, style: const TextStyle(fontSize: 13, height: 1.3)),
           if (lang != 'it') ...[
             const SizedBox(height: 4),
-            Text("${lang == 'ur' ? '🇵🇰' : '🇬🇧'} $displayDesc", style: TextStyle(fontSize: 12, color: color.withOpacity(0.9))),
+            Text("${lang == 'ur' ? '🇵🇰' : '🇬🇧'} $displayDesc", style: TextStyle(fontSize: 12, color: color.withValues(alpha: 0.9))),
           ],
           const Divider(height: 20),
           ...items.map(

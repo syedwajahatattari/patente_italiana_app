@@ -90,7 +90,7 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
               decoration: BoxDecoration(
-                color: isPlaying ? color : color.withOpacity(0.1),
+                color: isPlaying ? color : color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: color,
@@ -137,9 +137,9 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
       decoration: BoxDecoration(
         color: Theme.of(context).scaffoldBackgroundColor,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
-        border: Border.all(color: AppColors.primary.withOpacity(0.3), width: 1.5),
+        border: Border.all(color: AppColors.primary.withValues(alpha: 0.3), width: 1.5),
         boxShadow: [
-          BoxShadow(color: Colors.black.withOpacity(0.25), blurRadius: 25, offset: const Offset(0, -6)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.25), blurRadius: 25, offset: const Offset(0, -6)),
         ],
       ),
       child: SingleChildScrollView(
@@ -202,7 +202,7 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 decoration: BoxDecoration(
-                  color: Colors.amber.shade900.withOpacity(0.12),
+                  color: Colors.amber.shade900.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(color: Colors.amber.shade700, width: 1.2),
                 ),
@@ -232,10 +232,10 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: (question.isTrue ? AppColors.passedGreen : AppColors.failedRed).withOpacity(0.12),
+                color: (question.isTrue ? AppColors.passedGreen : AppColors.failedRed).withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
-                  color: (question.isTrue ? AppColors.passedGreen : AppColors.failedRed).withOpacity(0.4),
+                  color: (question.isTrue ? AppColors.passedGreen : AppColors.failedRed).withValues(alpha: 0.4),
                 ),
               ),
               child: Row(
@@ -299,7 +299,7 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: Colors.grey.withOpacity(0.18)),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.18)),
               ),
               child: Text(
                 question.explanationIt.isNotEmpty ? question.explanationIt : "Verifica le norme di circolazione e la segnaletica associata.",
@@ -331,9 +331,9 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF16A34A).withOpacity(0.08),
+                  color: const Color(0xFF16A34A).withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF16A34A).withOpacity(0.2)),
+                  border: Border.all(color: const Color(0xFF16A34A).withValues(alpha: 0.2)),
                 ),
                 child: Directionality(
                   textDirection: TextDirection.rtl,
@@ -369,9 +369,9 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
                 width: double.infinity,
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF0284C7).withOpacity(0.08),
+                  color: const Color(0xFF0284C7).withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: const Color(0xFF0284C7).withOpacity(0.2)),
+                  border: Border.all(color: const Color(0xFF0284C7).withValues(alpha: 0.2)),
                 ),
                 child: Text(
                   question.explanationEn,
@@ -387,7 +387,7 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,

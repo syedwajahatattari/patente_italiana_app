@@ -92,9 +92,9 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                         decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: AppColors.secondary.withOpacity(0.15)),
+                          border: Border.all(color: AppColors.secondary.withValues(alpha: 0.15)),
                           boxShadow: [
-                            BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 10, offset: const Offset(0, 3)),
+                            BoxShadow(color: Colors.black.withValues(alpha: 0.02), blurRadius: 10, offset: const Offset(0, 3)),
                           ],
                         ),
                         child: Column(
@@ -109,7 +109,7 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                                       Container(
                                         padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                         decoration: BoxDecoration(
-                                          color: AppColors.secondary.withOpacity(0.15),
+                                          color: AppColors.secondary.withValues(alpha: 0.15),
                                           borderRadius: BorderRadius.circular(8),
                                         ),
                                         child: Text(item.category, style: GoogleFonts.outfit(fontSize: 10, fontWeight: FontWeight.bold, color: AppColors.secondary)),
@@ -158,7 +158,7 @@ class _GlossaryScreenState extends State<GlossaryScreen> {
                               Container(
                                 padding: const EdgeInsets.all(12),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primary.withOpacity(0.08),
+                                  color: AppColors.primary.withValues(alpha: 0.08),
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Column(

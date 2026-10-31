@@ -32,7 +32,7 @@ class TopicListScreen extends StatelessWidget {
             margin: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
             decoration: BoxDecoration(
-              color: subProvider.isPremium ? AppColors.passedGreen.withOpacity(0.15) : AppColors.accentGold.withOpacity(0.15),
+              color: subProvider.isPremium ? AppColors.passedGreen.withValues(alpha: 0.15) : AppColors.accentGold.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color: subProvider.isPremium ? AppColors.passedGreen : AppColors.accentGold,
@@ -71,12 +71,12 @@ class TopicListScreen extends StatelessWidget {
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: isUnlocked ? AppColors.primary.withOpacity(0.15) : Colors.amber.withOpacity(0.35),
+                color: isUnlocked ? AppColors.primary.withValues(alpha: 0.15) : Colors.amber.withValues(alpha: 0.35),
                 width: isUnlocked ? 1 : 1.5,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: isUnlocked ? Colors.black.withOpacity(0.03) : Colors.amber.withOpacity(0.04),
+                  color: isUnlocked ? Colors.black.withValues(alpha: 0.03) : Colors.amber.withValues(alpha: 0.04),
                   blurRadius: 10,
                   offset: const Offset(0, 3),
                 ),
@@ -87,7 +87,7 @@ class TopicListScreen extends StatelessWidget {
               leading: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isUnlocked ? AppColors.primary.withOpacity(0.15) : Colors.amber.withOpacity(0.15),
+                  color: isUnlocked ? AppColors.primary.withValues(alpha: 0.15) : Colors.amber.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(14),
                 ),
                 child: Icon(
@@ -159,8 +159,8 @@ class TopicListScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: isUnlocked
-                          ? AppColors.secondary.withOpacity(0.15)
-                          : Colors.grey.withOpacity(0.15),
+                          ? AppColors.secondary.withValues(alpha: 0.15)
+                          : Colors.grey.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Text(

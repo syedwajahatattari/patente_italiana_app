@@ -133,7 +133,7 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(22),
                 boxShadow: [
-                  BoxShadow(color: const Color(0xFF4F46E5).withOpacity(0.3), blurRadius: 12, offset: const Offset(0, 4)),
+                  BoxShadow(color: const Color(0xFF4F46E5).withValues(alpha: 0.3), blurRadius: 12, offset: const Offset(0, 4)),
                 ],
               ),
               child: Row(
@@ -141,7 +141,7 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.volume_up_rounded, color: Colors.white, size: 36),
@@ -160,8 +160,8 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                               ? "اطالوی ڈرائیونگ تھیوری کو آسان اردو اور اٹالین آڈیو وضاحت کے ساتھ سمجھیں"
                               : "Ascolta i concetti ministeriali più difficili spiegati in modo semplice.",
                           style: isUrdu
-                              ? AppTheme.urduStyle(fontSize: 13, color: Colors.white.withOpacity(0.9))
-                              : TextStyle(fontSize: 11, color: Colors.white.withOpacity(0.85)),
+                              ? AppTheme.urduStyle(fontSize: 13, color: Colors.white.withValues(alpha: 0.9))
+                              : TextStyle(fontSize: 11, color: Colors.white.withValues(alpha: 0.85)),
                         ),
                       ],
                     ),
@@ -180,7 +180,7 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
               color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: isUnlocked ? AppColors.primary.withOpacity(0.2) : Colors.amber.withOpacity(0.3),
+                color: isUnlocked ? AppColors.primary.withValues(alpha: 0.2) : Colors.amber.withValues(alpha: 0.3),
                 width: 1.2,
               ),
             ),
@@ -189,7 +189,7 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
               leading: Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: isUnlocked ? AppColors.primary.withOpacity(0.15) : Colors.amber.withOpacity(0.15),
+                  color: isUnlocked ? AppColors.primary.withValues(alpha: 0.15) : Colors.amber.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Icon(
@@ -211,7 +211,7 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                     decoration: BoxDecoration(
-                      color: isUnlocked ? AppColors.passedGreen.withOpacity(0.15) : AppColors.accentGold.withOpacity(0.15),
+                      color: isUnlocked ? AppColors.passedGreen.withValues(alpha: 0.15) : AppColors.accentGold.withValues(alpha: 0.15),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
@@ -388,7 +388,7 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.08),
+                            color: Colors.grey.withValues(alpha: 0.08),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Row(

@@ -83,6 +83,12 @@ class OpenRouterService {
     final attempt1 = await _requestModel(_primaryModel, systemPrompt, userMessage, key);
     if (attempt1.success) return attempt1;
 
+    // Fast-fail: If the failure is due to an invalid/unauthorized API key (401/403),
+    // skip the fallback model call because the same key will fail identically.
+    if (attempt1.statusCode == 401 || attempt1.statusCode == 403) {
+      return attempt1;
+    }
+
     // Attempt 2: Fallback Model
     debugPrint(
       "Primary AI model ($_primaryModel) failed (${attempt1.errorType}). Switching to fallback model: $_fallbackModel",

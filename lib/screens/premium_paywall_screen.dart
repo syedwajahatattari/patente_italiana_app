@@ -81,7 +81,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
                 borderRadius: BorderRadius.circular(26),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.amber.shade700.withOpacity(0.35),
+                    color: Colors.amber.shade700.withValues(alpha: 0.35),
                     blurRadius: 18,
                     offset: const Offset(0, 6),
                   ),
@@ -92,7 +92,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.2),
+                      color: Colors.white.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(Icons.workspace_premium_rounded, size: 48, color: Colors.white),
@@ -116,15 +116,15 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
                           : "Supera l'esame teorico della patente al 1° colpo senza stress!"),
                     textAlign: TextAlign.center,
                     style: isUrdu
-                      ? AppTheme.urduStyle(fontSize: 16, color: Colors.white.withOpacity(0.95), height: 1.4)
-                      : GoogleFonts.inter(fontSize: 13, color: Colors.white.withOpacity(0.9), height: 1.4),
+                      ? AppTheme.urduStyle(fontSize: 16, color: Colors.white.withValues(alpha: 0.95), height: 1.4)
+                      : GoogleFonts.inter(fontSize: 13, color: Colors.white.withValues(alpha: 0.9), height: 1.4),
                   ),
                   const SizedBox(height: 14),
                   // Social Proof Badge
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: Colors.black.withOpacity(0.25),
+                      color: Colors.black.withValues(alpha: 0.25),
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Row(
@@ -386,7 +386,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.accentGold.withOpacity(0.35), width: 1.2),
+        border: Border.all(color: AppColors.accentGold.withValues(alpha: 0.35), width: 1.2),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -464,7 +464,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
               decoration: BoxDecoration(
-                color: AppColors.passedGreen.withOpacity(0.12),
+                color: AppColors.passedGreen.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
@@ -528,14 +528,14 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
           duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 6),
           decoration: BoxDecoration(
-            color: isSelected ? AppColors.accentGold.withOpacity(0.15) : Theme.of(context).cardColor,
+            color: isSelected ? AppColors.accentGold.withValues(alpha: 0.15) : Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
-              color: isSelected ? AppColors.accentGold : Colors.grey.withOpacity(0.25),
+              color: isSelected ? AppColors.accentGold : Colors.grey.withValues(alpha: 0.25),
               width: isSelected ? 2.5 : 1,
             ),
             boxShadow: isSelected
-              ? [BoxShadow(color: AppColors.accentGold.withOpacity(0.25), blurRadius: 10, offset: const Offset(0, 4))]
+              ? [BoxShadow(color: AppColors.accentGold.withValues(alpha: 0.25), blurRadius: 10, offset: const Offset(0, 4))]
               : [],
           ),
           child: Column(
@@ -600,14 +600,14 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 6),
         decoration: BoxDecoration(
-          color: isSelected ? AppColors.accentGold.withOpacity(0.15) : Theme.of(context).cardColor,
+          color: isSelected ? AppColors.accentGold.withValues(alpha: 0.15) : Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isSelected ? AppColors.accentGold : Colors.grey.withOpacity(0.25),
+            color: isSelected ? AppColors.accentGold : Colors.grey.withValues(alpha: 0.25),
             width: isSelected ? 2.5 : 1,
           ),
           boxShadow: isSelected
-            ? [BoxShadow(color: AppColors.accentGold.withOpacity(0.25), blurRadius: 10, offset: const Offset(0, 4))]
+            ? [BoxShadow(color: AppColors.accentGold.withValues(alpha: 0.25), blurRadius: 10, offset: const Offset(0, 4))]
             : [],
         ),
         child: Column(
@@ -670,7 +670,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: Colors.grey.withOpacity(0.12)),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.12)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -678,7 +678,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: color.withOpacity(0.15),
+              color: color.withValues(alpha: 0.15),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: color, size: 22),

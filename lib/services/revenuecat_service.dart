@@ -82,7 +82,7 @@ class RevenueCatService {
       return false;
     }
     try {
-      PurchaseResult result = await Purchases.purchasePackage(package);
+      final PurchaseResult result = await Purchases.purchase(PurchaseParams.package(package));
       return result.customerInfo.entitlements.all[entitlementId]?.isActive == true;
     } catch (e) {
       debugPrint("Purchase cancelled or failed: $e");

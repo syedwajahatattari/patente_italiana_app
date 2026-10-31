@@ -39,7 +39,7 @@ A modern, offline-capable Flutter application designed to help candidates prepar
 - **Freemium & In-App Purchases**:
   - Integrated via RevenueCat SDK.
   - Pro features: unlimited exams, full ministerial tricks bank, advanced spaced repetition error bank.
-  - Secure `--dart-define` configuration with zero secret leakage in client binaries.
+  - Secure compile-time `--dart-define` configuration keeping secrets strictly out of git history and source files.
 
 ---
 
@@ -134,7 +134,8 @@ flutter test
 
 ## 🔒 Security & Privacy
 
-- Secret keys (`.env`) are strictly excluded via `.gitignore` and are **never** bundled in `pubspec.yaml` assets.
+- Secret keys are never committed to version control or included in source code/bundled assets. Keys are injected via compile-time `--dart-define`.
+- Production security note: For mobile client deployments handling commercial AI API quotas, routing requests through a secured backend proxy or cloud function is recommended to avoid client-side key extraction.
 - In-app purchases are strictly validated server-side by RevenueCat.
 - Offline quiz answers and progress are stored locally on-device in private application storage.
 

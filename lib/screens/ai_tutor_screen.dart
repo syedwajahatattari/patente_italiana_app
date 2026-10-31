@@ -407,7 +407,7 @@ URDU: [La tua spiegazione in urdu]
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: isPlaying ? color : color.withOpacity(0.12),
+                color: isPlaying ? color : color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: color, width: isPlaying ? 1.5 : 1.0),
               ),
@@ -480,13 +480,13 @@ URDU: [La tua spiegazione in urdu]
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
                   color: OpenRouterService.isConfigured
-                      ? AppColors.passedGreen.withOpacity(0.12)
-                      : (isDark ? const Color(0xFF451A03) : Colors.amber.withOpacity(0.15)),
+                      ? AppColors.passedGreen.withValues(alpha: 0.12)
+                      : (isDark ? const Color(0xFF451A03) : Colors.amber.withValues(alpha: 0.15)),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: OpenRouterService.isConfigured
-                        ? AppColors.passedGreen.withOpacity(0.4)
-                        : (isDark ? const Color(0xFFB45309) : Colors.amber.shade700.withOpacity(0.4)),
+                        ? AppColors.passedGreen.withValues(alpha: 0.4)
+                        : (isDark ? const Color(0xFFB45309) : Colors.amber.shade700.withValues(alpha: 0.4)),
                   ),
                 ),
                 child: Row(
@@ -583,7 +583,7 @@ URDU: [La tua spiegazione in urdu]
                   elevation: 1,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
-                    side: BorderSide(color: Colors.grey.withOpacity(0.25)),
+                    side: BorderSide(color: Colors.grey.withValues(alpha: 0.25)),
                   ),
                   label: Text(
                     prompt,
@@ -631,9 +631,9 @@ URDU: [La tua spiegazione in urdu]
                     decoration: BoxDecoration(
                       color: Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: const Color(0xFF6366F1).withOpacity(0.25), width: 1.2),
+                      border: Border.all(color: const Color(0xFF6366F1).withValues(alpha: 0.25), width: 1.2),
                       boxShadow: [
-                        BoxShadow(color: Colors.black.withOpacity(0.04), blurRadius: 10, offset: const Offset(0, 3)),
+                        BoxShadow(color: Colors.black.withValues(alpha: 0.04), blurRadius: 10, offset: const Offset(0, 3)),
                       ],
                     ),
                     child: Column(
@@ -645,7 +645,7 @@ URDU: [La tua spiegazione in urdu]
                             Container(
                               padding: const EdgeInsets.all(6),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF6366F1).withOpacity(0.12),
+                                color: const Color(0xFF6366F1).withValues(alpha: 0.12),
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(Icons.psychology_rounded, color: Color(0xFF6366F1), size: 18),
@@ -660,8 +660,8 @@ URDU: [La tua spiegazione in urdu]
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
                                 color: msg.isOfflineRule
-                                    ? (isDark ? const Color(0xFF451A03) : Colors.amber.shade800.withOpacity(0.12))
-                                    : AppColors.passedGreen.withOpacity(0.12),
+                                    ? (isDark ? const Color(0xFF451A03) : Colors.amber.shade800.withValues(alpha: 0.12))
+                                    : AppColors.passedGreen.withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               child: Text(
@@ -692,9 +692,9 @@ URDU: [La tua spiegazione in urdu]
                             width: double.infinity,
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
-                              color: isDark ? Colors.red.shade900.withOpacity(0.25) : Colors.red.shade50,
+                              color: isDark ? Colors.red.shade900.withValues(alpha: 0.25) : Colors.red.shade50,
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: Colors.red.shade700.withOpacity(0.3)),
+                              border: Border.all(color: Colors.red.shade700.withValues(alpha: 0.3)),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -730,7 +730,7 @@ URDU: [La tua spiegazione in urdu]
                             width: double.infinity,
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.03),
+                              color: Colors.black.withValues(alpha: 0.03),
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: Text(
@@ -769,12 +769,12 @@ URDU: [La tua spiegazione in urdu]
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
                               color: isDark
-                                  ? const Color(0xFF14532D).withOpacity(0.35)
+                                  ? const Color(0xFF14532D).withValues(alpha: 0.35)
                                   : const Color(0xFFF0FDF4),
                               borderRadius: BorderRadius.circular(14),
                               border: Border.all(
                                 color: isDark
-                                    ? const Color(0xFF22C55E).withOpacity(0.4)
+                                    ? const Color(0xFF22C55E).withValues(alpha: 0.4)
                                     : const Color(0xFF86EFAC),
                               ),
                             ),
@@ -799,13 +799,13 @@ URDU: [La tua spiegazione in urdu]
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               color: isDark
-                                  ? const Color(0xFF78350F).withOpacity(0.25)
-                                  : Colors.amber.shade900.withOpacity(0.08),
+                                  ? const Color(0xFF78350F).withValues(alpha: 0.25)
+                                  : Colors.amber.shade900.withValues(alpha: 0.08),
                               borderRadius: BorderRadius.circular(12),
                               border: Border.all(
                                 color: isDark
-                                    ? const Color(0xFFF59E0B).withOpacity(0.35)
-                                    : Colors.amber.shade700.withOpacity(0.3),
+                                    ? const Color(0xFFF59E0B).withValues(alpha: 0.35)
+                                    : Colors.amber.shade700.withValues(alpha: 0.3),
                               ),
                             ),
                             child: Row(
@@ -854,7 +854,7 @@ URDU: [La tua spiegazione in urdu]
             decoration: BoxDecoration(
               color: Theme.of(context).cardColor,
               boxShadow: [
-                BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, -3)),
+                BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 10, offset: const Offset(0, -3)),
               ],
             ),
             child: SafeArea(

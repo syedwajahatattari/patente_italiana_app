@@ -81,7 +81,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                   padding: const EdgeInsets.all(16),
                   margin: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: Colors.amber.shade900.withOpacity(0.15),
+                    color: Colors.amber.shade900.withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(color: Colors.amber.shade700),
                   ),
@@ -139,7 +139,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                         decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(16),
-                          border: Border.all(color: AppColors.failedRed.withOpacity(0.2)),
+                          border: Border.all(color: AppColors.failedRed.withValues(alpha: 0.2)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -152,7 +152,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                                 decoration: BoxDecoration(
                                   color: Colors.grey.shade100,
                                   borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(color: Colors.grey.withOpacity(0.2)),
+                                  border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
                                 ),
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(12),
@@ -213,9 +213,9 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                               width: double.infinity,
                               padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
-                                color: (q.isTrue ? AppColors.passedGreen : AppColors.failedRed).withOpacity(0.08),
+                                color: (q.isTrue ? AppColors.passedGreen : AppColors.failedRed).withValues(alpha: 0.08),
                                 borderRadius: BorderRadius.circular(10),
-                                border: Border.all(color: (q.isTrue ? AppColors.passedGreen : AppColors.failedRed).withOpacity(0.3)),
+                                border: Border.all(color: (q.isTrue ? AppColors.passedGreen : AppColors.failedRed).withValues(alpha: 0.3)),
                               ),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -233,7 +233,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                                           decoration: BoxDecoration(
-                                            color: AppColors.primary.withOpacity(0.1),
+                                            color: AppColors.primary.withValues(alpha: 0.1),
                                             borderRadius: BorderRadius.circular(12),
                                           ),
                                           child: const Row(
@@ -275,7 +275,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                                             decoration: BoxDecoration(
-                                              color: (lang == 'ur' ? const Color(0xFF16A34A) : const Color(0xFF0284C7)).withOpacity(0.12),
+                                              color: (lang == 'ur' ? const Color(0xFF16A34A) : const Color(0xFF0284C7)).withValues(alpha: 0.12),
                                               borderRadius: BorderRadius.circular(12),
                                             ),
                                             child: Row(
