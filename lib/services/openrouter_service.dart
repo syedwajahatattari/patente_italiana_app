@@ -47,8 +47,8 @@ class OpenRouterService {
   static const String _primaryModel = 'openrouter/free';
   static const String _fallbackModel = 'meta-llama/llama-3.2-3b-instruct:free';
 
-  /// Obtains the API key strictly from compile-time environment flags:
-  /// `--dart-define=OPENROUTER_API_KEY=...` or `--dart-define-from-file=.env`
+  /// Obtains the API key strictly from compile-time environment flag:
+  /// `--dart-define=OPENROUTER_API_KEY=...`
   static String get apiKey =>
       const String.fromEnvironment('OPENROUTER_API_KEY', defaultValue: '');
 
@@ -64,9 +64,9 @@ class OpenRouterService {
       return const AiResponseResult.failure(
         errorType: AiErrorType.missingKey,
         errorMessageIt:
-            "Chiave API non configurata.\nImposta OPENROUTER_API_KEY tramite --dart-define o --dart-define-from-file.",
+            "Chiave API non configurata.\nImposta OPENROUTER_API_KEY tramite --dart-define.",
         errorMessageUr:
-            "AI سروس کی API کی شامل نہیں ہے۔ براہ کرم --dart-define یا .env کے ذریعے کنفیگر کریں۔",
+            "AI سروس کی API کی شامل نہیں ہے۔ براہ کرم --dart-define کے ذریعے کنفیگر کریں۔",
         statusCode: 401,
       );
     }

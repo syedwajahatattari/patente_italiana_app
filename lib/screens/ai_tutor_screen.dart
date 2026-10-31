@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import '../providers/language_provider.dart';
 import '../providers/subscription_provider.dart';
 import '../screens/premium_paywall_screen.dart';
 import '../services/tts_service.dart';
@@ -136,6 +137,29 @@ URDU: [La tua spiegazione in urdu]
 ''';
 
     try {
+      if (!OpenRouterService.isConfigured) {
+        // AI is not configured. Provide offline rule response without returning missing-key fake chat text.
+        // Failed / key-missing attempts must NOT burn quota!
+        final offlineRule = _generateAiAnswer(query);
+        final id = "ai_${DateTime.now().millisecondsSinceEpoch}";
+        final aiResponse = AiTutorMessage(
+          id: id,
+          isUser: false,
+          text: offlineRule.text,
+          ruleIt: offlineRule.ruleIt,
+          explanationUr: offlineRule.explanationUr,
+          examTip: offlineRule.examTip,
+        );
+
+        if (mounted) {
+          setState(() {
+            _messages.add(aiResponse);
+            // DO NOT increment _queriesAskedToday when key is missing!
+          });
+        }
+        return;
+      }
+
       final result = await OpenRouterService.getAiResponseDetailed(prompt, query);
 
       if (result.success && result.text != null) {
@@ -162,51 +186,41 @@ URDU: [La tua spiegazione in urdu]
         if (mounted) {
           setState(() {
             _messages.add(aiResponse);
-            // Only increment daily usage counter on successful AI response
+            // ONLY increment daily quota on actual successful online AI response!
             _queriesAskedToday++;
           });
         }
       } else {
-        // Online call failed — activate offline rule fallback with honest diagnostic notice
+        // Online call failed (e.g. timeout / network error) — fallback to offline rule without burning quota!
         final offlineRule = _generateAiAnswer(query);
         final id = "ai_${DateTime.now().millisecondsSinceEpoch}";
-        final isKeyMissing = result.errorType == AiErrorType.missingKey;
-
-        final noticeIt = isKeyMissing
-            ? "⚠️ Nota: Risposta da banca regole locale (API Key non configurata via --dart-define)."
-            : "⚠️ Nota: Risposta da banca regole locale (${result.errorMessageIt}).";
-        final noticeUr = isKeyMissing
-            ? "⚠️ نوٹ: یہ جواب لوکل قواعد سے دیا گیا ہے کیونکہ آن لائن API کی شامل نہیں ہے۔"
-            : "⚠️ نوٹ: یہ جواب لوکل قواعد سے دیا گیا ہے (${result.errorMessageUr})۔";
-
         final aiResponse = AiTutorMessage(
           id: id,
           isUser: false,
-          text: "${offlineRule.text}\n\n$noticeIt",
+          text: offlineRule.text,
           ruleIt: offlineRule.ruleIt,
-          explanationUr: "${offlineRule.explanationUr}\n\n$noticeUr",
+          explanationUr: offlineRule.explanationUr,
           examTip: offlineRule.examTip,
         );
 
         if (mounted) {
           setState(() {
             _messages.add(aiResponse);
-            // DO NOT increment _queriesAskedToday on failed/fallback responses!
+            // DO NOT increment _queriesAskedToday on failed online calls!
           });
         }
       }
     } catch (e) {
       if (mounted) {
-        // Fallback to offline rule on any unhandled exception
         final offlineRule = _generateAiAnswer(query);
         setState(() {
           _messages.add(
             AiTutorMessage(
               id: "err_${DateTime.now().millisecondsSinceEpoch}",
               isUser: false,
-              text: "${offlineRule.text}\n\n⚠️ Connessione offline: $e",
+              text: offlineRule.text,
               ruleIt: offlineRule.ruleIt,
-              explanationUr: "${offlineRule.explanationUr}\n\n⚠️ آف لائن موڈ فعال ہے",
+              explanationUr: offlineRule.explanationUr,
               examTip: offlineRule.examTip,
             ),
           );
@@ -416,6 +430,9 @@ URDU: [La tua spiegazione in urdu]
   @override
   Widget build(BuildContext context) {
     final subProvider = Provider.of<SubscriptionProvider>(context);
+    final langProvider = Provider.of<LanguageProvider>(context);
+    final isUrdu = langProvider.langCode == 'ur';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
@@ -443,7 +460,7 @@ URDU: [La tua spiegazione in urdu]
           ],
         ),
         actions: [
-          // In-App Diagnostic Badge: Configured vs Missing Key
+          // In-App Diagnostic Badge: AI: Configured / AI: Not Configured
           Center(
             child: InkWell(
               onTap: () => _showConfigHelpDialog(context),
@@ -454,12 +471,12 @@ URDU: [La tua spiegazione in urdu]
                 decoration: BoxDecoration(
                   color: OpenRouterService.isConfigured
                       ? AppColors.passedGreen.withOpacity(0.12)
-                      : Colors.amber.withOpacity(0.15),
+                      : (isDark ? const Color(0xFF451A03) : Colors.amber.withOpacity(0.15)),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
                     color: OpenRouterService.isConfigured
                         ? AppColors.passedGreen.withOpacity(0.4)
-                        : Colors.amber.shade700.withOpacity(0.4),
+                        : (isDark ? const Color(0xFFB45309) : Colors.amber.shade700.withOpacity(0.4)),
                   ),
                 ),
                 child: Row(
@@ -472,17 +489,17 @@ URDU: [La tua spiegazione in urdu]
                       size: 13,
                       color: OpenRouterService.isConfigured
                           ? AppColors.passedGreen
-                          : Colors.amber.shade800,
+                          : (isDark ? const Color(0xFFFBBF24) : Colors.amber.shade800),
                     ),
                     const SizedBox(width: 4),
                     Text(
-                      OpenRouterService.isConfigured ? "AI Online" : "AI Offline",
+                      OpenRouterService.isConfigured ? "AI: Configured" : "AI: Not Configured",
                       style: TextStyle(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
                         color: OpenRouterService.isConfigured
                             ? AppColors.passedGreen
-                            : Colors.amber.shade900,
+                            : (isDark ? const Color(0xFFFDE68A) : Colors.amber.shade900),
                       ),
                     ),
                   ],
@@ -502,10 +519,46 @@ URDU: [La tua spiegazione in urdu]
       ),
       body: Column(
         children: [
-          // Suggested prompts carousel
+          // Notice banner when API key is missing
+          if (!OpenRouterService.isConfigured)
+            Container(
+              margin: const EdgeInsets.fromLTRB(16, 6, 16, 2),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF451A03) : const Color(0xFFFEF3C7),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: isDark ? const Color(0xFFB45309) : const Color(0xFFF59E0B),
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.info_outline_rounded,
+                    size: 18,
+                    color: isDark ? const Color(0xFFFBBF24) : const Color(0xFFD97706),
+                  ),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      isUrdu
+                          ? "AI کنفیگر نہیں: جوابات لوکل ڈرائیونگ رولز کے ذریعے دیے جا رہے ہیں۔"
+                          : "AI: Not Configured (--dart-define=OPENROUTER_API_KEY=...)",
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        color: isDark ? const Color(0xFFFDE68A) : const Color(0xFF92400E),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+          // Suggested prompts carousel (height 50, shrinkWrap, no vertical clipping)
           Container(
-            height: 44,
-            margin: const EdgeInsets.symmetric(vertical: 8),
+            height: 50,
+            margin: const EdgeInsets.symmetric(vertical: 6),
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -515,12 +568,17 @@ URDU: [La tua spiegazione in urdu]
                 final prompt = _suggestedPrompts[index];
                 return ActionChip(
                   backgroundColor: Theme.of(context).cardColor,
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   elevation: 1,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(18),
-                    side: BorderSide(color: Colors.grey.withOpacity(0.2)),
+                    side: BorderSide(color: Colors.grey.withOpacity(0.25)),
                   ),
-                  label: Text(prompt, style: const TextStyle(fontSize: 12)),
+                  label: Text(
+                    prompt,
+                    style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.w500),
+                  ),
                   onPressed: () => _handleSend(prompt),
                 );
               },
@@ -631,14 +689,18 @@ URDU: [La tua spiegazione in urdu]
                             children: [
                               Text(
                                 "اردو میں رہنمائی:",
-                                style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.bold, color: const Color(0xFF16A34A)),
+                                style: GoogleFonts.outfit(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: isDark ? const Color(0xFF4ADE80) : const Color(0xFF16A34A),
+                                ),
                               ),
                               _buildAudioChip(
                                 id: "${msg.id}_ur",
                                 text: msg.explanationUr!,
                                 langCode: 'ur',
                                 label: "اردو آواز 🇵🇰",
-                                color: const Color(0xFF16A34A),
+                                color: isDark ? const Color(0xFF4ADE80) : const Color(0xFF16A34A),
                               ),
                             ],
                           ),
@@ -647,15 +709,25 @@ URDU: [La tua spiegazione in urdu]
                             width: double.infinity,
                             padding: const EdgeInsets.all(12),
                             decoration: BoxDecoration(
-                              color: const Color(0xFF16A34A).withOpacity(0.08),
+                              color: isDark
+                                  ? const Color(0xFF14532D).withOpacity(0.35)
+                                  : const Color(0xFFF0FDF4),
                               borderRadius: BorderRadius.circular(14),
-                              border: Border.all(color: const Color(0xFF16A34A).withOpacity(0.2)),
+                              border: Border.all(
+                                color: isDark
+                                    ? const Color(0xFF22C55E).withOpacity(0.4)
+                                    : const Color(0xFF86EFAC),
+                              ),
                             ),
                             child: Directionality(
                               textDirection: TextDirection.rtl,
                               child: Text(
                                 msg.explanationUr!,
-                                style: AppTheme.urduStyle(fontSize: 16, color: const Color(0xFF14532D), height: 1.7),
+                                style: AppTheme.urduStyle(
+                                  fontSize: 16,
+                                  color: isDark ? const Color(0xFFF0FDF4) : const Color(0xFF0F172A),
+                                  height: 1.7,
+                                ),
                               ),
                             ),
                           ),
@@ -667,9 +739,15 @@ URDU: [La tua spiegazione in urdu]
                           Container(
                             padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
-                              color: Colors.amber.shade900.withOpacity(0.08),
+                              color: isDark
+                                  ? const Color(0xFF78350F).withOpacity(0.25)
+                                  : Colors.amber.shade900.withOpacity(0.08),
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(color: Colors.amber.shade700.withOpacity(0.3)),
+                              border: Border.all(
+                                color: isDark
+                                    ? const Color(0xFFF59E0B).withOpacity(0.35)
+                                    : Colors.amber.shade700.withOpacity(0.3),
+                              ),
                             ),
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -679,7 +757,11 @@ URDU: [La tua spiegazione in urdu]
                                 Expanded(
                                   child: Text(
                                     "Trucco d'esame: ${msg.examTip!}",
-                                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.amber.shade900),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w600,
+                                      color: isDark ? const Color(0xFFFDE68A) : Colors.amber.shade900,
+                                    ),
                                   ),
                                 ),
                               ],

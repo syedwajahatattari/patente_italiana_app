@@ -103,27 +103,18 @@ flutter pub get
 ```
 
 ### 4. Configuration (Environment Keys)
-API keys are never bundled inside application assets or source code. Pass them securely at build/run time using either `--dart-define-from-file` or individual `--dart-define` flags.
+API keys are never bundled inside application assets or source code. Pass them securely at build/run time using `--dart-define`:
 
-**Option A (Recommended for Local Dev):**
-Create a local `.env` file (copied from `.env.example`, which is automatically ignored by Git):
-```bash
-cp .env.example .env
-```
-Fill in your keys in `.env`, then launch Flutter with:
-```bash
-flutter run --dart-define-from-file=.env
-```
-
-**Option B (Direct Command Line Flags or CI/CD):**
 ```bash
 flutter run \
+  --dart-define=OPENROUTER_API_KEY="your_openrouter_key_here" \
   --dart-define=REVENUECAT_GOOGLE_KEY="your_google_key_here" \
-  --dart-define=REVENUECAT_APPLE_KEY="your_apple_key_here" \
-  --dart-define=OPENROUTER_API_KEY="your_openrouter_key_here"
+  --dart-define=REVENUECAT_APPLE_KEY="your_apple_key_here"
 ```
 
-> **Note**: If keys are not provided, the app will gracefully run in **safe mode** without crashing. Free tiers, all 7,139 offline quizzes, and the offline theory rule engine work immediately out of the box.
+For VS Code and Android Studio users, launch configurations are provided in `.vscode/launch.json` that pass `--dart-define=OPENROUTER_API_KEY=...`.
+
+> **Note**: If keys are not provided, the app runs gracefully in **safe mode** with a visible in-app status badge (`AI: Not Configured`). All 7,139 offline quizzes and the local Italian highway code theory rule engine work immediately without requiring any keys or internet connection.
 
 ---
 

@@ -2,6 +2,14 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Patente App (with OPENROUTER_API_KEY)",
+      "request": "launch",
+      "type": "dart",
+      "args": [
+        "--dart-define=OPENROUTER_API_KEY=${env:OPENROUTER_API_KEY}"
+      ]
+    },
+    {
       "name": "Patente App (Local .env)",
       "request": "launch",
       "type": "dart",
