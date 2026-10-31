@@ -1,0 +1,85 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.pyo
+__pycache__/
+*.swp
+.DS_Store
+*/.DS_Store
+**/.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
+
+# IntelliJ / Android Studio related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# VS Code related
+.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+build/
+
+# Android Studio / Gradle artifacts
+android/.gradle/
+android/local.properties
+android/build/
+android/app/build/
+/android/app/debug
+/android/app/profile
+/android/app/release
+android/key.properties
+*.keystore
+*.jks
+
+# iOS / macOS build files
+ios/Flutter/Generated.xcconfig
+ios/Flutter/flutter_export_environment.sh
+ios/Flutter/ephemeral/
+ios/Pods/
+ios/.symlinks/
+ios/Podfile.lock
+macos/Flutter/ephemeral/
+macos/Pods/
+macos/.symlinks/
+macos/Podfile.lock
+
+# Linux / Windows Ephemeral
+linux/flutter/ephemeral/
+windows/flutter/ephemeral/
+
+# Secrets and environment variables
+.env
+.env.*
+!.env.example
+
+# Node / npm / yarn packages & logs
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Python virtual environments
+venv/
+.venv/
+env/
+.pytest_cache/
+
+# Symbolication / Obfuscation related
+app.*.symbols
+app.*.map.json

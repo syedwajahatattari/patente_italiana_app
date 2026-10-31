@@ -1,0 +1,222 @@
+[
+  {
+    "id": "t1",
+    "title_it": "Definizioni Stradali e Veicoli",
+    "title_ur": "سڑک اور گاڑیوں کی تعریفیں",
+    "title_en": "Road Definitions & Vehicle Types",
+    "icon": "commute",
+    "category": "Fondamentali",
+    "totalQuestions": 2168,
+    "description_it": "Carreggiata, corsia, banchina, marciapiede e classificazione veicoli."
+  },
+  {
+    "id": "t2",
+    "title_it": "Segnali di Pericolo",
+    "title_ur": "خطرے کے اشارے",
+    "title_en": "Danger Signs",
+    "icon": "warning_amber_rounded",
+    "category": "Segnaletica",
+    "totalQuestions": 675,
+    "description_it": "Segnali triangolari che preavvisano un pericolo a 150 metri."
+  },
+  {
+    "id": "t3",
+    "title_it": "Segnali di Divieto",
+    "title_ur": "ممنوعہ اشارے",
+    "title_en": "Prohibition Signs",
+    "icon": "do_not_disturb_on_rounded",
+    "category": "Segnaletica",
+    "totalQuestions": 975,
+    "description_it": "Segnali circolari con bordo rosso che vietano il transito o manovre."
+  },
+  {
+    "id": "t4",
+    "title_it": "Segnali di Obbligo",
+    "title_ur": "لازمی اشارے",
+    "title_en": "Mandatory Signs",
+    "icon": "navigation_rounded",
+    "category": "Segnaletica",
+    "totalQuestions": 512,
+    "description_it": "Segnali circolari blu che indicano l'obbligo di seguire una direzione."
+  },
+  {
+    "id": "t5",
+    "title_it": "Segnali di Precedenza e Incroci",
+    "title_ur": "حقِ فائقیت اور چوک",
+    "title_en": "Right of Way & Intersections",
+    "icon": "alt_route_rounded",
+    "category": "Regole",
+    "totalQuestions": 670,
+    "description_it": "Dare precedenza, Stop, precedenza a destra e incroci complessi."
+  },
+  {
+    "id": "t6",
+    "title_it": "Velocità e Distanza di Sicurezza",
+    "title_ur": "رفتار اور محفوظ فاصلہ",
+    "title_en": "Speed & Safety Distance",
+    "icon": "speed_rounded",
+    "category": "Guida",
+    "totalQuestions": 274,
+    "description_it": "Limiti di velocità in città, autostrada e calcolo della distanza."
+  },
+  {
+    "id": "t7",
+    "title_it": "Sorpasso e Norme di Circolazione",
+    "title_ur": "اوور ٹیکنگ اور ٹریفک قوانین",
+    "title_en": "Overtaking & Traffic Rules",
+    "icon": "swap_calls_rounded",
+    "category": "Guida",
+    "totalQuestions": 64,
+    "description_it": "Regole per il sorpasso a destra/sinistra e cambio corsia."
+  },
+  {
+    "id": "t8",
+    "title_it": "Fermata, Sosta e Parcheggio",
+    "title_ur": "رکنا اور پارکنگ",
+    "title_en": "Stopping & Parking Rules",
+    "icon": "local_parking_rounded",
+    "category": "Guida",
+    "totalQuestions": 283,
+    "description_it": "Divieto di sosta, fermata volontaria e disco orario."
+  },
+  {
+    "id": "t9",
+    "title_it": "Uso delle Luci e Segnali Acustici",
+    "title_ur": "لائٹس اور ہارن کا استعمال",
+    "title_en": "Lights & Horn Usage",
+    "icon": "highlight_rounded",
+    "category": "Equipaggiamento",
+    "totalQuestions": 120,
+    "description_it": "Anabbaglianti, abbaglianti, fendinebbia e uso del clacson."
+  },
+  {
+    "id": "t10",
+    "title_it": "Patente, Documenti e Punti",
+    "title_ur": "لائسنس، کاغذات اور پوائنٹس",
+    "title_en": "License & Document Rules",
+    "icon": "card_membership_rounded",
+    "category": "Legge",
+    "totalQuestions": 149,
+    "description_it": "Carta di circolazione, sospensione patente, punti e revisione."
+  },
+  {
+    "id": "t11",
+    "title_it": "Primo Soccorso e Sicurezza Stradale",
+    "title_ur": "ابتدائی طبی امداد",
+    "title_en": "First Aid & Safety",
+    "icon": "health_and_safety_rounded",
+    "category": "Sicurezza",
+    "totalQuestions": 7,
+    "description_it": "Comportamento in caso di incidente, stato di shock e feriti."
+  },
+  {
+    "id": "t12",
+    "title_it": "Elementi del Veicolo e Manutenzione",
+    "title_ur": "گاڑی کے پرزے اور دیکھ بھال",
+    "title_en": "Vehicle Parts & Maintenance",
+    "icon": "build_circle_rounded",
+    "category": "Equipaggiamento",
+    "totalQuestions": 157,
+    "description_it": "Freni, pneumatici, sospensioni, motore e spie luminose del cruscotto."
+  },
+  {
+    "id": "t13",
+    "title_it": "Alcool, Droga e Guida Sicura",
+    "title_ur": "شراب، منشیات اور محفوظ ڈرائیونگ",
+    "title_en": "Alcohol, Drugs & Safe Driving",
+    "icon": "no_drinks_rounded",
+    "category": "Sicurezza",
+    "totalQuestions": 261,
+    "description_it": "Effetti dell'alcool e delle sostanze stupefacenti sulla guida, tasso alcolemico e sanzioni."
+  },
+  {
+    "id": "t14",
+    "title_it": "Cinture di Sicurezza e Sistemi di Ritenuta",
+    "title_ur": "سیٹ بیلٹ اور حفاظتی نظام",
+    "title_en": "Seat Belts & Restraint Systems",
+    "icon": "airline_seat_recline_normal_rounded",
+    "category": "Sicurezza",
+    "totalQuestions": 141,
+    "description_it": "Uso delle cinture di sicurezza, seggiolini per bambini e airbag."
+  },
+  {
+    "id": "t16",
+    "title_it": "Segnali Stradali Complementari",
+    "title_ur": "اضافی ٹریفک اشارے",
+    "title_en": "Supplementary Road Signs",
+    "icon": "signpost_rounded",
+    "category": "Segnaletica",
+    "totalQuestions": 16,
+    "description_it": "Pannelli integrativi, segnali di indicazione e segnaletica orizzontale."
+  },
+  {
+    "id": "t17",
+    "title_it": "Assicurazione e Responsabilità Civile",
+    "title_ur": "انشورنس اور شہری ذمہ داری",
+    "title_en": "Insurance & Civil Liability",
+    "icon": "verified_user_rounded",
+    "category": "Legge",
+    "totalQuestions": 69,
+    "description_it": "RC Auto obbligatoria, risarcimento danni e responsabilità del conducente."
+  },
+  {
+    "id": "t18",
+    "title_it": "Comportamento agli Incroci e Rotatorie",
+    "title_ur": "چوراہوں اور روٹری پر رویہ",
+    "title_en": "Behavior at Intersections & Roundabouts",
+    "icon": "roundabout_right_rounded",
+    "category": "Regole",
+    "totalQuestions": 174,
+    "description_it": "Regole di precedenza agli incroci, rotonde e immissioni nel traffico."
+  },
+  {
+    "id": "t19",
+    "title_it": "Trasporto Persone e Cose",
+    "title_ur": "مسافروں اور سامان کی نقل و حمل",
+    "title_en": "Transport of People & Goods",
+    "icon": "people_rounded",
+    "category": "Regole",
+    "totalQuestions": 7,
+    "description_it": "Norme sul trasporto di persone, carico massimo e sporgenza dei carichi."
+  },
+  {
+    "id": "t20",
+    "title_it": "Cause di Incidenti e Comportamento",
+    "title_ur": "حادثات کی وجوہات اور رویہ",
+    "title_en": "Accident Causes & Behavior",
+    "icon": "car_crash_rounded",
+    "category": "Sicurezza",
+    "totalQuestions": 65,
+    "description_it": "Principali cause degli incidenti stradali, colpo di sonno e stanchezza."
+  },
+  {
+    "id": "t21",
+    "title_it": "Inquinamento e Rispetto Ambientale",
+    "title_ur": "آلودگی اور ماحولیاتی احترام",
+    "title_en": "Pollution & Environmental Respect",
+    "icon": "eco_rounded",
+    "category": "Ambiente",
+    "totalQuestions": 59,
+    "description_it": "Emissioni inquinanti, marmitta catalitica e guida ecologica."
+  },
+  {
+    "id": "t22",
+    "title_it": "Segnaletica Orizzontale e Luminosa",
+    "title_ur": "سڑک پر پینٹ شدہ اور روشنی والے اشارے",
+    "title_en": "Road Markings & Light Signals",
+    "icon": "traffic_rounded",
+    "category": "Segnaletica",
+    "totalQuestions": 101,
+    "description_it": "Strisce pedonali, semafori, linee continue e tratteggiate."
+  },
+  {
+    "id": "t23",
+    "title_it": "Pneumatici, Freni e Dispositivi",
+    "title_ur": "ٹائر، بریک اور آلات",
+    "title_en": "Tires, Brakes & Devices",
+    "icon": "tire_repair_rounded",
+    "category": "Equipaggiamento",
+    "totalQuestions": 192,
+    "description_it": "Stato dei pneumatici, efficienza dei freni, ABS, ESP e dispositivi di sicurezza."
+  }
+]

@@ -1,0 +1,102 @@
+[
+  {
+    "id": "g1",
+    "term_it": "Carreggiata",
+    "term_ur": "کاریجاتا (سڑک کا وہ حصہ جہاں گاڑیاں چلتی ہیں)",
+    "term_en": "Carriageway (Road section for vehicle traffic)",
+    "definition_it": "Parte della strada destinata allo scorrimento dei veicoli; comprende le corsie di marcia ma NON i marciapiedi né le banchine.",
+    "definition_ur": "سڑک کا وہ حصہ جو صرف گاڑیوں کی آمدورفت کے لیے مخصوص ہے۔ اس میں کرسیا (ٹریک) شامل ہیں لیکن فٹ پاتھ اور بنکینا شامل نہیں ہیں۔",
+    "category": "Strada",
+    "example_it": "La carreggiata può essere a senso unico o a doppio senso di circolazione."
+  },
+  {
+    "id": "g2",
+    "term_it": "Corsia",
+    "term_ur": "کورسیا (سڑک کی ایک لائن / ٹریک)",
+    "term_en": "Lane (Subdivision of carriageway)",
+    "definition_it": "Parte della carreggiata di larghezza idonea a permettere la circolazione di una fila unica di veicoli.",
+    "definition_ur": "کاریجاتا کی ایک ایسی پٹی جس کی چوڑائی ایک وقت میں ایک قطار میں گاڑی گزرنے کے لیے کافی ہو۔",
+    "category": "Strada",
+    "example_it": "Corsia di marcia, corsia di sorpasso, corsia di emergenza."
+  },
+  {
+    "id": "g3",
+    "term_it": "Banchina",
+    "term_ur": "بانکینا (سڑک کا کچا یا پکا کنارہ جو گاڑیوں کے لیے نہیں ہوتا)",
+    "term_en": "Hard shoulder / Road margin",
+    "definition_it": "Spazio compreso tra il margine della carreggiata e il ciglio del marciapiede o del fosso; non è destinata al transito dei veicoli.",
+    "definition_ur": "کاریجاتا کے باہر کا کنارہ جو عام گاڑیوں کی آمدورفت کے لیے نہیں ہوتا۔",
+    "category": "Strada",
+    "example_it": "Sulla banchina è vietata la circolazione e la sosta dei veicoli."
+  },
+  {
+    "id": "g4",
+    "term_it": "Precedenza",
+    "term_ur": "پریچیڈینزا (حقِ فائقیت / پہلے گزرنے کا حق)",
+    "term_en": "Right of Way / Priority",
+    "definition_it": "Diritto di transitare prima degli altri veicoli ad un incrocio o in una strettoia.",
+    "definition_ur": "کسی چوک یا تنگ سڑک پر دوسرے سے پہلے گزرنے کا قانونی حق۔",
+    "category": "Regole",
+    "example_it": "Agli incroci, salvo diversa segnalazione, vale la regola della precedenza a destra."
+  },
+  {
+    "id": "g5",
+    "term_it": "Sorpasso",
+    "term_ur": "سورپاسو (اوور ٹیک کرنا)",
+    "term_en": "Overtaking",
+    "definition_it": "Manovra mediante la quale un veicolo supera un altro veicolo in movimento o fermo sulla stessa corsia.",
+    "definition_ur": "اپنی ہی سمت میں چلتی ہوئی یا رکی ہوئی گاڑی سے آگے نکلنے کا عمل۔",
+    "category": "Manovre",
+    "example_it": "Il sorpasso si effettua di norma a sinistra."
+  },
+  {
+    "id": "g6",
+    "term_it": "Fermata vs Sosta",
+    "term_ur": "فیرماتا (تھوڑی دیر رکنا) بمقابلہ سوستا (پارکنگ)",
+    "term_en": "Temporary Stop vs Parking",
+    "definition_it": "La FERMATA è una temporanea sospensione della marcia (con conducente presente). La SOSTA è il prolungato stazionamento del veicolo.",
+    "definition_ur": "فیرماتا کا مطلب ہے ڈرائیور کا گاڑی کے اندر رہتے ہوئے کچھ سیکنڈ رکنا (جیسے سواری اتارنا)۔ سوستا کا مطلب ہے گاڑی کھڑی کر کے چلے جانا (پارکنگ)۔",
+    "category": "Regole",
+    "example_it": "La fermata è consentita anche dove c'è il divieto di sosta, purché non rechi intralcio."
+  },
+  {
+    "id": "g7",
+    "term_it": "Isola di Traffico",
+    "term_ur": "ٹریفک آئی لینڈ (سڑک کے بیچ ابھرا ہوا یا پینٹ شدہ حصہ)",
+    "term_en": "Traffic Island / Channelizing Island",
+    "definition_it": "Piazzola elevata o dipinta sulla carreggiata destinata a incanalare i flussi di traffico; è vietato transitarvi sopra.",
+    "definition_ur": "سڑک کے بیچ پینٹ کیا گیا یا اونچا بنایا گیا حصہ جو گاڑیوں کو الگ الگ سمت میں بھیجتا ہے۔ اس کے اوپر گاڑی چلانا سخت منع ہے۔",
+    "category": "Strada",
+    "example_it": "Sull'isola di traffico è vietata sia la circolazione che la sosta."
+  },
+  {
+    "id": "g8",
+    "term_it": "Distanza di Sicurezza",
+    "term_ur": "سیفٹی ڈسٹنس (محفوظ فاصلہ)",
+    "term_en": "Safety Distance",
+    "definition_it": "Spazio minimo da mantenere dal veicolo che precede per evitare di tamponarlo in caso di frenata improvvisa.",
+    "definition_ur": "آگے چلنے والی گاڑی سے رکھا جانے والا کم از کم فاصلہ تاکہ اچانک بریک لگانے پر حادثہ نہ ہو۔",
+    "category": "Guida",
+    "example_it": "La distanza di sicurezza dipende dalla velocità, dalle condizioni del conducente e dell'asfalto."
+  },
+  {
+    "id": "g9",
+    "term_it": "Ciclomotore vs Motoveicolo",
+    "term_ur": "چیپلو موتورے (50cc تک 50km/h) بمقابلہ موتو ویکولو (50cc سے بڑا)",
+    "term_en": "Moped (up to 50cc) vs Motorcycle (>50cc)",
+    "definition_it": "Il ciclomotore ha cilindrata fino a 50 cm³ e velocità max 45 km/h. Il motoveicolo supera tali limiti.",
+    "definition_ur": "چیپلو موتورے 50cc تک کا چھوٹا سکوٹر ہوتا ہے۔ موتو ویکولو 50cc سے اوپر کی موٹر سائیکل ہوتی ہے۔",
+    "category": "Veicoli",
+    "example_it": "I ciclomotori non possono circolare in autostrada."
+  },
+  {
+    "id": "g10",
+    "term_it": "Revisione del Veicolo",
+    "term_ur": "ریویزیونے (گاڑی کا روڈ ٹیسٹ / معائنہ)",
+    "term_en": "Vehicle Inspection (MOT test)",
+    "definition_it": "Controllo periodico obbligatorio per verificare le condizioni di sicurezza e inquinamento del veicolo.",
+    "definition_ur": "گاڑی کا لازمی سرکاری معائنہ جو ہر 2 سال بعد (یا نئ گاڑی کے 4 سال بعد) ہوتا ہے۔",
+    "category": "Legge",
+    "example_it": "La prima revisione va fatta dopo 4 anni dalla prima immatricolazione, poi ogni 2 anni."
+  }
+]

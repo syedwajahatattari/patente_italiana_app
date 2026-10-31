@@ -1,0 +1,259 @@
+{
+  "golden_rules": [
+    {
+      "title_it": "Le parole assolute sono quasi sempre FALSE",
+      "title_en": "Absolute words are almost always FALSE",
+      "title_ur": "مطلق الفاظ والے سوالات تقریباً ہمیشہ غلط (FALSE) ہوتے ہیں",
+      "description_it": "Parole come 'sempre', 'mai', 'solo', 'soltanto', 'esclusivamente', 'unicamente', 'tutti', 'qualsiasi', 'in ogni caso', 'in nessun caso' indicano quasi sempre una risposta FALSO.",
+      "description_en": "Words like 'sempre' (always), 'mai' (never), 'solo/soltanto' (only), 'esclusivamente' (exclusively), 'tutti' (all), 'qualsiasi' (any), 'in ogni caso' (in every case) almost always mean FALSE.",
+      "description_ur": "الفاظ جیسے 'sempre' (ہمیشہ)، 'mai' (کبھی نہیں)، 'solo/soltanto' (صرف)، 'esclusivamente' (خصوصی طور پر)، 'tutti' (سب)، 'qualsiasi' (کوئی بھی)، 'in ogni caso' (ہر صورت میں) والے سوالات تقریباً ہمیشہ غلط ہوتے ہیں۔",
+      "accuracy": 71.2,
+      "icon": "⚡",
+      "keywords": [
+        "sempre",
+        "mai",
+        "solo",
+        "soltanto",
+        "esclusivamente",
+        "unicamente",
+        "tutti",
+        "tutte",
+        "qualsiasi",
+        "qualunque",
+        "in ogni caso",
+        "in nessun caso",
+        "ogni",
+        "nessuno",
+        "nessuna"
+      ],
+      "predicted_answer": false
+    },
+    {
+      "title_it": "'Mai' = quasi sempre FALSO (92%)",
+      "title_en": "'Mai' (never) = almost always FALSE (92%)",
+      "title_ur": "'mai' (کبھی نہیں) = تقریباً ہمیشہ FALSE (92%)",
+      "description_it": "Se una domanda contiene 'mai' (es. 'non si deve mai...'), la risposta è FALSO nel 92% dei casi. Nella guida, quasi niente è 'mai' vietato o 'mai' permesso senza eccezioni.",
+      "description_en": "If a question contains 'mai' (never), the answer is FALSE 92% of the time. In driving, almost nothing is 'never' forbidden or 'never' allowed without exceptions.",
+      "description_ur": "اگر سوال میں 'mai' (کبھی نہیں) لفظ ہو تو 92% وقت جواب FALSE ہوتا ہے۔ ڈرائیونگ میں تقریباً کچھ بھی بغیر استثنا کے 'کبھی نہیں' ممنوع یا اجازت نہیں ہوتا۔",
+      "accuracy": 91.7,
+      "icon": "🚫",
+      "keywords": [
+        "mai"
+      ],
+      "predicted_answer": false
+    },
+    {
+      "title_it": "'Esclusivamente/Unicamente' = sempre FALSO",
+      "title_en": "'Exclusively/Uniquely' = always FALSE",
+      "title_ur": "'esclusivamente/unicamente' (صرف اور صرف) = ہمیشہ FALSE",
+      "description_it": "Se la domanda dice 'esclusivamente' o 'unicamente', la risposta è FALSO nel 93-100% dei casi. Ci sono sempre eccezioni nella legge.",
+      "description_en": "If the question uses 'esclusivamente' (exclusively) or 'unicamente' (uniquely), the answer is FALSE 93-100% of the time. There are always exceptions in the law.",
+      "description_ur": "اگر سوال میں 'esclusivamente' (خصوصی طور پر) یا 'unicamente' (منفرد طور پر) ہو تو جواب 93-100% FALSE ہوتا ہے۔ قانون میں ہمیشہ مستثنیات ہوتی ہیں۔",
+      "accuracy": 96.5,
+      "icon": "🎯",
+      "keywords": [
+        "esclusivamente",
+        "unicamente"
+      ],
+      "predicted_answer": false
+    },
+    {
+      "title_it": "'Solo' (soltanto) = FALSE nel 75% dei casi",
+      "title_en": "'Solo' (only) = FALSE 75% of the time",
+      "title_ur": "'solo/soltanto' (صرف) = 75% وقت FALSE",
+      "description_it": "Quando la domanda limita con 'solo' o 'soltanto' (es. 'è obbligatorio solo quando...'), la risposta è quasi sempre FALSO perché le regole hanno più condizioni.",
+      "description_en": "When a question limits with 'solo/soltanto' (only), the answer is almost always FALSE because rules have more conditions than stated.",
+      "description_ur": "جب سوال 'solo/soltanto' (صرف) سے محدود کرے (مثلاً 'صرف اس وقت لازمی ہے جب...') تو جواب تقریباً ہمیشہ FALSE ہوتا ہے کیونکہ قوانین میں بتائی گئی شرائط سے زیادہ شرائط ہوتی ہیں۔",
+      "accuracy": 75.2,
+      "icon": "☝️",
+      "keywords": [
+        "solo",
+        "soltanto"
+      ],
+      "predicted_answer": false
+    },
+    {
+      "title_it": "'In ogni caso' = FALSE nel 90% dei casi",
+      "title_en": "'In every case' = FALSE 90% of the time",
+      "title_ur": "'in ogni caso' (ہر صورت میں) = 90% FALSE",
+      "description_it": "Se la domanda dice 'in ogni caso' (in tutti i casi), è quasi sicuramente FALSO. Ci sono sempre eccezioni e circostanze particolari.",
+      "description_en": "If the question says 'in ogni caso' (in every case), it's almost certainly FALSE. There are always exceptions and special circumstances.",
+      "description_ur": "اگر سوال میں 'in ogni caso' (ہر صورت میں) ہو تو یہ تقریباً یقینی طور پر FALSE ہے۔ ہمیشہ مستثنیات اور خاص حالات ہوتے ہیں۔",
+      "accuracy": 89.5,
+      "icon": "📋",
+      "keywords": [
+        "in ogni caso"
+      ],
+      "predicted_answer": false
+    },
+    {
+      "title_it": "'Moderare la velocità' = quasi sempre VERO (97%)",
+      "title_en": "'Slow down' = almost always TRUE (97%)",
+      "title_ur": "'moderare la velocità' (رفتار کم کرنا) = تقریباً ہمیشہ TRUE (97%)",
+      "description_it": "Se la domanda parla di 'moderare la velocità' (rallentare, fare attenzione), la risposta è VERO nel 97% dei casi. La prudenza è sempre giusta.",
+      "description_en": "If the question mentions 'moderare la velocità' (slow down, be careful), the answer is TRUE 97% of the time. Caution is always right.",
+      "description_ur": "اگر سوال میں 'moderare la velocità' (رفتار کم کرنا، احتیاط کرنا) ہو تو 97% وقت جواب TRUE ہوتا ہے۔ احتیاط ہمیشہ درست ہے۔",
+      "accuracy": 97.4,
+      "icon": "🐢",
+      "keywords": [
+        "moderare"
+      ],
+      "predicted_answer": true
+    },
+    {
+      "title_it": "'Prudenza/Attenzione' = quasi sempre VERO (75%+)",
+      "title_en": "'Caution/Attention' = almost always TRUE (75%+)",
+      "title_ur": "'prudenza/attenzione' (احتیاط/توجہ) = تقریباً ہمیشہ TRUE (75%+)",
+      "description_it": "Le domande che parlano di 'prudenza', 'attenzione', 'cautela' o 'controllare' sono quasi sempre VERO. La sicurezza viene prima di tutto.",
+      "description_en": "Questions about 'prudenza' (caution), 'attenzione' (attention), 'controllare' (check) are almost always TRUE. Safety comes first.",
+      "description_ur": "سوالات جن میں 'prudenza' (احتیاط)، 'attenzione' (توجہ)، 'controllare' (جانچ) ہو وہ تقریباً ہمیشہ TRUE ہوتے ہیں۔ حفاظت سب سے اہم ہے۔",
+      "accuracy": 75.0,
+      "icon": "⚠️",
+      "keywords": [
+        "prudenza",
+        "attenzione",
+        "cautela",
+        "controllare"
+      ],
+      "predicted_answer": true
+    },
+    {
+      "title_it": "'È obbligatorio' = FALSE nel 70% dei casi",
+      "title_en": "'It is mandatory' = FALSE 70% of the time",
+      "title_ur": "'è obbligatorio' (لازمی ہے) = 70% FALSE",
+      "description_it": "Quando la domanda afferma che qualcosa 'è obbligatorio', verificare bene — nel 70% dei casi è FALSO perché l'obbligo è presentato in modo troppo ampio o errato.",
+      "description_en": "When a question states something 'è obbligatorio' (is mandatory), check carefully — 70% of the time it's FALSE because the obligation is presented too broadly or incorrectly.",
+      "description_ur": "جب سوال کہے کہ کچھ 'è obbligatorio' (لازمی ہے) تو احتیاط سے پڑھیں — 70% وقت یہ FALSE ہوتا ہے کیونکہ فرض بہت وسیع یا غلط بیان کیا جاتا ہے۔",
+      "accuracy": 70.5,
+      "icon": "📜",
+      "keywords": [
+        "è obbligatorio"
+      ],
+      "predicted_answer": false
+    }
+  ],
+  "speed_limits": {
+    "title_it": "Limiti di Velocità — Ricordali!",
+    "title_en": "Speed Limits — Remember Them!",
+    "title_ur": "رفتار کی حدود — یاد رکھیں!",
+    "limits": [
+      {
+        "zone_it": "Centro abitato (città)",
+        "zone_en": "Urban area (city)",
+        "zone_ur": "شہری علاقہ (شہر)",
+        "limit": "50 km/h",
+        "icon": "🏙️"
+      },
+      {
+        "zone_it": "Strada extraurbana secondaria",
+        "zone_en": "Secondary extra-urban road",
+        "zone_ur": "ثانوی غیر شہری سڑک",
+        "limit": "90 km/h",
+        "icon": "🛤️"
+      },
+      {
+        "zone_it": "Strada extraurbana principale",
+        "zone_en": "Main extra-urban road",
+        "zone_ur": "مرکزی غیر شہری سڑک",
+        "limit": "110 km/h",
+        "icon": "🚗"
+      },
+      {
+        "zone_it": "Autostrada",
+        "zone_en": "Motorway",
+        "zone_ur": "موٹروے",
+        "limit": "130 km/h",
+        "icon": "🏎️"
+      },
+      {
+        "zone_it": "Neopatentati (primi 3 anni)",
+        "zone_en": "New drivers (first 3 years)",
+        "zone_ur": "نئے ڈرائیور (پہلے 3 سال)",
+        "limit": "100 km/h max",
+        "icon": "🔰"
+      }
+    ]
+  },
+  "alcohol_limits": {
+    "title_it": "Limiti Alcolici",
+    "title_en": "Alcohol Limits",
+    "title_ur": "الکحل کی حدود",
+    "limits": [
+      {
+        "category_it": "Conducente normale",
+        "category_en": "Normal driver",
+        "category_ur": "عام ڈرائیور",
+        "limit": "0.5 g/l",
+        "icon": "🍷"
+      },
+      {
+        "category_it": "Neopatentati (primi 3 anni)",
+        "category_en": "New drivers (first 3 years)",
+        "category_ur": "نئے ڈرائیور (3 سال)",
+        "limit": "0.0 g/l",
+        "icon": "🔰"
+      },
+      {
+        "category_it": "Conducenti professionali",
+        "category_en": "Professional drivers",
+        "category_ur": "پیشہ ور ڈرائیور",
+        "limit": "0.0 g/l",
+        "icon": "🚛"
+      },
+      {
+        "category_it": "Under 21",
+        "category_en": "Under 21",
+        "category_ur": "21 سال سے کم",
+        "limit": "0.0 g/l",
+        "icon": "👶"
+      }
+    ]
+  },
+  "exam_strategy": [
+    {
+      "title_it": "La regola del 50/50",
+      "title_en": "The 50/50 Rule",
+      "title_ur": "50/50 کا اصول",
+      "tip_it": "Le domande dell'esame sono divise esattamente 50% VERO e 50% FALSO. Se hai risposto troppi VERO di fila, probabilmente il prossimo è FALSO.",
+      "tip_en": "Exam questions are split exactly 50% TRUE and 50% FALSE. If you've answered too many TRUE in a row, the next one is probably FALSE.",
+      "tip_ur": "امتحان کے سوالات بالکل 50% TRUE اور 50% FALSE تقسیم ہیں۔ اگر آپ نے بہت زیادہ TRUE لگا دیے ہیں تو اگلا غالباً FALSE ہوگا۔",
+      "icon": "⚖️"
+    },
+    {
+      "title_it": "Massimo 3 errori permessi",
+      "title_en": "Maximum 3 errors allowed",
+      "title_ur": "زیادہ سے زیادہ 3 غلطیاں اجازت ہیں",
+      "tip_it": "Nell'esame reale hai 30 minuti per 30 domande (40 nell'ultimo formato). Puoi fare massimo 3 errori per superare l'esame.",
+      "tip_en": "In the real exam you have 30 minutes for 30 questions (40 in the latest format). You can make a maximum of 3 errors to pass.",
+      "tip_ur": "اصل امتحان میں آپ کے پاس 30 سوالات کے لیے 30 منٹ ہیں (نئے فارمیٹ میں 40)۔ پاس ہونے کے لیے زیادہ سے زیادہ 3 غلطیاں کی جا سکتی ہیں۔",
+      "icon": "❌"
+    },
+    {
+      "title_it": "Leggi la domanda COMPLETA",
+      "title_en": "Read the COMPLETE question",
+      "title_ur": "سوال مکمل پڑھیں",
+      "tip_it": "Molte domande sono 'quasi' vere ma con un dettaglio sbagliato alla fine. Leggi OGNI parola prima di rispondere.",
+      "tip_en": "Many questions are 'almost' true but with a wrong detail at the end. Read EVERY word before answering.",
+      "tip_ur": "بہت سے سوالات 'تقریباً' درست ہوتے ہیں لیکن آخر میں ایک غلط تفصیل ہوتی ہے۔ جواب دینے سے پہلے ہر لفظ پڑھیں۔",
+      "icon": "👀"
+    },
+    {
+      "title_it": "Se il buon senso dice SÌ, probabilmente è VERO",
+      "title_en": "If common sense says YES, it's probably TRUE",
+      "title_ur": "اگر عقل کہے کہ ہاں — تو شاید TRUE ہے",
+      "tip_it": "Le regole stradali seguono il buon senso: rallentare in caso di pericolo, dare la precedenza ai pedoni, non guidare ubriachi. Se sembra logico, è quasi sempre VERO.",
+      "tip_en": "Road rules follow common sense: slow down for danger, give way to pedestrians, don't drive drunk. If it seems logical, it's almost always TRUE.",
+      "tip_ur": "ٹریفک قوانین عقل کے مطابق ہیں: خطرے میں رفتار کم کریں، پیدل چلنے والوں کو راستہ دیں، نشے میں نہ چلائیں۔ اگر منطقی لگے تو تقریباً ہمیشہ TRUE ہے۔",
+      "icon": "🧠"
+    },
+    {
+      "title_it": "Attenzione alle doppie negazioni",
+      "title_en": "Watch for double negatives",
+      "title_ur": "دوہری نفی سے ہوشیار رہیں",
+      "tip_it": "Le domande con 'non è vietato' significano 'è permesso'. Le doppie negazioni sono un tranello comune.",
+      "tip_en": "Questions with 'non è vietato' (not forbidden) mean 'it's allowed'. Double negatives are a common trap.",
+      "tip_ur": "'non è vietato' (ممنوع نہیں ہے) کا مطلب ہے 'اجازت ہے'۔ دوہری نفی ایک عام جال ہے۔",
+      "icon": "🪤"
+    }
+  ]
+}
