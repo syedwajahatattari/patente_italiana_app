@@ -16,6 +16,8 @@ class AiTutorMessage {
   final String? ruleIt;
   final String? explanationUr;
   final String? examTip;
+  final bool isOfflineRule;
+  final String? errorNotice;
   final DateTime timestamp;
 
   AiTutorMessage({
@@ -25,6 +27,8 @@ class AiTutorMessage {
     this.ruleIt,
     this.explanationUr,
     this.examTip,
+    this.isOfflineRule = false,
+    this.errorNotice,
     DateTime? timestamp,
   }) : timestamp = timestamp ?? DateTime.now();
 }
@@ -149,6 +153,7 @@ URDU: [La tua spiegazione in urdu]
           ruleIt: offlineRule.ruleIt,
           explanationUr: offlineRule.explanationUr,
           examTip: offlineRule.examTip,
+          isOfflineRule: true,
         );
 
         if (mounted) {
@@ -181,6 +186,7 @@ URDU: [La tua spiegazione in urdu]
           isUser: false,
           text: itaText,
           explanationUr: urduText,
+          isOfflineRule: false,
         );
 
         if (mounted) {
@@ -191,7 +197,7 @@ URDU: [La tua spiegazione in urdu]
           });
         }
       } else {
-        // Online call failed (e.g. timeout / network error) — fallback to offline rule without burning quota!
+        // Online call failed (e.g. timeout / network error / rate limit) — fallback to offline rule with real diagnostics!
         final offlineRule = _generateAiAnswer(query);
         final id = "ai_${DateTime.now().millisecondsSinceEpoch}";
         final aiResponse = AiTutorMessage(
@@ -201,6 +207,8 @@ URDU: [La tua spiegazione in urdu]
           ruleIt: offlineRule.ruleIt,
           explanationUr: offlineRule.explanationUr,
           examTip: offlineRule.examTip,
+          isOfflineRule: true,
+          errorNotice: "${result.errorMessageIt} (${result.errorMessageUr})",
         );
 
         if (mounted) {
@@ -222,6 +230,8 @@ URDU: [La tua spiegazione in urdu]
               ruleIt: offlineRule.ruleIt,
               explanationUr: offlineRule.explanationUr,
               examTip: offlineRule.examTip,
+              isOfflineRule: true,
+              errorNotice: "Connessione non disponibile: $e",
             ),
           );
         });
@@ -361,7 +371,7 @@ URDU: [La tua spiegazione in urdu]
             Text(
               isConfigured
                   ? "✅ L'API Key di OpenRouter è configurata correttamente.\n\nLe risposte vengono generate in tempo reale tramite i modelli AI."
-                  : "⚠️ Nessuna chiave API configurata via --dart-define.\n\nIn questa modalità, l'assistente risponde utilizzando il motore offline basato sulle regole ufficiali del Codice della Strada.\n\nPer abilitare l'AI online, avvia l'app con:\nflutter run --dart-define=OPENROUTER_API_KEY=tua_chiave\noppure aggiungi la chiave nel file .env e avvia con:\nflutter run --dart-define-from-file=.env",
+                  : "⚠️ Nessuna chiave API configurata.\n\nIn questa modalità, l'assistente risponde utilizzando il motore offline basato sulle regole ufficiali del Codice della Strada.\n\nPer abilitare l'AI online, avvia l'app con:\nflutter run --dart-define=OPENROUTER_API_KEY=tua_chiave\noppure seleziona 'Patente App (with OPENROUTER_API_KEY)' in VS Code.",
               style: const TextStyle(fontSize: 13, height: 1.5),
             ),
           ],
@@ -645,6 +655,26 @@ URDU: [La tua spiegazione in urdu]
                               "Istruttore AI",
                               style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 13, color: const Color(0xFF6366F1)),
                             ),
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: msg.isOfflineRule
+                                    ? (isDark ? const Color(0xFF451A03) : Colors.amber.shade800.withOpacity(0.12))
+                                    : AppColors.passedGreen.withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                msg.isOfflineRule ? "Regola CdS" : "AI Live ⚡",
+                                style: TextStyle(
+                                  fontSize: 9,
+                                  fontWeight: FontWeight.bold,
+                                  color: msg.isOfflineRule
+                                      ? (isDark ? const Color(0xFFFDE68A) : Colors.amber.shade900)
+                                      : AppColors.passedGreen,
+                                ),
+                              ),
+                            ),
                             const Spacer(),
                             if (msg.ruleIt != null)
                               _buildAudioChip(
@@ -656,6 +686,35 @@ URDU: [La tua spiegazione in urdu]
                               ),
                           ],
                         ),
+                        if (msg.errorNotice != null) ...[
+                          const SizedBox(height: 8),
+                          Container(
+                            width: double.infinity,
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: isDark ? Colors.red.shade900.withOpacity(0.25) : Colors.red.shade50,
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(color: Colors.red.shade700.withOpacity(0.3)),
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Icon(Icons.info_outline_rounded, size: 14, color: isDark ? Colors.red.shade300 : Colors.red.shade700),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    "Server AI: ${msg.errorNotice!}",
+                                    style: TextStyle(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w500,
+                                      color: isDark ? Colors.red.shade200 : Colors.red.shade800,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                         const SizedBox(height: 10),
 
                         // Main text

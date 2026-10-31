@@ -47,10 +47,18 @@ class OpenRouterService {
   static const String _primaryModel = 'openrouter/free';
   static const String _fallbackModel = 'meta-llama/llama-3.2-3b-instruct:free';
 
+  /// Optional client injection for unit tests
+  @visibleForTesting
+  static http.Client? testHttpClient;
+
+  /// Optional API key override for unit tests
+  @visibleForTesting
+  static String? testApiKey;
+
   /// Obtains the API key strictly from compile-time environment flag:
-  /// `--dart-define=OPENROUTER_API_KEY=...`
+  /// `--dart-define=OPENROUTER_API_KEY=...` (or test override if set)
   static String get apiKey =>
-      const String.fromEnvironment('OPENROUTER_API_KEY', defaultValue: '');
+      testApiKey ?? const String.fromEnvironment('OPENROUTER_API_KEY', defaultValue: '');
 
   static bool get isConfigured => apiKey.isNotEmpty;
 
@@ -86,15 +94,6 @@ class OpenRouterService {
     return attempt2.errorType != AiErrorType.serverError ? attempt2 : attempt1;
   }
 
-  /// Convenience wrapper returning formatted text
-  static Future<String> getAiResponse(String systemPrompt, String userMessage) async {
-    final result = await getAiResponseDetailed(systemPrompt, userMessage);
-    if (result.success && result.text != null) {
-      return result.text!;
-    }
-    return "${result.errorMessageIt}\n(${result.errorMessageUr})";
-  }
-
   static Future<AiResponseResult> _requestModel(
     String model,
     String systemPrompt,
@@ -102,24 +101,31 @@ class OpenRouterService {
     String key,
   ) async {
     try {
-      final response = await http
-          .post(
-            Uri.parse(_baseUrl),
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': 'Bearer $key',
-              'HTTP-Referer': 'https://patenteitaliana.app',
-              'X-Title': 'Patente Italiana App',
-            },
-            body: jsonEncode({
-              'model': model,
-              'messages': [
-                {'role': 'system', 'content': systemPrompt},
-                {'role': 'user', 'content': userMessage},
-              ],
-            }),
-          )
-          .timeout(const Duration(seconds: 15));
+      final client = testHttpClient ?? http.Client();
+      final shouldClose = testHttpClient == null;
+      http.Response response;
+      try {
+        response = await client
+            .post(
+              Uri.parse(_baseUrl),
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer $key',
+                'HTTP-Referer': 'https://patenteitaliana.app',
+                'X-Title': 'Patente Italiana App',
+              },
+              body: jsonEncode({
+                'model': model,
+                'messages': [
+                  {'role': 'system', 'content': systemPrompt},
+                  {'role': 'user', 'content': userMessage},
+                ],
+              }),
+            )
+            .timeout(const Duration(seconds: 15));
+      } finally {
+        if (shouldClose) client.close();
+      }
 
       if (response.statusCode == 200) {
         final dynamic data = jsonDecode(response.body);
