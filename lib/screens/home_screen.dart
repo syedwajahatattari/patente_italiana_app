@@ -143,7 +143,47 @@ class HomeScreen extends StatelessWidget {
       ),
       body: quizProvider.isLoading
           ? const Center(child: CircularProgressIndicator(color: AppColors.primary))
-          : RefreshIndicator(
+          : quizProvider.hasError
+              ? Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(28.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(Icons.error_outline_rounded, size: 64, color: AppColors.failedRed),
+                        const SizedBox(height: 16),
+                        Text(
+                          isUrdu ? "ڈیٹا لوڈ کرنے میں دشواری پیش آئی" : (lang == 'en' ? "Error loading datasets" : "Errore nel caricamento dei dati"),
+                          style: GoogleFonts.outfit(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          isUrdu
+                              ? "براہ کرم دوبارہ کوشش کریں یا ایپ ری اسٹارٹ کریں۔"
+                              : "Impossibile caricare il database dei quiz. Riprova.",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                        const SizedBox(height: 18),
+                        ElevatedButton.icon(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                          ),
+                          onPressed: () => quizProvider.initData(),
+                          icon: const Icon(Icons.refresh_rounded, size: 20),
+                          label: Text(
+                            isUrdu ? "دوبارہ کوشش کریں" : (lang == 'en' ? "Retry" : "Riprova"),
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : RefreshIndicator(
               onRefresh: () async => await quizProvider.initData(),
               child: SingleChildScrollView(
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -909,7 +949,7 @@ class HomeScreen extends StatelessWidget {
           return;
         }
 
-        await subProvider.recordExamAttempt();
+        // Deduct attempt only upon completion in submitExam()
         quizProvider.startMinisterialExam();
         if (context.mounted) {
           Navigator.push(context, MaterialPageRoute(builder: (_) => const ExamSimulationScreen()));

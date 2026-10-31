@@ -188,7 +188,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                                       icon: const Icon(Icons.delete_outline_rounded, color: Colors.grey),
                                       onPressed: () async {
                                         await StorageService.removeErrorQuestionId(q.id);
-                                        quizProvider.initData();
+                                        quizProvider.removeErrorQuestion(q.id);
                                       },
                                     ),
                                   ],

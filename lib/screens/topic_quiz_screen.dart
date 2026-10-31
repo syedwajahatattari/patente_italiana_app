@@ -36,15 +36,15 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
   }
 
   String _getTranslation(question, String langCode) {
-    if (langCode == 'en') return question.questionEn;
-    if (langCode == 'ur') return question.questionUr;
-    return '';
+    if (langCode == 'en') return question.questionEn.isNotEmpty ? question.questionEn : question.questionIt;
+    if (langCode == 'ur') return question.questionUr.isNotEmpty ? question.questionUr : question.questionIt;
+    return question.questionIt;
   }
 
   String _getExplanation(question, String langCode) {
-    if (langCode == 'en') return question.explanationEn;
-    if (langCode == 'ur') return question.explanationUr;
-    return '';
+    if (langCode == 'en') return question.explanationEn.isNotEmpty ? question.explanationEn : question.explanationIt;
+    if (langCode == 'ur') return question.explanationUr.isNotEmpty ? question.explanationUr : question.explanationIt;
+    return question.explanationIt;
   }
 
   String _getCorrectAnswerText(bool isTrue, String langCode) {
@@ -72,6 +72,16 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.topicTitle, style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 16)),
+        actions: [
+          TextButton.icon(
+            onPressed: () => _showFinishDialog(context, quizProvider, lang),
+            icon: const Icon(Icons.check_circle_outline_rounded, color: AppColors.passedGreen, size: 18),
+            label: Text(
+              lang == 'ur' ? "مکمل" : (lang == 'en' ? "Finish" : "Termina"),
+              style: const TextStyle(color: AppColors.passedGreen, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
       ),
       body: SafeArea(
         child: Padding(
@@ -443,21 +453,100 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
                     icon: const Icon(Icons.arrow_back),
                     label: Text(lang == 'ur' ? "پچھلا" : (lang == 'en' ? "Previous" : "Indietro")),
                   ),
-                  TextButton.icon(
-                    onPressed: quizProvider.currentQuestionIndex < quizProvider.activeExamQuestions.length - 1
-                        ? () {
-                            quizProvider.nextQuestion();
-                            setState(() => _showExplanation = false);
-                          }
-                        : null,
-                    icon: const Icon(Icons.arrow_forward),
-                    label: Text(lang == 'ur' ? "اگلا" : (lang == 'en' ? "Next" : "Avanti")),
-                  ),
+                  if (quizProvider.currentQuestionIndex < quizProvider.activeExamQuestions.length - 1)
+                    TextButton.icon(
+                      onPressed: () {
+                        quizProvider.nextQuestion();
+                        setState(() => _showExplanation = false);
+                      },
+                      icon: const Icon(Icons.arrow_forward),
+                      label: Text(lang == 'ur' ? "اگلا" : (lang == 'en' ? "Next" : "Avanti")),
+                    )
+                  else
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.passedGreen,
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      ),
+                      onPressed: () => _showFinishDialog(context, quizProvider, lang),
+                      icon: const Icon(Icons.check_rounded, size: 18),
+                      label: Text(
+                        lang == 'ur' ? "مکمل کریں" : (lang == 'en' ? "Finish" : "Termina"),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ),
                 ],
               ),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showFinishDialog(BuildContext parentContext, QuizProvider quizProvider, String lang) {
+    final isUrdu = lang == 'ur';
+    int correct = 0;
+    int wrong = 0;
+    for (var q in quizProvider.activeExamQuestions) {
+      final ans = quizProvider.userAnswers[q.id];
+      if (ans != null) {
+        if (ans == q.isTrue) {
+          correct++;
+        } else {
+          wrong++;
+        }
+      }
+    }
+    final answered = quizProvider.userAnswers.length;
+    final total = quizProvider.activeExamQuestions.length;
+
+    showDialog(
+      context: parentContext,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Text(
+          isUrdu ? "🎯 پریکٹس کا نتیجہ" : (lang == 'en' ? "🎯 Practice Summary" : "🎯 Riepilogo Esercitazione"),
+          style: isUrdu
+              ? AppTheme.urduStyle(fontSize: 20, fontWeight: FontWeight.bold)
+              : GoogleFonts.outfit(fontWeight: FontWeight.bold),
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              isUrdu
+                  ? "کل سوالات: $total | حل کیے: $answered\nدرست: $correct | غلطیاں: $wrong"
+                  : (lang == 'en'
+                      ? "Total: $total | Answered: $answered\nCorrect: $correct | Errors: $wrong"
+                      : "Domande totali: $total | Risposte: $answered\nCorrette: $correct | Errori: $wrong"),
+              style: isUrdu ? AppTheme.urduStyle(fontSize: 15, height: 1.6) : const TextStyle(fontSize: 14, height: 1.5),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(isUrdu ? "جاری رکھیں" : (lang == 'en' ? "Continue" : "Continua")),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColors.primary,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+            onPressed: () async {
+              Navigator.pop(ctx);
+              await quizProvider.submitPractice();
+              if (parentContext.mounted) {
+                Navigator.pop(parentContext);
+              }
+            },
+            child: Text(isUrdu ? "مکمل کریں اور نکلیں" : (lang == 'en' ? "Finish & Exit" : "Termina ed Esci")),
+          ),
+        ],
       ),
     );
   }

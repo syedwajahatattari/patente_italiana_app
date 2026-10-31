@@ -149,56 +149,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Testing Mode Banner (ONLY in Debug Mode for QA / Developers)
-            if (kDebugMode) ...[
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-                decoration: BoxDecoration(
-                  color: subProvider.isPremium ? AppColors.passedGreen.withOpacity(0.12) : Colors.amber.withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: subProvider.isPremium ? AppColors.passedGreen : Colors.amber,
-                    width: 1.5,
-                  ),
-                ),
-                child: Row(
-                  children: [
-                    Icon(
-                      subProvider.isPremium ? Icons.verified_rounded : Icons.science_rounded,
-                      color: subProvider.isPremium ? AppColors.passedGreen : Colors.amber.shade700,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "🧪 Developer QA Switch (Debug Only)",
-                            style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 12),
-                          ),
-                          Text(
-                            subProvider.isPremium ? "PRO Active" : "Free Plan Active",
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                              color: subProvider.isPremium ? AppColors.passedGreen : Colors.amber.shade800,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Switch.adaptive(
-                      value: subProvider.isPremium,
-                      activeColor: AppColors.passedGreen,
-                      onChanged: (val) {
-                        subProvider.setPremium(val);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-            ],
+
 
             // Comparison Table: Free vs PRO (Pushes conversion drastically)
             _buildComparisonCard(context, isUrdu, lang),
@@ -244,10 +195,10 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
             _buildFeatureRow(
               icon: Icons.offline_bolt_rounded,
               color: Colors.green.shade600,
-              titleIt: "100% Offline (Senza Internet)",
-              descIt: "Studia e fai quiz ovunque, in metro, treno o aereo senza consumare giga.",
-              titleUr: "📴 مکمل آف لائن موڈ",
-              descUr: "بغیر انٹرنیٹ کے میٹرو، بس یا سفر میں تمام سوالات اور تصاویر پڑھیں۔",
+              titleIt: "Quiz e Teoria Offline",
+              descIt: "Esercitati anche senza connessione internet su oltre 7.000 quiz.",
+              titleUr: "📴 کوئز اور تھیوری آف لائن",
+              descUr: "بغیر انٹرنیٹ کے بھی 7,000 سے زائد سوالات اور اصول پڑھیں۔",
               isUrdu: isUrdu,
             ),
             const SizedBox(height: 22),
@@ -315,11 +266,19 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
                   }
 
                   if (_packages.isEmpty) {
-                    // Fallback simulated activation if packages aren't configured yet
-                    await subProvider.setPremium(true);
-                    if (context.mounted) {
-                      _showSuccessDialog(context, isUrdu);
-                    }
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(
+                          isUrdu
+                              ? "ادائیگی کی سروس فی الحال دستیاب نہیں ہے۔ براہ کرم انٹرنیٹ چیک کریں یا بعد میں کوشش کریں۔"
+                              : (lang == 'en'
+                                  ? "Payment service is currently unavailable. Please check internet or try again later."
+                                  : "Servizio acquisti momentaneamente non disponibile. Verifica la connessione e riprova più tardi."),
+                        ),
+                        backgroundColor: AppColors.failedRed,
+                        behavior: SnackBarBehavior.floating,
+                      ),
+                    );
                     return;
                   }
 
@@ -471,7 +430,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
           _buildComparisonRow(
             feature: isUrdu ? "آف لائن بغیر انٹرنیٹ" : "Studio Offline",
             freeVal: "❌",
-            proVal: "✅ 100% Offline",
+            proVal: "✅ Quiz Offline",
             isProAdvantage: true,
           ),
         ],

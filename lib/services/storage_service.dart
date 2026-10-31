@@ -16,6 +16,8 @@ class StorageService {
   static const String _keyTimeAttackHighScore = 'key_time_attack_high_score';
   static const String _keyTimeAttackGamesPlayedDate = 'key_time_attack_games_date';
   static const String _keyTimeAttackGamesCount = 'key_time_attack_games_count';
+  static const String _keyActiveExam = 'key_active_exam_state';
+  static const String _keyErrorStreakPrefix = 'key_err_correct_streak_';
 
   // Exam History
   static Future<List<ExamResult>> getExamResults() async {
@@ -193,5 +195,60 @@ class StorageService {
   static Future<void> setLanguage(String langCode) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_keyLanguage, langCode);
+  }
+
+  // ── Active Exam Persistence ──
+  static Future<void> saveActiveExamState({
+    required List<String> questionIds,
+    required Map<String, bool> userAnswers,
+    required int secondsRemaining,
+    required Set<String> flaggedIds,
+  }) async {
+    final prefs = await SharedPreferences.getInstance();
+    final data = {
+      'questionIds': questionIds,
+      'userAnswers': userAnswers,
+      'secondsRemaining': secondsRemaining,
+      'flaggedIds': flaggedIds.toList(),
+      'savedAt': DateTime.now().millisecondsSinceEpoch,
+    };
+    await prefs.setString(_keyActiveExam, json.encode(data));
+  }
+
+  static Future<Map<String, dynamic>?> getActiveExamState() async {
+    final prefs = await SharedPreferences.getInstance();
+    final raw = prefs.getString(_keyActiveExam);
+    if (raw == null || raw.isEmpty) return null;
+    try {
+      return json.decode(raw) as Map<String, dynamic>;
+    } catch (_) {
+      return null;
+    }
+  }
+
+  static Future<void> clearActiveExamState() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove(_keyActiveExam);
+  }
+
+  // ── Error Bank 2-Correct Answers Removal ──
+  static Future<bool> recordErrorQuestionSuccess(String qId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final streakKey = '$_keyErrorStreakPrefix$qId';
+    final currentStreak = (prefs.getInt(streakKey) ?? 0) + 1;
+    if (currentStreak >= 2) {
+      await removeErrorQuestionId(qId);
+      await prefs.remove(streakKey);
+      return true; // Successfully removed from error bank
+    } else {
+      await prefs.setInt(streakKey, currentStreak);
+      return false;
+    }
+  }
+
+  static Future<void> recordErrorQuestionFailure(String qId) async {
+    final prefs = await SharedPreferences.getInstance();
+    final streakKey = '$_keyErrorStreakPrefix$qId';
+    await prefs.setInt(streakKey, 0); // Reset consecutive streak
   }
 }

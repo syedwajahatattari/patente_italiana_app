@@ -136,34 +136,54 @@ ITA: [La tua risposta in italiano]
 URDU: [La tua spiegazione in urdu]
 ''';
 
-    final responseText = await OpenRouterService.getAiResponse(prompt, query);
-    
-    // Parse response
-    String itaText = "Si è verificato un errore, riprova più tardi.";
-    String? urduText;
-    
-    if (responseText.contains("ITA:") && responseText.contains("URDU:")) {
-      final parts = responseText.split("URDU:");
-      itaText = parts[0].replaceAll("ITA:", "").trim();
-      urduText = parts[1].trim();
-    } else {
-      itaText = responseText;
-    }
+    try {
+      final responseText = await OpenRouterService.getAiResponse(prompt, query);
+      
+      // Parse response
+      String itaText = "Si è verificato un errore, riprova più tardi.";
+      String? urduText;
+      
+      if (responseText.contains("ITA:") && responseText.contains("URDU:")) {
+        final parts = responseText.split("URDU:");
+        itaText = parts[0].replaceAll("ITA:", "").trim();
+        urduText = parts[1].trim();
+      } else {
+        itaText = responseText;
+      }
 
-    final id = "ai_${DateTime.now().millisecondsSinceEpoch}";
-    final aiResponse = AiTutorMessage(
-      id: id,
-      isUser: false,
-      text: itaText,
-      explanationUr: urduText,
-    );
+      final id = "ai_${DateTime.now().millisecondsSinceEpoch}";
+      final aiResponse = AiTutorMessage(
+        id: id,
+        isUser: false,
+        text: itaText,
+        explanationUr: urduText,
+      );
 
-    if (mounted) {
-      setState(() {
-        _messages.add(aiResponse);
-        _isLoading = false;
-      });
-      _scrollToBottom();
+      if (mounted) {
+        setState(() {
+          _messages.add(aiResponse);
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _messages.add(
+            AiTutorMessage(
+              id: "err_${DateTime.now().millisecondsSinceEpoch}",
+              isUser: false,
+              text: "Errore di connessione. Riprova più tardi.",
+              explanationUr: "کنکشن کی خرابی۔ براہ کرم دوبارہ کوشش کریں۔",
+            ),
+          );
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        _scrollToBottom();
+      }
     }
   }
 

@@ -12,8 +12,16 @@ import 'services/revenuecat_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load(fileName: ".env");
-  await RevenueCatService.init();
+  try {
+    await dotenv.load(fileName: ".env");
+  } catch (e) {
+    debugPrint("Notice: .env not loaded or missing (running with defaults/dart-define): $e");
+  }
+  try {
+    await RevenueCatService.init();
+  } catch (e) {
+    debugPrint("Notice: RevenueCatService.init failed (safe fallback active): $e");
+  }
   runApp(const PatenteItalianaApp());
 }
 

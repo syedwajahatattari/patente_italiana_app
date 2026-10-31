@@ -30,7 +30,9 @@ class Question {
       questionIt: json['question_it'] ?? '',
       questionUr: json['question_ur'] ?? '',
       questionEn: json['question_en'] ?? '',
-      isTrue: json['isTrue'] ?? true,
+      isTrue: json['isTrue'] is bool
+          ? json['isTrue'] as bool
+          : (json['isTrue'] != null && json['isTrue'].toString().toLowerCase() == 'true'),
       explanationIt: json['explanation_it'] ?? '',
       explanationUr: json['explanation_ur'] ?? '',
       explanationEn: json['explanation_en'] ?? '',

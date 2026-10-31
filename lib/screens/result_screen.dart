@@ -516,7 +516,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                         return;
                       }
 
-                      await subProvider.recordExamAttempt();
+                      // Deduct attempt only upon completion in submitExam()
                       quizProvider.startMinisterialExam();
                       if (context.mounted) {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const ExamSimulationScreen()));

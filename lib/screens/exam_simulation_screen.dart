@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../providers/quiz_provider.dart';
 import '../providers/language_provider.dart';
+import '../providers/subscription_provider.dart';
 import '../services/tts_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
@@ -17,18 +18,30 @@ class ExamSimulationScreen extends StatefulWidget {
   State<ExamSimulationScreen> createState() => _ExamSimulationScreenState();
 }
 
-class _ExamSimulationScreenState extends State<ExamSimulationScreen> {
+class _ExamSimulationScreenState extends State<ExamSimulationScreen> with WidgetsBindingObserver {
   bool _showTranslation = true;
   bool _allowPop = false;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     TTSService.init();
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      quizProvider.pauseTimer();
+    } else if (state == AppLifecycleState.resumed) {
+      quizProvider.resumeTimer();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     TTSService.stop();
     // Cancel the timer directly — safe to call during dispose
     final quizProvider = Provider.of<QuizProvider>(context, listen: false);
@@ -42,18 +55,18 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> {
     return "${mins.toString().padLeft(2, '0')}:${secs.toString().padLeft(2, '0')}";
   }
 
-  /// Get question text in user's selected language
+  /// Get question text in user's selected language with safe fallback to Italian
   String _getTranslation(question, String langCode) {
-    if (langCode == 'en') return question.questionEn;
-    if (langCode == 'ur') return question.questionUr;
-    return ''; // Italian-only mode
+    if (langCode == 'en') return question.questionEn.isNotEmpty ? question.questionEn : question.questionIt;
+    if (langCode == 'ur') return question.questionUr.isNotEmpty ? question.questionUr : question.questionIt;
+    return question.questionIt;
   }
 
-  /// Get explanation text in user's selected language
+  /// Get explanation text in user's selected language with safe fallback to Italian
   String _getExplanation(question, String langCode) {
-    if (langCode == 'en') return question.explanationEn;
-    if (langCode == 'ur') return question.explanationUr;
-    return ''; // Italian-only mode
+    if (langCode == 'en') return question.explanationEn.isNotEmpty ? question.explanationEn : question.explanationIt;
+    if (langCode == 'ur') return question.explanationUr.isNotEmpty ? question.explanationUr : question.explanationIt;
+    return question.explanationIt;
   }
 
   /// Get language flag + label
@@ -244,6 +257,19 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> {
     final lang = langProvider.langCode;
     final isUrdu = lang == 'ur';
 
+    // Auto-navigate to result screen when time is up or exam completed
+    if (quizProvider.isAutoSubmitted || (quizProvider.isExamCompleted && quizProvider.lastExamResult != null)) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          quizProvider.clearAutoSubmitted();
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (_) => const ResultScreen()),
+          );
+        }
+      });
+    }
+
     if (quizProvider.activeExamQuestions.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: const Text("Simulazione Esame")),
@@ -286,38 +312,65 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> {
             ),
           ),
           actions: [
-            // Timer Widget
-            Container(
-              margin: const EdgeInsets.only(right: 12),
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-              decoration: BoxDecoration(
-                color: quizProvider.timerSecondsRemaining < 300
-                    ? AppColors.failedRed.withOpacity(0.2)
-                    : AppColors.primary.withOpacity(0.15),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: quizProvider.timerSecondsRemaining < 300 ? AppColors.failedRed : AppColors.primary,
+            // Timer Widget (Shows Paused Pill if Backgrounded/Paused)
+            if (quizProvider.isTimerPaused)
+              GestureDetector(
+                onTap: () {
+                  HapticFeedback.lightImpact();
+                  quizProvider.resumeTimer();
+                },
+                child: Container(
+                  margin: const EdgeInsets.only(right: 12),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: Colors.amber.shade900.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: Colors.amber.shade800),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.play_circle_filled_rounded, size: 18, color: Colors.amber.shade800),
+                      const SizedBox(width: 4),
+                      Text(
+                        "Pausa (${_formatTimer(quizProvider.timerSecondsRemaining)})",
+                        style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.amber.shade900),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.timer_outlined,
-                    size: 18,
+              )
+            else
+              Container(
+                margin: const EdgeInsets.only(right: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                decoration: BoxDecoration(
+                  color: quizProvider.timerSecondsRemaining < 300
+                      ? AppColors.failedRed.withOpacity(0.2)
+                      : AppColors.primary.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
                     color: quizProvider.timerSecondsRemaining < 300 ? AppColors.failedRed : AppColors.primary,
                   ),
-                  const SizedBox(width: 4),
-                  Text(
-                    _formatTimer(quizProvider.timerSecondsRemaining),
-                    style: GoogleFonts.outfit(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
+                ),
+                child: Row(
+                  children: [
+                    Icon(
+                      Icons.timer_outlined,
+                      size: 18,
                       color: quizProvider.timerSecondsRemaining < 300 ? AppColors.failedRed : AppColors.primary,
                     ),
-                  ),
-                ],
+                    const SizedBox(width: 4),
+                    Text(
+                      _formatTimer(quizProvider.timerSecondsRemaining),
+                      style: GoogleFonts.outfit(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                        color: quizProvider.timerSecondsRemaining < 300 ? AppColors.failedRed : AppColors.primary,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
         body: SafeArea(
@@ -744,7 +797,8 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> {
             style: ElevatedButton.styleFrom(backgroundColor: AppColors.passedGreen),
             onPressed: () async {
               Navigator.pop(ctx);
-              await quizProvider.submitExam();
+              final subProvider = Provider.of<SubscriptionProvider>(parentContext, listen: false);
+              await quizProvider.submitExam(subProvider: subProvider);
               if (parentContext.mounted) {
                 Navigator.pushReplacement(parentContext, MaterialPageRoute(builder: (_) => const ResultScreen()));
               }

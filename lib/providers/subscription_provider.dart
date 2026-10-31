@@ -68,9 +68,10 @@ class SubscriptionProvider extends ChangeNotifier {
     }
   }
 
-  /// FOR TESTING / DEBUG ONLY: Toggle premium manually. 
-  /// In production, rely on `refreshSubscriptionStatus()` after a purchase.
+  /// FOR TESTING / DEBUG ONLY: Toggle premium manually in debug mode only.
   Future<void> setPremium(bool value) async {
+    assert(kDebugMode, "setPremium can only be called in debug mode");
+    if (!kDebugMode) return;
     _isPremium = value;
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_prefKeyIsPremium, value);
@@ -78,6 +79,8 @@ class SubscriptionProvider extends ChangeNotifier {
   }
 
   Future<void> togglePremium() async {
+    assert(kDebugMode, "togglePremium can only be called in debug mode");
+    if (!kDebugMode) return;
     await setPremium(!_isPremium);
   }
 

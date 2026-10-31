@@ -3,32 +3,40 @@ import 'package:flutter/foundation.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class RevenueCatService {
-  // TODO: Replace these with your actual RevenueCat Public API Keys from the dashboard
-  static const String _appleApiKey = 'appl_api_key_here';
-  static const String _googleApiKey = 'goog_api_key_here';
+  // Public SDK Keys loaded from --dart-define or fallback
+  static const String _appleApiKey = String.fromEnvironment('REVENUECAT_APPLE_KEY', defaultValue: '');
+  static const String _googleApiKey = String.fromEnvironment('REVENUECAT_GOOGLE_KEY', defaultValue: '');
 
-  // The entitlement ID you set up in RevenueCat (e.g. 'pro')
+  // The entitlement ID configured in RevenueCat dashboard (e.g. 'pro')
   static const String entitlementId = 'pro';
+
+  static bool _isConfigured = false;
+  static bool get isConfigured => _isConfigured;
 
   static Future<void> init() async {
     if (kIsWeb) return; // RevenueCat does not support Web currently
 
-    await Purchases.setLogLevel(LogLevel.info);
+    try {
+      final key = Platform.isAndroid ? _googleApiKey : _appleApiKey;
+      if (key.isEmpty || key.contains('_here')) {
+        debugPrint("Warning: RevenueCat API Key not provided. Use --dart-define=REVENUECAT_GOOGLE_KEY=... or REVENUECAT_APPLE_KEY=...");
+        _isConfigured = false;
+        return;
+      }
 
-    PurchasesConfiguration? configuration;
-    if (Platform.isAndroid) {
-      configuration = PurchasesConfiguration(_googleApiKey);
-    } else if (Platform.isIOS || Platform.isMacOS) {
-      configuration = PurchasesConfiguration(_appleApiKey);
-    }
-
-    if (configuration != null) {
+      await Purchases.setLogLevel(kDebugMode ? LogLevel.debug : LogLevel.info);
+      final configuration = PurchasesConfiguration(key);
       await Purchases.configure(configuration);
+      _isConfigured = true;
+    } catch (e) {
+      debugPrint("RevenueCatService init error: $e");
+      _isConfigured = false;
     }
   }
 
   /// Checks if the user is currently PRO based on the RevenueCat servers
   static Future<bool> isUserPremium() async {
+    if (!_isConfigured) return false;
     try {
       CustomerInfo customerInfo = await Purchases.getCustomerInfo();
       return customerInfo.entitlements.all[entitlementId]?.isActive == true;
@@ -38,8 +46,12 @@ class RevenueCatService {
     }
   }
 
-  /// Restores previous purchases (e.g., if a user reinstalls the app)
+  /// Restores previous purchases (required for App Store compliance)
   static Future<bool> restorePurchases() async {
+    if (!_isConfigured) {
+      debugPrint("Restore purchases skipped: RevenueCat is not configured.");
+      return false;
+    }
     try {
       CustomerInfo customerInfo = await Purchases.restorePurchases();
       return customerInfo.entitlements.all[entitlementId]?.isActive == true;
@@ -51,6 +63,7 @@ class RevenueCatService {
 
   /// Fetches the available subscription packages from RevenueCat
   static Future<List<Package>> getOfferings() async {
+    if (!_isConfigured) return [];
     try {
       Offerings offerings = await Purchases.getOfferings();
       if (offerings.current != null && offerings.current!.availablePackages.isNotEmpty) {
@@ -64,6 +77,10 @@ class RevenueCatService {
 
   /// Attempts to purchase the given package
   static Future<bool> purchasePackage(Package package) async {
+    if (!_isConfigured) {
+      debugPrint("Purchase skipped: RevenueCat is not configured.");
+      return false;
+    }
     try {
       PurchaseResult result = await Purchases.purchasePackage(package);
       return result.customerInfo.entitlements.all[entitlementId]?.isActive == true;
