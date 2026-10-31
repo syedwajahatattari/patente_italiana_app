@@ -428,9 +428,9 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
             isProAdvantage: true,
           ),
           _buildComparisonRow(
-            feature: isUrdu ? "آف لائن بغیر انٹرنیٹ" : "Studio Offline",
+            feature: isUrdu ? "آف لائن کوئز اور تھیوری" : "Quiz e Teoria Offline",
             freeVal: "❌",
-            proVal: "✅ Quiz Offline",
+            proVal: isUrdu ? "✅ کوئز آف لائن" : "✅ Quiz Offline",
             isProAdvantage: true,
           ),
         ],

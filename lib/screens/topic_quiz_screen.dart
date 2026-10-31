@@ -19,6 +19,7 @@ class TopicQuizScreen extends StatefulWidget {
 
 class _TopicQuizScreenState extends State<TopicQuizScreen> {
   bool _showExplanation = false;
+  bool _isFinishDialogShowing = false;
 
   @override
   void initState() {
@@ -59,6 +60,16 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
     final langProvider = Provider.of<LanguageProvider>(context);
     final lang = langProvider.langCode;
 
+    // Handle timer timeout for practice quiz
+    if (quizProvider.isAutoSubmitted && !_isFinishDialogShowing) {
+      _isFinishDialogShowing = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (!mounted) return;
+        quizProvider.clearAutoSubmitted();
+        _showFinishDialog(context, quizProvider, lang, isTimeout: true);
+      });
+    }
+
     if (quizProvider.activeExamQuestions.isEmpty) {
       return Scaffold(
         appBar: AppBar(title: Text(widget.topicTitle)),
@@ -69,10 +80,34 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
     final q = quizProvider.activeExamQuestions[quizProvider.currentQuestionIndex];
     final userChoice = quizProvider.userAnswers[q.id];
 
+    final timerMins = (quizProvider.timerSecondsRemaining ~/ 60).toString().padLeft(2, '0');
+    final timerSecs = (quizProvider.timerSecondsRemaining % 60).toString().padLeft(2, '0');
+
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.topicTitle, style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 16)),
         actions: [
+          Center(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              decoration: BoxDecoration(
+                color: Colors.grey.withOpacity(0.12),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Icon(Icons.timer_outlined, size: 14, color: Colors.grey),
+                  const SizedBox(width: 4),
+                  Text(
+                    "$timerMins:$timerSecs",
+                    style: GoogleFonts.jetBrainsMono(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.grey.shade700),
+                  ),
+                ],
+              ),
+            ),
+          ),
           TextButton.icon(
             onPressed: () => _showFinishDialog(context, quizProvider, lang),
             icon: const Icon(Icons.check_circle_outline_rounded, color: AppColors.passedGreen, size: 18),
@@ -485,7 +520,7 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
     );
   }
 
-  void _showFinishDialog(BuildContext parentContext, QuizProvider quizProvider, String lang) {
+  void _showFinishDialog(BuildContext parentContext, QuizProvider quizProvider, String lang, {bool isTimeout = false}) {
     final isUrdu = lang == 'ur';
     int correct = 0;
     int wrong = 0;
@@ -504,10 +539,13 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
 
     showDialog(
       context: parentContext,
+      barrierDismissible: !isTimeout,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text(
-          isUrdu ? "🎯 پریکٹس کا نتیجہ" : (lang == 'en' ? "🎯 Practice Summary" : "🎯 Riepilogo Esercitazione"),
+          isTimeout
+              ? (isUrdu ? "⏰ وقت ختم ہو گیا!" : (lang == 'en' ? "⏰ Time Expired!" : "⏰ Tempo Scaduto!"))
+              : (isUrdu ? "🎯 پریکٹس کا نتیجہ" : (lang == 'en' ? "🎯 Practice Summary" : "🎯 Riepilogo Esercitazione")),
           style: isUrdu
               ? AppTheme.urduStyle(fontSize: 20, fontWeight: FontWeight.bold)
               : GoogleFonts.outfit(fontWeight: FontWeight.bold),
@@ -516,6 +554,19 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            if (isTimeout) ...[
+              Text(
+                isUrdu
+                    ? "پریکٹس کا وقت ختم ہو چکا ہے۔ آپ کے جوابات محفوظ کر لیے گئے ہیں۔"
+                    : (lang == 'en'
+                        ? "Practice time has expired. Your progress has been saved."
+                        : "Il tempo per questa esercitazione è scaduto. I tuoi progressi sono stati salvati."),
+                style: isUrdu
+                    ? AppTheme.urduStyle(fontSize: 14, color: AppColors.failedRed)
+                    : const TextStyle(fontSize: 13, color: AppColors.failedRed, fontWeight: FontWeight.w600),
+              ),
+              const SizedBox(height: 10),
+            ],
             Text(
               isUrdu
                   ? "کل سوالات: $total | حل کیے: $answered\nدرست: $correct | غلطیاں: $wrong"
@@ -527,10 +578,14 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text(isUrdu ? "جاری رکھیں" : (lang == 'en' ? "Continue" : "Continua")),
-          ),
+          if (!isTimeout)
+            TextButton(
+              onPressed: () {
+                _isFinishDialogShowing = false;
+                Navigator.pop(ctx);
+              },
+              child: Text(isUrdu ? "جاری رکھیں" : (lang == 'en' ? "Continue" : "Continua")),
+            ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
@@ -538,16 +593,23 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
             onPressed: () async {
+              _isFinishDialogShowing = false;
               Navigator.pop(ctx);
               await quizProvider.submitPractice();
               if (parentContext.mounted) {
                 Navigator.pop(parentContext);
               }
             },
-            child: Text(isUrdu ? "مکمل کریں اور نکلیں" : (lang == 'en' ? "Finish & Exit" : "Termina ed Esci")),
+            child: Text(
+              isTimeout
+                  ? (isUrdu ? "ٹھیک ہے / بند کریں" : (lang == 'en' ? "OK / Exit" : "OK / Esci"))
+                  : (isUrdu ? "مکمل کریں اور نکلیں" : (lang == 'en' ? "Finish & Exit" : "Termina ed Esci")),
+            ),
           ),
         ],
       ),
-    );
+    ).then((_) {
+      _isFinishDialogShowing = false;
+    });
   }
 }

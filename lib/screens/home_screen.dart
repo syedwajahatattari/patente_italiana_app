@@ -950,7 +950,7 @@ class HomeScreen extends StatelessWidget {
         }
 
         // Deduct attempt only upon completion in submitExam()
-        quizProvider.startMinisterialExam();
+        quizProvider.startMinisterialExam(subProvider: subProvider);
         if (context.mounted) {
           Navigator.push(context, MaterialPageRoute(builder: (_) => const ExamSimulationScreen()));
         }

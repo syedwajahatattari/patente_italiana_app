@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:isolate';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,6 +19,7 @@ class QuizProvider extends ChangeNotifier {
   List<GlossaryItem> _glossaryItems = [];
   List<ExamResult> _examResults = [];
   Set<String> _errorQuestionIds = {};
+  SubscriptionProvider? _subscriptionProvider;
 
   bool _isLoading = true;
   bool _hasError = false;
@@ -179,10 +181,9 @@ class QuizProvider extends ChangeNotifier {
       final List<dynamic> glossaryRaw = json.decode(glossaryJsonStr);
       _glossaryItems = glossaryRaw.map((g) => GlossaryItem.fromJson(g)).toList();
 
-      // 3. Load Questions
+      // 3. Load Questions via background isolate to prevent main-thread UI jank
       final String questionsJsonStr = await rootBundle.loadString('assets/data/quiz_questions.json');
-      final List<dynamic> questionsRaw = json.decode(questionsJsonStr);
-      _allQuestions = questionsRaw.map((q) => Question.fromJson(q)).toList();
+      _allQuestions = await Isolate.run(() => _parseQuestions(questionsJsonStr));
 
       // 4. Load Saved History & Error Bank from SharedPreferences
       _examResults = await StorageService.getExamResults();
@@ -203,6 +204,21 @@ class QuizProvider extends ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     }
+  }
+
+  static List<Question> _parseQuestions(String rawJson) {
+    final List<dynamic> list = json.decode(rawJson);
+    return list.map((q) => Question.fromJson(q)).toList();
+  }
+
+  void attachSubscriptionProvider(SubscriptionProvider sub) {
+    _subscriptionProvider = sub;
+  }
+
+  @visibleForTesting
+  void setQuestionsForTesting(List<Question> questions) {
+    _allQuestions = questions;
+    _isLoading = false;
   }
 
   /// Restore active in-progress exam if user was interrupted
@@ -242,7 +258,10 @@ class QuizProvider extends ChangeNotifier {
 
   // ── Ministerial Exam (Scheda Esame) ──
   // 30 unique questions, topic-weighted distribution, balanced to 13–17 VERO / 13–17 FALSO
-  void startMinisterialExam() {
+  void startMinisterialExam({SubscriptionProvider? subProvider}) {
+    if (subProvider != null) {
+      _subscriptionProvider = subProvider;
+    }
     _examTimer?.cancel();
     _quizMode = QuizMode.exam;
     _quizInitialSeconds = 1200; // 20 mins
@@ -562,8 +581,9 @@ class QuizProvider extends ChangeNotifier {
     _examResults.insert(0, _lastExamResult!);
 
     // P1-10: Record daily attempt on submit, NOT on start!
-    if (subProvider != null) {
-      await subProvider.recordExamAttempt();
+    final sub = subProvider ?? _subscriptionProvider;
+    if (sub != null) {
+      await sub.recordExamAttempt();
     }
 
     // Update streak & daily stats
