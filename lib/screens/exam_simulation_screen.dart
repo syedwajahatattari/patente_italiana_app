@@ -30,6 +30,14 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final subProvider = Provider.of<SubscriptionProvider>(context, listen: false);
+    final quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    quizProvider.attachSubscriptionProvider(subProvider);
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     final quizProvider = Provider.of<QuizProvider>(context, listen: false);
     if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {

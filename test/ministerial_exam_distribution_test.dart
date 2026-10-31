@@ -1,3 +1,5 @@
+import 'dart:convert';
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:patente_italiana_app/models/question.dart';
@@ -38,7 +40,7 @@ void main() {
       quizProvider.stopTimer();
     });
 
-    test('startMinisterialExam production code produces exactly 30 unique questions and 13-17 True answers across 100 iterations', () {
+    test('startMinisterialExam production code produces exactly 30 unique questions and 13-17 True answers across 100 iterations (mock pool)', () {
       for (int run = 0; run < 100; run++) {
         quizProvider.startMinisterialExam();
         final selected = quizProvider.activeExamQuestions;
@@ -64,6 +66,48 @@ void main() {
           falseCount >= 13 && falseCount <= 17,
           isTrue,
           reason: "Run $run False count was $falseCount, expected between 13 and 17",
+        );
+
+        quizProvider.stopTimer();
+      }
+    });
+
+    test('startMinisterialExam strictly balances real 7,139-question dataset with skewed topics across 100 iterations', () {
+      final file = File('assets/data/quiz_questions.json');
+      expect(file.existsSync(), isTrue, reason: "Real questions asset file must exist");
+
+      final raw = file.readAsStringSync();
+      final List<dynamic> list = json.decode(raw);
+      final realQuestions = list.map((q) => Question.fromJson(q as Map<String, dynamic>)).toList();
+      expect(realQuestions.length, 7139, reason: "Real bank must contain 7,139 questions");
+
+      quizProvider.setQuestionsForTesting(realQuestions);
+
+      for (int run = 0; run < 100; run++) {
+        quizProvider.startMinisterialExam();
+        final selected = quizProvider.activeExamQuestions;
+
+        // 1. Assert exactly 30 questions
+        expect(selected.length, 30, reason: "Real dataset run $run must have 30 questions");
+
+        // 2. Assert 30 unique IDs (no duplicates)
+        final uniqueIds = selected.map((q) => q.id).toSet();
+        expect(uniqueIds.length, 30, reason: "Real dataset run $run must have 30 unique IDs");
+
+        // 3. Assert True answers strictly between 13 and 17
+        final int trueCount = selected.where((q) => q.isTrue).length;
+        expect(
+          trueCount >= 13 && trueCount <= 17,
+          isTrue,
+          reason: "Real dataset run $run True count was $trueCount (expected 13-17)",
+        );
+
+        // 4. Assert False answers strictly between 13 and 17
+        final int falseCount = selected.where((q) => !q.isTrue).length;
+        expect(
+          falseCount >= 13 && falseCount <= 17,
+          isTrue,
+          reason: "Real dataset run $run False count was $falseCount (expected 13-17)",
         );
 
         quizProvider.stopTimer();

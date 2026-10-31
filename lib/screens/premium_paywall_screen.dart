@@ -430,7 +430,7 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
           _buildComparisonRow(
             feature: isUrdu ? "آف لائن کوئز اور تھیوری" : "Quiz e Teoria Offline",
             freeVal: "❌",
-            proVal: isUrdu ? "✅ کوئز آف لائن" : "✅ Quiz Offline",
+            proVal: isUrdu ? "✅ کوئز اور تھیوری" : "✅ Quiz e Teoria",
             isProAdvantage: true,
           ),
         ],

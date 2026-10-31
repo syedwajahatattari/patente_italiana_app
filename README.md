@@ -8,7 +8,7 @@ A modern, offline-first Flutter application designed to help candidates prepare 
 
 - **Ministerial Exam Simulation**:
   - Faithful to official 2026 Italian Ministry of Transport (Ministero dei Trasporti) exam standards:
-    - 30 randomly selected questions across 20 official syllabus topics.
+    - 30 randomly selected questions across all 22 official syllabus topics (Capitoli Ministeriali).
     - Balanced distribution of 13–17 VERO (True) and 13–17 FALSO (False) answers.
     - 20-minute timer with background pause/resume handling.
     - Passing criteria: Maximum 3 errors allowed.
@@ -20,8 +20,9 @@ A modern, offline-first Flutter application designed to help candidates prepare 
   - Urdu translations with high-legibility **Jameel Noori Nastaleeq** typography.
   - Native Text-to-Speech (TTS) audio narration for Italian and Urdu explanations.
 
-- **Offline-First Quiz Engine**:
-  - Complete 7,139-question database bundled in local JSON assets.
+- **Offline-Capable Quiz Engine**:
+  - Complete 7,139-question database and explanations bundled in local JSON assets for offline study.
+  - Road sign and scenario illustration images are cached on-device upon first display via `cached_network_image`.
   - Heavy JSON parsing offloaded to a background Dart isolate (`Isolate.run`), ensuring 60fps UI performance without frame drops.
 
 - **Smart Error Bank (Banca Errori)**:

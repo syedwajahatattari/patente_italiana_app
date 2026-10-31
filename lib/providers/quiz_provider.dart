@@ -222,7 +222,10 @@ class QuizProvider extends ChangeNotifier {
   }
 
   /// Restore active in-progress exam if user was interrupted
-  Future<void> restoreActiveExamIfAny() async {
+  Future<void> restoreActiveExamIfAny({SubscriptionProvider? subProvider}) async {
+    if (subProvider != null) {
+      _subscriptionProvider = subProvider;
+    }
     final state = await StorageService.getActiveExamState();
     if (state == null) return;
 

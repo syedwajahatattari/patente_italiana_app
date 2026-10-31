@@ -6,6 +6,7 @@ import '../providers/language_provider.dart';
 import '../providers/subscription_provider.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
+import '../services/tts_service.dart';
 import 'premium_paywall_screen.dart';
 
 class VideoLesson {
@@ -357,23 +358,51 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                             ),
                             onPressed: () {
-                              Navigator.pop(ctx);
+                              TTSService.speak(
+                                isUrdu ? lesson.summaryUr : lesson.summaryIt,
+                                langCode: isUrdu ? 'ur' : 'it',
+                                id: "lesson_${lesson.id}",
+                              );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
-                                    isUrdu ? "سبق کامیابی سے لوڈ ہو گیا!" : "Riproduzione lezione avviata!",
+                                    isUrdu ? "🔊 آڈیو وضاحت شروع ہو گئی ہے..." : "🔊 Riproduzione audio spiegazione...",
                                     style: isUrdu ? AppTheme.urduStyle(fontSize: 14, color: Colors.white) : null,
                                   ),
-                                  backgroundColor: AppColors.passedGreen,
+                                  backgroundColor: AppColors.primary,
                                   behavior: SnackBarBehavior.floating,
+                                  duration: const Duration(seconds: 2),
                                 ),
                               );
                             },
-                            icon: const Icon(Icons.play_arrow_rounded),
+                            icon: const Icon(Icons.volume_up_rounded),
                             label: Text(
-                              isUrdu ? "سبق شروع کریں" : "Avvia Lezione",
-                              style: const TextStyle(fontWeight: FontWeight.bold),
+                              isUrdu ? "آڈیو خلاصہ سنیں (Audio)" : "Ascolta Spiegazione Audio",
+                              style: isUrdu
+                                  ? AppTheme.urduStyle(fontSize: 16, fontWeight: FontWeight.bold)
+                                  : const TextStyle(fontWeight: FontWeight.bold),
                             ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.08),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(Icons.info_outline_rounded, size: 14, color: Colors.grey),
+                              const SizedBox(width: 6),
+                              Text(
+                                isUrdu
+                                    ? "🎬 ویڈیو اسٹریمنگ جلد اگلی اپڈیٹ میں شامل ہو گی"
+                                    : "🎬 Streaming video in arrivo nel prossimo aggiornamento",
+                                style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
+                              ),
+                            ],
                           ),
                         ),
                       ],

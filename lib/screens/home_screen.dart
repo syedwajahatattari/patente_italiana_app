@@ -898,10 +898,22 @@ class HomeScreen extends StatelessWidget {
   ) {
     final isUrdu = lang == 'ur';
     final isPro = subProvider.isPremium;
+    final bool hasActiveExam = quizProvider.activeExamQuestions.isNotEmpty &&
+        !quizProvider.isExamCompleted &&
+        quizProvider.quizMode == QuizMode.exam;
 
     return InkWell(
       onTap: () async {
         HapticFeedback.lightImpact();
+
+        // If resuming an already active exam, re-attach provider and open screen
+        if (hasActiveExam) {
+          quizProvider.attachSubscriptionProvider(subProvider);
+          quizProvider.resumeTimer();
+          Navigator.push(context, MaterialPageRoute(builder: (_) => const ExamSimulationScreen()));
+          return;
+        }
+
         if (!subProvider.canTakeExam) {
           showDialog(
             context: context,
@@ -979,7 +991,11 @@ class HomeScreen extends StatelessWidget {
                     color: Colors.white.withOpacity(0.2),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 36),
+                  child: Icon(
+                    hasActiveExam ? Icons.play_circle_filled_rounded : Icons.play_arrow_rounded,
+                    color: Colors.white,
+                    size: 36,
+                  ),
                 ),
                 const SizedBox(width: 18),
                 Expanded(
@@ -987,20 +1003,22 @@ class HomeScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "SIMULAZIONE ESAME MINISTERIALE",
+                        hasActiveExam ? "RIPRENDI ESAME IN CORSO ⏱️" : "SIMULAZIONE ESAME MINISTERIALE",
                         style: GoogleFonts.outfit(fontSize: 15, fontWeight: FontWeight.w800, color: Colors.white),
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "30 Domande  •  20 Minuti  •  Max 3 Errori",
+                        hasActiveExam
+                            ? "${quizProvider.timerSecondsRemaining ~/ 60}m ${quizProvider.timerSecondsRemaining % 60}s rimanenti  •  Domanda ${quizProvider.currentQuestionIndex + 1}/30"
+                            : "30 Domande  •  20 Minuti  •  Max 3 Errori",
                         style: GoogleFonts.inter(fontSize: 13, color: Colors.white.withOpacity(0.9), fontWeight: FontWeight.w500),
                       ),
                       if (lang != 'it') ...[
                         const SizedBox(height: 2),
                         Text(
                           isUrdu
-                              ? "مکمل منسٹریل ایگزام سیمولیشن شروع کریں"
-                              : "Start Full Ministerial Exam Simulation",
+                              ? (hasActiveExam ? "جاری امتحان کو دوبارہ شروع کریں" : "مکمل منسٹریل ایگزام سیمولیشن شروع کریں")
+                              : (hasActiveExam ? "Resume your active exam simulation" : "Start Full Ministerial Exam Simulation"),
                           style: isUrdu
                               ? AppTheme.urduStyle(fontSize: 15, color: Colors.white.withOpacity(0.95), height: 1.4)
                               : GoogleFonts.inter(fontSize: 12, color: Colors.white.withOpacity(0.8)),
