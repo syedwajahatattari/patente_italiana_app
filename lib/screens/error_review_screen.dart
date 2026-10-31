@@ -173,7 +173,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                               children: [
                                 Flexible(
                                   child: Text(
-                                    "${lang == 'ur' ? 'اصل جواب' : (lang == 'en' ? 'Correct answer' : 'Risposta corretta')}: ${q.isTrue ? (lang == 'ur' ? 'VERO (صحیح)' : (lang == 'en' ? 'VERO (True)' : 'VERO')) : (lang == 'ur' ? 'FALSO (غلط)' : (lang == 'en' ? 'FALSO (False)' : 'FALSO'))}",
+                                    "${lang == 'ur' ? 'اصل جواب' : (lang == 'roman' ? 'Asal Jawab' : (lang == 'en' ? 'Correct answer' : 'Risposta corretta'))}: ${q.isTrue ? (lang == 'ur' ? 'VERO (صحیح)' : (lang == 'roman' ? 'VERO (Sahi)' : (lang == 'en' ? 'VERO (True)' : 'VERO'))) : (lang == 'ur' ? 'FALSO (غلط)' : (lang == 'roman' ? 'FALSO (Ghalat)' : (lang == 'en' ? 'FALSO (False)' : 'FALSO')))}",
                                     style: GoogleFonts.outfit(fontWeight: FontWeight.bold, color: q.isTrue ? AppColors.passedGreen : AppColors.failedRed),
                                   ),
                                 ),
@@ -201,7 +201,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                               Directionality(
                                 textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
                                 child: Text(
-                                  "${lang == 'ur' ? '🇵🇰 ' : '🇬🇧 '}${lang == 'en' ? q.questionEn : q.questionUr}",
+                                  "${lang == 'ur' || lang == 'roman' ? '🇵🇰 ' : '🇬🇧 '}${lang == 'roman' ? (q.questionRomanUrdu.isNotEmpty ? q.questionRomanUrdu : q.questionUr) : (lang == 'en' ? q.questionEn : q.questionUr)}",
                                   style: lang == 'ur'
                                       ? AppTheme.urduStyle(fontSize: 16, color: AppColors.primaryDark, fontWeight: FontWeight.w600)
                                       : GoogleFonts.inter(fontSize: 13, color: AppColors.primaryDark, fontWeight: FontWeight.w500),
@@ -257,7 +257,7 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                                           child: Directionality(
                                             textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
                                             child: Text(
-                                              lang == 'en' ? q.explanationEn : q.explanationUr,
+                                              lang == 'roman' ? (q.explanationRomanUrdu.isNotEmpty ? q.explanationRomanUrdu : q.explanationUr) : (lang == 'en' ? q.explanationEn : q.explanationUr),
                                               style: lang == 'ur'
                                                   ? AppTheme.urduStyle(fontSize: 15, color: AppColors.primaryDark)
                                                   : GoogleFonts.inter(fontSize: 12, color: AppColors.primaryDark, fontWeight: FontWeight.w500),
@@ -268,15 +268,14 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                                         InkWell(
                                           onTap: () => TTSService.toggleSpeak(
                                             id: "${q.id}_rev_$lang",
-                                            text: lang == 'en' ? q.explanationEn : q.explanationUr,
-                                            langCode: lang,
+                                            text: lang == 'roman' ? (q.explanationUr.isNotEmpty ? q.explanationUr : q.explanationIt) : (lang == 'en' ? q.explanationEn : q.explanationUr),
+                                            langCode: lang == 'roman' ? 'ur' : lang,
                                           ),
                                           borderRadius: BorderRadius.circular(12),
                                           child: Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                                             decoration: BoxDecoration(
-                                              color: (lang == 'ur' ? const Color(0xFF16A34A) : const Color(0xFF0284C7)).withValues(alpha: 0.12),
-                                              borderRadius: BorderRadius.circular(12),
+                                              color: (lang == 'ur' ? const Color(0xFF16A34A) : (lang == 'roman' ? const Color(0xFFD97706) : const Color(0xFF0284C7))).withValues(alpha: 0.12),
                                             ),
                                             child: Row(
                                               mainAxisSize: MainAxisSize.min,
@@ -284,15 +283,15 @@ class _ErrorReviewScreenState extends State<ErrorReviewScreen> {
                                                 Icon(
                                                   Icons.volume_up_rounded,
                                                   size: 13,
-                                                  color: lang == 'ur' ? const Color(0xFF16A34A) : const Color(0xFF0284C7),
+                                                  color: lang == 'ur' ? const Color(0xFF16A34A) : (lang == 'roman' ? const Color(0xFFD97706) : const Color(0xFF0284C7)),
                                                 ),
                                                 const SizedBox(width: 2),
                                                 Text(
-                                                  lang == 'ur' ? "اردو" : "EN",
+                                                  lang == 'ur' ? "اردو" : (lang == 'roman' ? "Roman" : "EN"),
                                                   style: TextStyle(
                                                     fontSize: 10,
                                                     fontWeight: FontWeight.bold,
-                                                    color: lang == 'ur' ? const Color(0xFF16A34A) : const Color(0xFF0284C7),
+                                                    color: lang == 'ur' ? const Color(0xFF16A34A) : (lang == 'roman' ? const Color(0xFFD97706) : const Color(0xFF0284C7)),
                                                   ),
                                                 ),
                                               ],

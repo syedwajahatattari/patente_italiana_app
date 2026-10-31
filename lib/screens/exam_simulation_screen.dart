@@ -65,6 +65,11 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
 
   /// Get question text in user's selected language with safe fallback to Italian
   String _getTranslation(question, String langCode) {
+    if (langCode == 'roman') {
+      if (question.questionRomanUrdu.isNotEmpty) return question.questionRomanUrdu;
+      if (question.questionUr.isNotEmpty) return question.questionUr;
+      return question.questionIt;
+    }
     if (langCode == 'en') return question.questionEn.isNotEmpty ? question.questionEn : question.questionIt;
     if (langCode == 'ur') return question.questionUr.isNotEmpty ? question.questionUr : question.questionIt;
     return question.questionIt;
@@ -72,6 +77,7 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
 
   /// Get language flag + label
   String _getTranslationLabel(String langCode) {
+    if (langCode == 'roman') return "🇵🇰 Roman Urdu Tarjuma";
     if (langCode == 'en') return "🇬🇧 English Translation";
     if (langCode == 'ur') return "🇵🇰 اردو ترجمہ (جمیل نوری نستعلیق)";
     return "";

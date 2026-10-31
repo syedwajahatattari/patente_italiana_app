@@ -118,6 +118,16 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               PopupMenuItem(
+                value: AppLanguage.romanUrdu,
+                child: Row(
+                  children: [
+                    if (langProvider.language == AppLanguage.romanUrdu) const Icon(Icons.check, size: 18, color: AppColors.primary),
+                    if (langProvider.language == AppLanguage.romanUrdu) const SizedBox(width: 8),
+                    const Text("🇵🇰 Roman Urdu"),
+                  ],
+                ),
+              ),
+              PopupMenuItem(
                 value: AppLanguage.english,
                 child: Row(
                   children: [

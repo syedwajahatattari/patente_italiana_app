@@ -37,12 +37,22 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
   }
 
   String _getTranslation(question, String langCode) {
+    if (langCode == 'roman') {
+      if (question.questionRomanUrdu.isNotEmpty) return question.questionRomanUrdu;
+      if (question.questionUr.isNotEmpty) return question.questionUr;
+      return question.questionIt;
+    }
     if (langCode == 'en') return question.questionEn.isNotEmpty ? question.questionEn : question.questionIt;
     if (langCode == 'ur') return question.questionUr.isNotEmpty ? question.questionUr : question.questionIt;
     return question.questionIt;
   }
 
   String _getExplanation(question, String langCode) {
+    if (langCode == 'roman') {
+      if (question.explanationRomanUrdu.isNotEmpty) return question.explanationRomanUrdu;
+      if (question.explanationUr.isNotEmpty) return question.explanationUr;
+      return question.explanationIt;
+    }
     if (langCode == 'en') return question.explanationEn.isNotEmpty ? question.explanationEn : question.explanationIt;
     if (langCode == 'ur') return question.explanationUr.isNotEmpty ? question.explanationUr : question.explanationIt;
     return question.explanationIt;
@@ -50,6 +60,7 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
 
   String _getCorrectAnswerText(bool isTrue, String langCode) {
     if (langCode == 'ur') return isTrue ? 'VERO (صحیح)' : 'FALSO (غلط)';
+    if (langCode == 'roman') return isTrue ? 'VERO (Sahi)' : 'FALSO (Ghalat)';
     if (langCode == 'en') return isTrue ? 'VERO (TRUE)' : 'FALSO (FALSE)';
     return isTrue ? 'VERO' : 'FALSO';
   }
@@ -243,7 +254,7 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
                               Directionality(
                                 textDirection: lang == 'ur' ? TextDirection.rtl : TextDirection.ltr,
                                 child: Text(
-                                  "${lang == 'ur' ? '🇵🇰 ' : '🇬🇧 '}${_getTranslation(q, lang)}",
+                                  "${lang == 'ur' || lang == 'roman' ? '🇵🇰 ' : '🇬🇧 '}${_getTranslation(q, lang)}",
                                   style: lang == 'ur'
                                       ? AppTheme.urduStyle(fontSize: 18, color: AppColors.primaryDark, fontWeight: FontWeight.w600)
                                       : GoogleFonts.inter(fontSize: 14, color: AppColors.primaryDark, fontWeight: FontWeight.w500),
@@ -293,7 +304,7 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
                                           const SizedBox(height: 8),
                                         ],
                                         Text(
-                                          "${lang == 'ur' ? 'اصل جواب' : (lang == 'en' ? 'Correct answer' : 'Risposta corretta')}: ${_getCorrectAnswerText(q.isTrue, lang)}",
+                                          "${lang == 'ur' ? 'اصل جواب' : (lang == 'roman' ? 'Asal Jawab' : (lang == 'en' ? 'Correct answer' : 'Risposta corretta'))}: ${_getCorrectAnswerText(q.isTrue, lang)}",
                                           style: lang == 'ur'
                                               ? AppTheme.urduStyle(fontSize: 15, fontWeight: FontWeight.bold)
                                               : GoogleFonts.outfit(fontSize: 14, fontWeight: FontWeight.bold),
@@ -301,7 +312,7 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
                                         if (userChoice != null) ...[
                                           const SizedBox(height: 2),
                                           Text(
-                                            "${lang == 'ur' ? 'آپ کا جواب' : (lang == 'en' ? 'Your answer' : 'Tua risposta')}: ${_getCorrectAnswerText(userChoice, lang)}",
+                                            "${lang == 'ur' ? 'آپ کا جواب' : (lang == 'roman' ? 'Aap ka jawab' : (lang == 'en' ? 'Your answer' : 'Tua risposta'))}: ${_getCorrectAnswerText(userChoice, lang)}",
                                             style: lang == 'ur'
                                                 ? AppTheme.urduStyle(fontSize: 14, fontWeight: FontWeight.w600, color: isUserCorrect ? AppColors.passedGreen : AppColors.failedRed)
                                                 : TextStyle(
@@ -360,14 +371,14 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
                                               InkWell(
                                                 onTap: () => TTSService.toggleSpeak(
                                                   id: "${q.id}_exp_$lang",
-                                                  text: _getExplanation(q, lang),
-                                                  langCode: lang,
+                                                  text: lang == 'roman' ? (q.explanationUr.isNotEmpty ? q.explanationUr : q.explanationIt) : _getExplanation(q, lang),
+                                                  langCode: lang == 'roman' ? 'ur' : lang,
                                                 ),
                                                 borderRadius: BorderRadius.circular(12),
                                                 child: Container(
                                                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                                                   decoration: BoxDecoration(
-                                                    color: (lang == 'ur' ? const Color(0xFF16A34A) : const Color(0xFF0284C7)).withValues(alpha: 0.12),
+                                                    color: (lang == 'ur' ? const Color(0xFF16A34A) : (lang == 'roman' ? const Color(0xFFD97706) : const Color(0xFF0284C7))).withValues(alpha: 0.12),
                                                     borderRadius: BorderRadius.circular(12),
                                                   ),
                                                   child: Row(
@@ -376,15 +387,15 @@ class _TopicQuizScreenState extends State<TopicQuizScreen> {
                                                       Icon(
                                                         Icons.volume_up_rounded,
                                                         size: 14,
-                                                        color: lang == 'ur' ? const Color(0xFF16A34A) : const Color(0xFF0284C7),
+                                                        color: lang == 'ur' ? const Color(0xFF16A34A) : (lang == 'roman' ? const Color(0xFFD97706) : const Color(0xFF0284C7)),
                                                       ),
                                                       const SizedBox(width: 2),
                                                       Text(
-                                                        lang == 'ur' ? "اردو" : "EN",
+                                                        lang == 'ur' ? "اردو" : (lang == 'roman' ? "Roman" : "EN"),
                                                         style: TextStyle(
                                                           fontSize: 10,
                                                           fontWeight: FontWeight.bold,
-                                                          color: lang == 'ur' ? const Color(0xFF16A34A) : const Color(0xFF0284C7),
+                                                          color: lang == 'ur' ? const Color(0xFF16A34A) : (lang == 'roman' ? const Color(0xFFD97706) : const Color(0xFF0284C7)),
                                                         ),
                                                       ),
                                                     ],

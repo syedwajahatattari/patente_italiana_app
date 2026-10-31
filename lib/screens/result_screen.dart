@@ -403,7 +403,7 @@ class _ResultScreenState extends State<ResultScreen> with SingleTickerProviderSt
                                     child: Directionality(
                                       textDirection: isUrdu ? TextDirection.rtl : TextDirection.ltr,
                                       child: Text(
-                                        "${isUrdu ? '🇵🇰 ' : '🇬🇧 '}${lang == 'en' ? q.explanationEn : q.explanationUr}",
+                                        "${isUrdu || lang == 'roman' ? '🇵🇰 ' : '🇬🇧 '}${lang == 'roman' ? (q.explanationRomanUrdu.isNotEmpty ? q.explanationRomanUrdu : q.explanationUr) : (lang == 'en' ? q.explanationEn : q.explanationUr)}",
                                         style: isUrdu
                                             ? AppTheme.urduStyle(fontSize: 15, color: Colors.grey.shade800)
                                             : const TextStyle(fontSize: 12, color: Colors.grey),

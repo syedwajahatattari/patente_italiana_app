@@ -346,6 +346,41 @@ class _AiSmartExplanationSheetState extends State<AiSmartExplanationSheet> {
               const SizedBox(height: 16),
             ],
 
+            // Roman Urdu Explanation Header + Audio Button
+            if (langCode == 'roman' && (question.explanationRomanUrdu.isNotEmpty || question.explanationUr.isNotEmpty)) ...[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    "Roman Urdu Wazahat:",
+                    style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.bold, color: const Color(0xFFD97706)),
+                  ),
+                  _buildAudioChip(
+                    id: "${question.id}_exp_roman",
+                    text: question.explanationUr.isNotEmpty ? question.explanationUr : question.explanationIt,
+                    langCode: 'ur',
+                    label: "Urdu Voice 🇵🇰",
+                    color: const Color(0xFFD97706),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 6),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFD97706).withValues(alpha: 0.08),
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(color: const Color(0xFFD97706).withValues(alpha: 0.2)),
+                ),
+                child: Text(
+                  question.explanationRomanUrdu.isNotEmpty ? question.explanationRomanUrdu : question.explanationUr,
+                  style: GoogleFonts.inter(fontSize: 13, color: const Color(0xFF78350F), height: 1.5, fontWeight: FontWeight.w500),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+
             // English Explanation Header + Audio Button
             if (langCode == 'en' && question.explanationEn.isNotEmpty) ...[
               Row(

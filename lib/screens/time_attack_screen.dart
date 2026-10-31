@@ -255,7 +255,11 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
                                   Directionality(
                                     textDirection: isUrdu ? TextDirection.rtl : TextDirection.ltr,
                                     child: Text(
-                                      isUrdu ? currentQ.questionUr : currentQ.questionEn,
+                                      isUrdu
+                                          ? currentQ.questionUr
+                                          : (lang == 'roman'
+                                              ? (currentQ.questionRomanUrdu.isNotEmpty ? currentQ.questionRomanUrdu : currentQ.questionUr)
+                                              : currentQ.questionEn),
                                       textAlign: TextAlign.center,
                                       style: isUrdu
                                           ? AppTheme.urduStyle(fontSize: 17, color: AppColors.primaryDark, height: 1.6)
