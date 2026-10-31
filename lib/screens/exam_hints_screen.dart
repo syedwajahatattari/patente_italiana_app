@@ -580,7 +580,7 @@ class _ExamHintsScreenState extends State<ExamHintsScreen> with TickerProviderSt
                   Row(
                     children: [
                       Text(
-                        isUrdu ? "خفیہ ٹوٹکا #${ruleNum}" : "Trucco Ministeriale #${ruleNum}",
+                        isUrdu ? "خفیہ ٹوٹکا #$ruleNum" : "Trucco Ministeriale #$ruleNum",
                         style: GoogleFonts.outfit(fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(width: 6),

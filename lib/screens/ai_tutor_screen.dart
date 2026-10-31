@@ -120,13 +120,12 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
         ),
       );
       _isLoading = true;
-      _queriesAskedToday++;
     });
     _controller.clear();
     _scrollToBottom();
 
     // Setup prompt for driving license context
-    final String prompt = '''
+    const String prompt = '''
 Sei un istruttore esperto di teoria della patente B italiana.
 Rispondi in modo conciso ma molto chiaro e accurato (massimo 4-5 frasi).
 Fornisci la regola ufficiale del Codice della Strada se pertinente.
@@ -137,42 +136,78 @@ URDU: [La tua spiegazione in urdu]
 ''';
 
     try {
-      final responseText = await OpenRouterService.getAiResponse(prompt, query);
-      
-      // Parse response
-      String itaText = "Si è verificato un errore, riprova più tardi.";
-      String? urduText;
-      
-      if (responseText.contains("ITA:") && responseText.contains("URDU:")) {
-        final parts = responseText.split("URDU:");
-        itaText = parts[0].replaceAll("ITA:", "").trim();
-        urduText = parts[1].trim();
+      final result = await OpenRouterService.getAiResponseDetailed(prompt, query);
+
+      if (result.success && result.text != null) {
+        final responseText = result.text!;
+        String itaText = "Spiegazione completata.";
+        String? urduText;
+
+        if (responseText.contains("ITA:") && responseText.contains("URDU:")) {
+          final parts = responseText.split("URDU:");
+          itaText = parts[0].replaceAll("ITA:", "").trim();
+          urduText = parts[1].trim();
+        } else {
+          itaText = responseText;
+        }
+
+        final id = "ai_${DateTime.now().millisecondsSinceEpoch}";
+        final aiResponse = AiTutorMessage(
+          id: id,
+          isUser: false,
+          text: itaText,
+          explanationUr: urduText,
+        );
+
+        if (mounted) {
+          setState(() {
+            _messages.add(aiResponse);
+            // Only increment daily usage counter on successful AI response
+            _queriesAskedToday++;
+          });
+        }
       } else {
-        itaText = responseText;
-      }
+        // Online call failed — activate offline rule fallback with honest diagnostic notice
+        final offlineRule = _generateAiAnswer(query);
+        final id = "ai_${DateTime.now().millisecondsSinceEpoch}";
+        final isKeyMissing = result.errorType == AiErrorType.missingKey;
 
-      final id = "ai_${DateTime.now().millisecondsSinceEpoch}";
-      final aiResponse = AiTutorMessage(
-        id: id,
-        isUser: false,
-        text: itaText,
-        explanationUr: urduText,
-      );
+        final noticeIt = isKeyMissing
+            ? "⚠️ Nota: Risposta da banca regole locale (API Key non configurata via --dart-define)."
+            : "⚠️ Nota: Risposta da banca regole locale (${result.errorMessageIt}).";
+        final noticeUr = isKeyMissing
+            ? "⚠️ نوٹ: یہ جواب لوکل قواعد سے دیا گیا ہے کیونکہ آن لائن API کی شامل نہیں ہے۔"
+            : "⚠️ نوٹ: یہ جواب لوکل قواعد سے دیا گیا ہے (${result.errorMessageUr})۔";
 
-      if (mounted) {
-        setState(() {
-          _messages.add(aiResponse);
-        });
+        final aiResponse = AiTutorMessage(
+          id: id,
+          isUser: false,
+          text: "${offlineRule.text}\n\n$noticeIt",
+          ruleIt: offlineRule.ruleIt,
+          explanationUr: "${offlineRule.explanationUr}\n\n$noticeUr",
+          examTip: offlineRule.examTip,
+        );
+
+        if (mounted) {
+          setState(() {
+            _messages.add(aiResponse);
+            // DO NOT increment _queriesAskedToday on failed/fallback responses!
+          });
+        }
       }
     } catch (e) {
       if (mounted) {
+        // Fallback to offline rule on any unhandled exception
+        final offlineRule = _generateAiAnswer(query);
         setState(() {
           _messages.add(
             AiTutorMessage(
               id: "err_${DateTime.now().millisecondsSinceEpoch}",
               isUser: false,
-              text: "Errore di connessione. Riprova più tardi.",
-              explanationUr: "کنکشن کی خرابی۔ براہ کرم دوبارہ کوشش کریں۔",
+              text: "${offlineRule.text}\n\n⚠️ Connessione offline: $e",
+              ruleIt: offlineRule.ruleIt,
+              explanationUr: "${offlineRule.explanationUr}\n\n⚠️ آف لائن موڈ فعال ہے",
+              examTip: offlineRule.examTip,
             ),
           );
         });
@@ -254,8 +289,8 @@ URDU: [La tua spiegazione in urdu]
       context: context,
       builder: (ctx) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Row(
-          children: const [
+        title: const Row(
+          children: [
             Icon(Icons.workspace_premium_rounded, color: AppColors.accentGold, size: 28),
             SizedBox(width: 8),
             Text("Passa a PRO 👑"),
@@ -280,6 +315,47 @@ URDU: [La tua spiegazione in urdu]
               Navigator.push(context, MaterialPageRoute(builder: (_) => const PremiumPaywallScreen()));
             },
             child: const Text("Sblocca PRO"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showConfigHelpDialog(BuildContext context) {
+    final isConfigured = OpenRouterService.isConfigured;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(
+              isConfigured ? Icons.check_circle_rounded : Icons.info_outline_rounded,
+              color: isConfigured ? AppColors.passedGreen : Colors.amber.shade800,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              isConfigured ? "Stato Servizio AI" : "Configurazione AI",
+              style: GoogleFonts.outfit(fontWeight: FontWeight.bold, fontSize: 18),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              isConfigured
+                  ? "✅ L'API Key di OpenRouter è configurata correttamente.\n\nLe risposte vengono generate in tempo reale tramite i modelli AI."
+                  : "⚠️ Nessuna chiave API configurata via --dart-define.\n\nIn questa modalità, l'assistente risponde utilizzando il motore offline basato sulle regole ufficiali del Codice della Strada.\n\nPer abilitare l'AI online, avvia l'app con:\nflutter run --dart-define=OPENROUTER_API_KEY=tua_chiave\noppure aggiungi la chiave nel file .env e avvia con:\nflutter run --dart-define-from-file=.env",
+              style: const TextStyle(fontSize: 13, height: 1.5),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text("OK"),
           ),
         ],
       ),
@@ -367,6 +443,53 @@ URDU: [La tua spiegazione in urdu]
           ],
         ),
         actions: [
+          // In-App Diagnostic Badge: Configured vs Missing Key
+          Center(
+            child: InkWell(
+              onTap: () => _showConfigHelpDialog(context),
+              borderRadius: BorderRadius.circular(12),
+              child: Container(
+                margin: const EdgeInsets.only(right: 6),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: OpenRouterService.isConfigured
+                      ? AppColors.passedGreen.withOpacity(0.12)
+                      : Colors.amber.withOpacity(0.15),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: OpenRouterService.isConfigured
+                        ? AppColors.passedGreen.withOpacity(0.4)
+                        : Colors.amber.shade700.withOpacity(0.4),
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      OpenRouterService.isConfigured
+                          ? Icons.check_circle_rounded
+                          : Icons.warning_amber_rounded,
+                      size: 13,
+                      color: OpenRouterService.isConfigured
+                          ? AppColors.passedGreen
+                          : Colors.amber.shade800,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      OpenRouterService.isConfigured ? "AI Online" : "AI Offline",
+                      style: TextStyle(
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                        color: OpenRouterService.isConfigured
+                            ? AppColors.passedGreen
+                            : Colors.amber.shade900,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
           if (!subProvider.isPremium)
             TextButton.icon(
               onPressed: () {
@@ -419,9 +542,9 @@ URDU: [La tua spiegazione in urdu]
                       margin: const EdgeInsets.symmetric(vertical: 6),
                       padding: const EdgeInsets.all(14),
                       constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.78),
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         color: AppColors.primary,
-                        borderRadius: const BorderRadius.only(
+                        borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(18),
                           topRight: Radius.circular(18),
                           bottomLeft: Radius.circular(18),
@@ -572,11 +695,11 @@ URDU: [La tua spiegazione in urdu]
           ),
 
           if (_isLoading)
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [
+                children: [
                   SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2)),
                   SizedBox(width: 10),
                   Text("L'Istruttore AI sta analizzando il Codice della Strada...", style: TextStyle(fontSize: 12, color: Colors.grey)),

@@ -1,46 +1,101 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
+
+enum AiErrorType {
+  none,
+  missingKey,
+  rateLimited,
+  modelNotFound,
+  timeout,
+  noInternet,
+  serverError,
+}
+
+class AiResponseResult {
+  final bool success;
+  final String? text;
+  final AiErrorType errorType;
+  final String errorMessageIt;
+  final String errorMessageUr;
+  final int? statusCode;
+
+  const AiResponseResult.success(this.text)
+      : success = true,
+        errorType = AiErrorType.none,
+        errorMessageIt = '',
+        errorMessageUr = '',
+        statusCode = 200;
+
+  const AiResponseResult.failure({
+    required this.errorType,
+    required this.errorMessageIt,
+    required this.errorMessageUr,
+    this.statusCode,
+  })  : success = false,
+        text = null;
+}
 
 class OpenRouterService {
   static const String _baseUrl = 'https://openrouter.ai/api/v1/chat/completions';
 
   // Configurable models with automatic fallback
-  static const String _primaryModel = 'google/gemma-7b-it:free';
-  static const String _fallbackModel = 'meta-llama/llama-3-8b-instruct:free';
+  // Primary: Official OpenRouter Free Models Router (auto-selects available free models)
+  // Fallback: Llama 3.2 3B Instruct Free tier
+  static const String _primaryModel = 'openrouter/free';
+  static const String _fallbackModel = 'meta-llama/llama-3.2-3b-instruct:free';
 
-  /// Obtains the API key primarily from --dart-define=OPENROUTER_API_KEY=...
-  /// with safe fallback to local unbundled .env if present during dev.
-  static String get apiKey {
-    const fromDefine = String.fromEnvironment('OPENROUTER_API_KEY', defaultValue: '');
-    if (fromDefine.isNotEmpty) return fromDefine;
-    if (dotenv.isInitialized) {
-      return dotenv.env['OPENROUTER_API_KEY'] ?? '';
-    }
-    return '';
-  }
+  /// Obtains the API key strictly from compile-time environment flags:
+  /// `--dart-define=OPENROUTER_API_KEY=...` or `--dart-define-from-file=.env`
+  static String get apiKey =>
+      const String.fromEnvironment('OPENROUTER_API_KEY', defaultValue: '');
 
-  static Future<String> getAiResponse(String systemPrompt, String userMessage) async {
+  static bool get isConfigured => apiKey.isNotEmpty;
+
+  /// Primary high-level method returning detailed result with status and error differentiation
+  static Future<AiResponseResult> getAiResponseDetailed(
+    String systemPrompt,
+    String userMessage,
+  ) async {
     final key = apiKey;
     if (key.isEmpty) {
-      return "Chiave API non configurata. Imposta OPENROUTER_API_KEY tramite --dart-define.\n(AI سروس کی کنفیگریشن درکار ہے)";
+      return const AiResponseResult.failure(
+        errorType: AiErrorType.missingKey,
+        errorMessageIt:
+            "Chiave API non configurata.\nImposta OPENROUTER_API_KEY tramite --dart-define o --dart-define-from-file.",
+        errorMessageUr:
+            "AI سروس کی API کی شامل نہیں ہے۔ براہ کرم --dart-define یا .env کے ذریعے کنفیگر کریں۔",
+        statusCode: 401,
+      );
     }
 
     // Attempt 1: Primary Model
-    String? response = await _requestModel(_primaryModel, systemPrompt, userMessage, key);
-    if (response != null && response.isNotEmpty) return response;
+    final attempt1 = await _requestModel(_primaryModel, systemPrompt, userMessage, key);
+    if (attempt1.success) return attempt1;
 
     // Attempt 2: Fallback Model
-    debugPrint("Primary AI model failed or timed out. Switching to fallback model: $_fallbackModel");
-    response = await _requestModel(_fallbackModel, systemPrompt, userMessage, key);
-    if (response != null && response.isNotEmpty) return response;
+    debugPrint(
+      "Primary AI model ($_primaryModel) failed (${attempt1.errorType}). Switching to fallback model: $_fallbackModel",
+    );
+    final attempt2 = await _requestModel(_fallbackModel, systemPrompt, userMessage, key);
+    if (attempt2.success) return attempt2;
 
-    return "Impossibile collegarsi al server AI. Riprova più tardi.\n(AI سرور سے رابطہ نہیں ہو سکا، براہ کرم بعد میں کوشش کریں)";
+    // Return the most specific failure reason from the attempts
+    return attempt2.errorType != AiErrorType.serverError ? attempt2 : attempt1;
   }
 
-  static Future<String?> _requestModel(
+  /// Convenience wrapper returning formatted text
+  static Future<String> getAiResponse(String systemPrompt, String userMessage) async {
+    final result = await getAiResponseDetailed(systemPrompt, userMessage);
+    if (result.success && result.text != null) {
+      return result.text!;
+    }
+    return "${result.errorMessageIt}\n(${result.errorMessageUr})";
+  }
+
+  static Future<AiResponseResult> _requestModel(
     String model,
     String systemPrompt,
     String userMessage,
@@ -73,16 +128,76 @@ class OpenRouterService {
           if (firstChoice is Map && firstChoice['message'] is Map) {
             final content = firstChoice['message']['content'];
             if (content is String && content.trim().isNotEmpty) {
-              return content.trim();
+              return AiResponseResult.success(content.trim());
             }
           }
         }
+        return const AiResponseResult.failure(
+          errorType: AiErrorType.serverError,
+          errorMessageIt: "Risposta del modello vuota o non valida.",
+          errorMessageUr: "ماڈل کا جواب خالی یا غلط تھا۔",
+          statusCode: 200,
+        );
+      } else if (response.statusCode == 429) {
+        return const AiResponseResult.failure(
+          errorType: AiErrorType.rateLimited,
+          errorMessageIt:
+              "Limite di richieste superato (429 Too Many Requests).\nRiprova tra qualche istante.",
+          errorMessageUr:
+              "درخواستوں کی حد پوری ہو چکی ہے (429)، براہ کرم کچھ دیر بعد دوبارہ کوشش کریں۔",
+          statusCode: 429,
+        );
+      } else if (response.statusCode == 401 || response.statusCode == 403) {
+        return AiResponseResult.failure(
+          errorType: AiErrorType.missingKey,
+          errorMessageIt:
+              "Chiave API OpenRouter non valida o non autorizzata (${response.statusCode}).",
+          errorMessageUr:
+              "اوپن راؤٹر API کی غلط یا غیر مجاز ہے۔",
+          statusCode: response.statusCode,
+        );
+      } else if (response.statusCode == 404 || response.statusCode == 503) {
+        return AiResponseResult.failure(
+          errorType: AiErrorType.modelNotFound,
+          errorMessageIt:
+              "Modello AI temporaneamente non disponibile (${response.statusCode}).",
+          errorMessageUr:
+              "AI ماڈل فی الحال دستیاب نہیں ہے۔",
+          statusCode: response.statusCode,
+        );
       } else {
-        debugPrint("OpenRouter model $model responded with code: ${response.statusCode}");
+        return AiResponseResult.failure(
+          errorType: AiErrorType.serverError,
+          errorMessageIt:
+              "Errore del server AI (Codice: ${response.statusCode}). Riprova più tardi.",
+          errorMessageUr:
+              "AI سرور میں خرابی (کوڈ: ${response.statusCode})، براہ کرم بعد میں کوشش کریں۔",
+          statusCode: response.statusCode,
+        );
       }
+    } on TimeoutException {
+      return const AiResponseResult.failure(
+        errorType: AiErrorType.timeout,
+        errorMessageIt:
+            "Tempo di attesa scaduto (Timeout oltre 15s). Il server AI non risponde.",
+        errorMessageUr:
+            "سرور کا رسپانس ٹائم آؤٹ ہو گیا ہے۔ براہ کرم دوبارہ کوشش کریں۔",
+      );
+    } on SocketException {
+      return const AiResponseResult.failure(
+        errorType: AiErrorType.noInternet,
+        errorMessageIt:
+            "Nessuna connessione internet. Verifica la tua rete.",
+        errorMessageUr:
+            "انٹرنیٹ کنکشن موجود نہیں ہے، براہ کرم نیٹ ورک چیک کریں۔",
+      );
     } catch (e) {
       debugPrint("OpenRouter request error for $model: $e");
+      return AiResponseResult.failure(
+        errorType: AiErrorType.serverError,
+        errorMessageIt: "Errore di comunicazione: $e",
+        errorMessageUr: "رابطے کی خرابی، براہ کرم بعد میں کوشش کریں۔",
+      );
     }
-    return null;
   }
 }

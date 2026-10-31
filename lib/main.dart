@@ -1,7 +1,5 @@
-// ignore: deprecated_member_use
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'providers/quiz_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/language_provider.dart';
@@ -12,11 +10,6 @@ import 'services/revenuecat_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  try {
-    await dotenv.load(fileName: ".env");
-  } catch (e) {
-    debugPrint("Notice: .env not loaded or missing (running with defaults/dart-define): $e");
-  }
   try {
     await RevenueCatService.init();
   } catch (e) {

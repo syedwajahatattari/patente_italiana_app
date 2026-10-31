@@ -70,39 +70,11 @@ class _ExamSimulationScreenState extends State<ExamSimulationScreen> with Widget
     return question.questionIt;
   }
 
-  /// Get explanation text in user's selected language with safe fallback to Italian
-  String _getExplanation(question, String langCode) {
-    if (langCode == 'en') return question.explanationEn.isNotEmpty ? question.explanationEn : question.explanationIt;
-    if (langCode == 'ur') return question.explanationUr.isNotEmpty ? question.explanationUr : question.explanationIt;
-    return question.explanationIt;
-  }
-
   /// Get language flag + label
   String _getTranslationLabel(String langCode) {
     if (langCode == 'en') return "🇬🇧 English Translation";
     if (langCode == 'ur') return "🇵🇰 اردو ترجمہ (جمیل نوری نستعلیق)";
     return "";
-  }
-
-  /// Get "correct answer" text
-  String _getCorrectAnswerText(bool isTrue, String langCode) {
-    if (langCode == 'ur') return isTrue ? 'VERO (صحیح)' : 'FALSO (غلط)';
-    if (langCode == 'en') return isTrue ? 'VERO (TRUE)' : 'FALSO (FALSE)';
-    return isTrue ? 'VERO' : 'FALSO';
-  }
-
-  /// Get user answer result text
-  String _getUserResultText(bool isCorrect, bool? userChoice, String langCode) {
-    if (langCode == 'ur') {
-      if (isCorrect) return "✅ آپ کا انتخاب بالکل درست (ESATTO) ہے!";
-      return "❌ آپ کا جواب غلط (SBAGLIATO) ہے! آپ نے ${userChoice == true ? 'VERO' : 'FALSO'} منتخب کیا۔";
-    }
-    if (langCode == 'en') {
-      if (isCorrect) return "✅ Your answer is correct (ESATTO)!";
-      return "❌ Your answer is wrong (SBAGLIATO)! You selected ${userChoice == true ? 'VERO' : 'FALSO'}.";
-    }
-    if (isCorrect) return "✅ ESATTO!";
-    return "❌ SBAGLIATO! Hai selezionato ${userChoice == true ? 'VERO' : 'FALSO'}.";
   }
 
   void _confirmExitExam(BuildContext context, String lang) {

@@ -115,7 +115,7 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          isUrdu ? "ویڈیو اور آڈیو لیسنز" : (lang == 'en' ? "Video Masterclasses" : "Video Lezioni Teoria"),
+          isUrdu ? "آڈیو لیسنز اور تھیوری خلاصہ" : (lang == 'en' ? "Audio Lessons & Theory" : "Audio Lezioni & Teoria"),
           style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
         ),
       ),
@@ -144,7 +144,7 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                       color: Colors.white.withOpacity(0.2),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(Icons.play_circle_filled_rounded, color: Colors.white, size: 36),
+                    child: const Icon(Icons.volume_up_rounded, color: Colors.white, size: 36),
                   ),
                   const SizedBox(width: 14),
                   Expanded(
@@ -152,13 +152,13 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          isUrdu ? "مکمل تھیوری ویڈیو لیسنز" : "Video Lezioni & Trucchi d'Esame",
+                          isUrdu ? "تھیوری آڈیو اسباق اور اہم نکات" : "Audio Lezioni & Trucchi d'Esame",
                           style: GoogleFonts.outfit(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
                         ),
                         Text(
                           isUrdu
-                              ? "اطالوی ڈرائیونگ تھیوری کو آسان اردو اور اٹالین وضاحت کے ساتھ سمجھیں"
-                              : "Impara i concetti ministeriali più difficili spiegati in modo semplice.",
+                              ? "اطالوی ڈرائیونگ تھیوری کو آسان اردو اور اٹالین آڈیو وضاحت کے ساتھ سمجھیں"
+                              : "Ascolta i concetti ministeriali più difficili spiegati in modo semplice.",
                           style: isUrdu
                               ? AppTheme.urduStyle(fontSize: 13, color: Colors.white.withOpacity(0.9))
                               : TextStyle(fontSize: 11, color: Colors.white.withOpacity(0.85)),
@@ -257,15 +257,15 @@ class TheoryVideoLessonsScreen extends StatelessWidget {
                           const Icon(Icons.workspace_premium_rounded, color: AppColors.accentGold, size: 28),
                           const SizedBox(width: 8),
                           Text(
-                            isUrdu ? "ویڈیو سبق PRO 🔒" : "Video Lezione PRO 🔒",
+                            isUrdu ? "آڈیو سبق PRO 🔒" : "Lezione Audio PRO 🔒",
                             style: GoogleFonts.outfit(fontWeight: FontWeight.bold),
                           ),
                         ],
                       ),
                       content: Text(
                         isUrdu
-                            ? "یہ ماسٹر کلاس سبق صرف PRO ممبرز کے لیے دستیاب ہے۔ تمام اسباق، ٹاپکس اور امتحانی فارمولے ان لاک کرنے کے لیے PRO شروع کریں۔"
-                            : "Questa video lezione è riservata ai membri PRO. Passa a PRO per sbloccare l'intero corso teorico!",
+                            ? "یہ ماسٹر کلاس آڈیو سبق صرف PRO ممبرز کے لیے دستیاب ہے۔ تمام اسباق، ٹاپکس اور امتحانی فارمولے ان لاک کرنے کے لیے PRO شروع کریں۔"
+                            : "Questa lezione audio e sintesi è riservata ai membri PRO. Passa a PRO per sbloccare l'intero corso teorico!",
                         style: isUrdu ? AppTheme.urduStyle(fontSize: 15, height: 1.5) : const TextStyle(fontSize: 14),
                       ),
                       actions: [

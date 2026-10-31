@@ -120,7 +120,7 @@ class _IncrociSimulatorScreenState extends State<IncrociSimulatorScreen> {
   ];
 
   int _currentScenarioIndex = 0;
-  List<String> _selectedOrder = [];
+  final List<String> _selectedOrder = [];
   bool? _isCorrect;
   String? _errorMessage;
 

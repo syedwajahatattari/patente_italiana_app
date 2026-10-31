@@ -1,6 +1,6 @@
 # Patente Italiana B - Driving License Exam Prep 🇮🇹
 
-A modern, offline-first Flutter application designed to help candidates prepare for and pass the Italian Driving License (Patente di Guida B) ministerial theory examination. Features trilingual support (Italian, English, and Urdu with authentic Nastaleeq calligraphy), an intelligent ministerial exam simulator, topic-by-topic drills, error bank review, ministerial tips ("Trucchi"), and an interactive AI Tutor.
+A modern, offline-capable Flutter application designed to help candidates prepare for and pass the Italian Driving License (Patente di Guida B) ministerial theory examination. Features trilingual support (Italian, English, and Urdu with authentic Nastaleeq calligraphy), an intelligent ministerial exam simulator, topic-by-topic drills, error bank review, ministerial tips ("Trucchi"), and an interactive AI Tutor.
 
 ---
 
@@ -103,14 +103,19 @@ flutter pub get
 ```
 
 ### 4. Configuration (Environment Keys)
-Sensitive API keys are passed securely at build time using `--dart-define` flags.
+API keys are never bundled inside application assets or source code. Pass them securely at build/run time using either `--dart-define-from-file` or individual `--dart-define` flags.
 
-Create a `.env` file for local development (copy from `.env.example`):
+**Option A (Recommended for Local Dev):**
+Create a local `.env` file (copied from `.env.example`, which is automatically ignored by Git):
 ```bash
 cp .env.example .env
 ```
+Fill in your keys in `.env`, then launch Flutter with:
+```bash
+flutter run --dart-define-from-file=.env
+```
 
-Or pass them directly when launching Flutter:
+**Option B (Direct Command Line Flags or CI/CD):**
 ```bash
 flutter run \
   --dart-define=REVENUECAT_GOOGLE_KEY="your_google_key_here" \
@@ -118,7 +123,7 @@ flutter run \
   --dart-define=OPENROUTER_API_KEY="your_openrouter_key_here"
 ```
 
-> **Note**: If keys are not provided, the app will gracefully run in **safe mode** without crashing. Free tiers and offline quizzes work immediately out of the box.
+> **Note**: If keys are not provided, the app will gracefully run in **safe mode** without crashing. Free tiers, all 7,139 offline quizzes, and the offline theory rule engine work immediately out of the box.
 
 ---
 

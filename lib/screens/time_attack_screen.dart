@@ -11,7 +11,6 @@ import '../services/storage_service.dart';
 import '../services/tts_service.dart';
 import '../theme/app_colors.dart';
 import '../theme/app_theme.dart';
-import 'premium_paywall_screen.dart';
 
 class TimeAttackScreen extends StatefulWidget {
   const TimeAttackScreen({super.key});
@@ -53,7 +52,9 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
     _highScore = await StorageService.getTimeAttackHighScore();
     _questions = List.from(quizProvider.allQuestions)..shuffle();
     if (_questions.isEmpty) {
-      Navigator.pop(context);
+      if (mounted) {
+        Navigator.pop(context);
+      }
       return;
     }
     _startTimer();
