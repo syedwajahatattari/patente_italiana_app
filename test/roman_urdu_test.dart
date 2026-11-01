@@ -76,6 +76,13 @@ void main() {
         RegExp(r'\bbalkal\b', caseSensitive: false),
         RegExp(r'\bnihen\b', caseSensitive: false),
         RegExp(r'\bgadi\b', caseSensitive: false),
+        RegExp(r'\bwez\b', caseSensitive: false),
+        RegExp(r'\bsharo\b', caseSensitive: false),
+        RegExp(r'\besi\b', caseSensitive: false),
+        RegExp(r'\bsit\b', caseSensitive: false),
+        RegExp(r'\blaaif\b', caseSensitive: false),
+        RegExp(r'\bsiyor\b', caseSensitive: false),
+        RegExp(r'\bcyclein\b', caseSensitive: false),
       ];
       final urduScriptPattern = RegExp(r'[\u0600-\u06FF]');
 

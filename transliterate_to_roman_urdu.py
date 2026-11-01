@@ -604,6 +604,43 @@ WORD_REPLACEMENTS = [
     (r'\bmod\b', 'mor'),
     (r'\bparogaram\b', 'program'),
     (r'\bnambr\b', 'number'),
+
+    # Residual cleanups:
+    (r'\bkirage\s+wez\b', 'carriageways'),
+    (r'\bkirage\s+way\b', 'carriageway'),
+    (r'\broad\s+wez\b', 'roadways'),
+    (r'\bmotor\s+wez\b', 'motorways'),
+    (r'\bhi\s+wez\b', 'highways'),
+    (r'\bwez\b', 'ways'),
+    (r'\bsharo\b', 'shuru'),
+    (r'\besi\b', 'aisi'),
+    (r'\bmotor\s+cyclein\b', 'motorcycles'),
+    (r'\btri\s+cyclein\b', 'tricycles'),
+    (r'\bkwadri\s+cyclein\b', 'quadricycles'),
+    (r'\bcyclein\b', 'cycles'),
+    (r'\bsit\b', 'site'),
+    (r'\blaaif\s+siyor\b', 'life saver'),
+    (r'\blaaif\b', 'life'),
+    (r'\bsiyor\b', 'saver'),
+    (r'\b(kyunkeh|cunkah|chonkah)\s+ya\b', r'\1 yeh'),
+    (r'\bagar\s+ya\b', 'agar yeh'),
+    (r'\bjab\s+ya\b', 'jab yeh'),
+    (r'\bkeh\s+ya\b', 'keh yeh'),
+    (r'\bkah\s+ya\b', 'keh yeh'),
+    (r'\bto\s+ya\b', 'to yeh'),
+    (r'\bko\s+ya\b', 'ko yeh'),
+    (r'\bse\s+ya\b', 'se yeh'),
+    (r'\bpar\s+ya\b', 'par yeh'),
+    (r'\bka\s+ya\b', 'ka yeh'),
+    (r'\bki\s+ya\b', 'ki yeh'),
+    (r'\bke\s+ya\b', 'ke yeh'),
+    (r'\bmein\s+ya\b', 'mein yeh'),
+    (r'\bmin\s+ya\b', 'mein yeh'),
+    (r'\bshart\s+par\s+ya\b', 'shart par yeh'),
+    (r'\btaake\s+ya\b', 'taake yeh'),
+    (r'\bya\s+(nishan|signal|sarak|bayan|sawal|panel|alamt|aalah|waqt|faasla|hadd)\b', r'yeh \1'),
+    (r'\bya\s+(mashwara|khayal|andazah|bat|baat|zhan|zehan|shak|chek)\b', r'yeh \1'),
+    (r'\bya\s+(ek|aik|do|teen|chaar|sab|tamam|sirf)\b', r'yeh \1'),
 ]
 
 # Urdu letter phonetic fallback map
@@ -653,10 +690,13 @@ WORD_MAP = {
     'جا': 'ja', 'سکتے': 'sakte', 'سکتا': 'sakta', 'سکتی': 'sakti',
 }
 
-def clean_text(text):
+def clean_text(text, urdu_text=''):
     """Applies word boundary replacement rules to eliminate crude markers and ensure natural Roman Urdu."""
     if not text:
         return text
+    # Sentence-initial Ya when Urdu starts with یہ
+    if urdu_text and urdu_text.strip().startswith('یہ') and text.strip().startswith('Ya '):
+        text = 'Yeh ' + text.strip()[3:]
     for pattern, rep in WORD_REPLACEMENTS:
         text = re.sub(pattern, rep, text, flags=re.IGNORECASE)
     # Sentence capitalization
@@ -830,7 +870,7 @@ def main():
             rom_q = fallback_phonetic(q_ur)
             missing_q += 1
         else:
-            rom_q = clean_text(rom_q)
+            rom_q = clean_text(rom_q, q_ur)
         q['question_roman_urdu'] = rom_q
 
     # Save updated dataset
@@ -846,7 +886,10 @@ def main():
     valid_q = sum(1 for q in questions if q.get('question_roman_urdu', '').strip())
     valid_exp = sum(1 for q in questions if q.get('explanation_roman_urdu', '').strip())
 
-    bad_tokens = ['stric', 'strak', 'sadk', 'min', 'hay', 'hen', 'darist', 'aartecl', 'aarticl', 'balkal', 'scien', 'nihen', 'nihi', 'gadi']
+    bad_tokens = [
+        'stric', 'strak', 'sadk', 'min', 'hay', 'hen', 'darist', 'aartecl', 'aarticl',
+        'balkal', 'scien', 'nihen', 'nihi', 'gadi', 'wez', 'sharo', 'esi', 'sit', 'laaif', 'siyor', 'cyclein'
+    ]
     bad_counts = {}
     for b in bad_tokens:
         cnt = sum(
