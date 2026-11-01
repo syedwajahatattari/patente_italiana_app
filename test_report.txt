@@ -18,27 +18,32 @@ Downloading packages...
 Got dependencies!
 15 packages have newer versions incompatible with dependency constraints.
 Try `flutter pub outdated` for more information.
-00:00 +0: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/ministerial_exam_distribution_test.dart
-00:00 +0: /Users/syedwajahatshah/develop/patente_italiana_app/test/ministerial_exam_distribution_test.dart: Ministerial Exam Distribution Tests on QuizProvider startMinisterialExam production code produces exactly 30 unique questions and 13-17 True answers across 100 iterations (mock pool)
-00:00 +1: /Users/syedwajahatshah/develop/patente_italiana_app/test/ministerial_exam_distribution_test.dart: Ministerial Exam Distribution Tests on QuizProvider startMinisterialExam strictly balances real 7,139-question dataset with skewed topics across 100 iterations
-00:00 +2: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart
-00:00 +2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService detects missing key and returns 401 without network call
-00:00 +3: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService successfully parses valid 200 response from primary model
-00:00 +4: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService falls back to secondary model if primary returns 500
+00:00 +0: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_live_test.dart
+00:00 +0: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_live_test.dart: Live OpenRouter AI Tutor Verification Question 1: STOP vs Dare Precedenza live query returns HTTP 200 with Italian and Urdu explanation
+  Skip: OPENROUTER_API_KEY not passed via --dart-define
+00:00 +0 ~1: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_live_test.dart: Live OpenRouter AI Tutor Verification Question 2: Autostrada speed limits for neopatentati live query returns HTTP 200 with Italian and Urdu explanation
+  Skip: OPENROUTER_API_KEY not passed via --dart-define
+00:00 +0 ~2: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/ministerial_exam_distribution_test.dart
+00:00 +0 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ministerial_exam_distribution_test.dart: Ministerial Exam Distribution Tests on QuizProvider startMinisterialExam production code produces exactly 30 unique questions and 13-17 True answers across 100 iterations (mock pool)
+00:00 +1 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ministerial_exam_distribution_test.dart: Ministerial Exam Distribution Tests on QuizProvider startMinisterialExam strictly balances real 7,139-question dataset with skewed topics across 100 iterations
+00:00 +2 ~2: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart
+00:01 +2 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService detects missing key and returns 401 without network call
+00:01 +3 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService successfully parses valid 200 response from primary model
+00:01 +4 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService falls back to secondary model if primary returns 500
 Primary AI model (openrouter/free) failed (AiErrorType.serverError). Switching to fallback model: cohere/north-mini-code:free
-00:00 +5: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService correctly captures 429 rate limit error
+00:01 +5 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService correctly captures 429 rate limit error
 Primary AI model (openrouter/free) failed (AiErrorType.rateLimited). Switching to fallback model: cohere/north-mini-code:free
-00:00 +6: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService catches SocketException as noInternet error
+00:01 +6 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService catches SocketException as noInternet error
 Primary AI model (openrouter/free) failed (AiErrorType.noInternet). Switching to fallback model: cohere/north-mini-code:free
-00:00 +7: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService catches TimeoutException as timeout error
+00:01 +7 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService catches TimeoutException as timeout error
 Primary AI model (openrouter/free) failed (AiErrorType.timeout). Switching to fallback model: cohere/north-mini-code:free
-00:00 +8: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService fast-fails on 401 without making redundant fallback call
-00:00 +9: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart
-00:01 +9: /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart: App load test
-00:01 +10: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart
-00:02 +10: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Question.fromJson and toJson parse and serialize Roman Urdu fields correctly
-00:02 +11: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset has non-empty question_roman_urdu and explanation_roman_urdu for all 7,139 questions
-00:02 +12: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset contains zero crude phonetic markers and zero Urdu script in Roman fields
-00:02 +13: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Translation fallback correctly handles Roman Urdu empty/non-empty states
-00:02 +14: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests LanguageProvider maps and persists AppLanguage.romanUrdu to "roman"
-00:02 +15: All tests passed!
+00:01 +8 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService fast-fails on 401 without making redundant fallback call
+00:01 +9 ~2: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart
+00:01 +9 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart: App load test
+00:02 +10 ~2: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart
+00:02 +10 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Question.fromJson and toJson parse and serialize Roman Urdu fields correctly
+00:02 +11 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset has non-empty question_roman_urdu and explanation_roman_urdu for all 7,139 questions
+00:02 +12 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset contains zero crude phonetic markers and zero Urdu script in Roman fields
+00:02 +13 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Translation fallback correctly handles Roman Urdu empty/non-empty states
+00:02 +14 ~2: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests LanguageProvider maps and persists AppLanguage.romanUrdu to "roman"
+00:02 +15 ~2: All tests passed!
