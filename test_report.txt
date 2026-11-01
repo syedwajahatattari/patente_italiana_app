@@ -50,18 +50,19 @@ RevenueCat refresh failed, retaining cached PRO status: Exception: Network unrea
 RevenueCat restorePurchases failed, retaining cached PRO status: Exception: Network unreachable / offline
 00:01 +13 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: SubscriptionProvider Offline Survival Tests SubscriptionProvider.restorePurchases retains cached PRO when RevenueCat is unconfigured (returns null)
 00:01 +14 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: SubscriptionProvider Offline Survival Tests SubscriptionProvider.restorePurchases overwrites cache only when RevenueCat successfully returns server response (false)
-00:01 +15 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: AI Tutor Daily Quota Persistence Tests AiTutorScreen restores saved quota from SharedPreferences for today
-00:02 +16 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: AI Tutor Daily Quota Persistence Tests AiTutorScreen rolls over quota to 0/3 when saved date is yesterday
-00:02 +17 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: AI Tutor Daily Quota Persistence Tests AiTutorScreen loads quota and handles query safely
-00:02 +18 ~3: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart
-00:03 +18 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart: App load test
-00:03 +19 ~3: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart
-00:04 +19 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Question.fromJson and toJson parse and serialize Roman Urdu fields correctly
-00:04 +20 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset has non-empty question_roman_urdu and explanation_roman_urdu for all 7,139 questions
-00:04 +21 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset contains zero crude phonetic markers and zero Urdu script in Roman fields
-00:04 +22 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Translation fallback correctly handles Roman Urdu empty/non-empty states
-00:04 +23 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests LanguageProvider maps and persists AppLanguage.romanUrdu to "roman"
-00:04 +24 ~3: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/time_attack_image_test.dart
-00:05 +24 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/time_attack_image_test.dart: Time Attack Question Image Display Tests Shows CachedNetworkImage when question has non-empty imageUrl
-00:05 +25 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/time_attack_image_test.dart: Time Attack Question Image Display Tests Does not show CachedNetworkImage when question has null or empty imageUrl
-00:05 +26 ~3: All tests passed!
+00:01 +15 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: SubscriptionProvider Offline Survival Tests SubscriptionProvider.restorePurchases sets lastRestoreWasVerified=true and updates PRO when server returns true
+00:02 +16 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: AI Tutor Daily Quota Persistence Tests AiTutorScreen restores saved quota from SharedPreferences for today
+00:02 +17 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: AI Tutor Daily Quota Persistence Tests AiTutorScreen rolls over quota to 0/3 when saved date is yesterday
+00:02 +18 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/subscription_offline_and_tutor_quota_test.dart: AI Tutor Daily Quota Persistence Tests AiTutorScreen guards send until quota is loaded and accepts queries only after load
+00:03 +19 ~3: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart
+00:03 +19 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart: App load test
+00:04 +20 ~3: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart
+00:04 +20 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Question.fromJson and toJson parse and serialize Roman Urdu fields correctly
+00:04 +21 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset has non-empty question_roman_urdu and explanation_roman_urdu for all 7,139 questions
+00:04 +22 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset contains zero crude phonetic markers and zero Urdu script in Roman fields
+00:04 +23 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Translation fallback correctly handles Roman Urdu empty/non-empty states
+00:04 +24 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests LanguageProvider maps and persists AppLanguage.romanUrdu to "roman"
+00:05 +25 ~3: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/time_attack_image_test.dart
+00:05 +25 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/time_attack_image_test.dart: Time Attack Question Image Display Tests Shows CachedNetworkImage when question has non-empty imageUrl
+00:06 +26 ~3: /Users/syedwajahatshah/develop/patente_italiana_app/test/time_attack_image_test.dart: Time Attack Question Image Display Tests Does not show CachedNetworkImage when question has null or empty imageUrl
+00:06 +27 ~3: All tests passed!

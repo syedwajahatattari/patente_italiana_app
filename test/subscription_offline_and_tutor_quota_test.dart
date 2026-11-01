@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -90,6 +91,7 @@ void main() {
       final restored = await provider.restorePurchases();
       expect(restored, isTrue, reason: 'restorePurchases must return current PRO status on offline error');
       expect(provider.isPremium, isTrue, reason: 'Cached PRO status must not be wiped when restore fails offline');
+      expect(provider.lastRestoreWasVerified, isFalse, reason: 'lastRestoreWasVerified must be false on offline error');
 
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getBool('is_premium_active'), isTrue, reason: 'SharedPreferences must retain is_premium_active=true');
@@ -110,6 +112,7 @@ void main() {
       final restored = await provider.restorePurchases();
       expect(restored, isTrue);
       expect(provider.isPremium, isTrue);
+      expect(provider.lastRestoreWasVerified, isFalse);
 
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getBool('is_premium_active'), isTrue);
@@ -130,13 +133,38 @@ void main() {
       final restored = await provider.restorePurchases();
       expect(restored, isFalse, reason: 'Verified server false must update restore result to false');
       expect(provider.isPremium, isFalse, reason: 'Verified server false must overwrite provider PRO status to false');
+      expect(provider.lastRestoreWasVerified, isTrue, reason: 'lastRestoreWasVerified must be true on verified server response');
 
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getBool('is_premium_active'), isFalse, reason: 'Verified server false must overwrite SharedPreferences cache');
     });
+
+    test('SubscriptionProvider.restorePurchases sets lastRestoreWasVerified=true and updates PRO when server returns true', () async {
+      SharedPreferences.setMockInitialValues({
+        'is_premium_active': false,
+      });
+
+      RevenueCatService.testRestorePurchasesProvider = () async => true;
+
+      final provider = SubscriptionProvider();
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(provider.isPremium, isFalse);
+
+      final restored = await provider.restorePurchases();
+      expect(restored, isTrue);
+      expect(provider.isPremium, isTrue);
+      expect(provider.lastRestoreWasVerified, isTrue);
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getBool('is_premium_active'), isTrue);
+    });
   });
 
   group('AI Tutor Daily Quota Persistence Tests', () {
+    tearDown(() {
+      AiTutorScreen.testQuotaLoadBlocker = null;
+    });
+
     testWidgets('AiTutorScreen restores saved quota from SharedPreferences for today', (WidgetTester tester) async {
       final today = DateTime.now().toIso8601String().substring(0, 10);
       SharedPreferences.setMockInitialValues({
@@ -203,7 +231,10 @@ void main() {
       await tester.pumpWidget(const SizedBox());
     });
 
-    testWidgets('AiTutorScreen loads quota and handles query safely', (WidgetTester tester) async {
+    testWidgets('AiTutorScreen guards send until quota is loaded and accepts queries only after load', (WidgetTester tester) async {
+      final quotaCompleter = Completer<void>();
+      AiTutorScreen.testQuotaLoadBlocker = quotaCompleter;
+
       final today = DateTime.now().toIso8601String().substring(0, 10);
       SharedPreferences.setMockInitialValues({
         'key_ai_tutor_count': 1,
@@ -225,8 +256,44 @@ void main() {
         ),
       );
 
+      await tester.pump();
+
+      // BEFORE quota load resolves:
+      // 1. Verify send button is visually disabled (shows loading indicator and null onPressed)
+      final iconButton = tester.widget<IconButton>(find.byType(IconButton));
+      expect(iconButton.onPressed, isNull, reason: 'Send button must be disabled before quota loads');
+      expect(find.byType(CircularProgressIndicator), findsOneWidget, reason: 'Subtle spinner must show while quota is loading');
+      expect(find.byIcon(Icons.send_rounded), findsNothing, reason: 'Send icon must not show while loading');
+
+      // 2. Attempt to send while not loaded:
+      await tester.enterText(find.byType(TextField), 'Test race question');
+      await tester.tap(find.byType(IconButton));
+      await tester.pump();
+
+      // Assert no question was sent (no user bubble added, controller not cleared, no crash)
+      expect(find.byWidgetPredicate((w) => w is Align && w.alignment == Alignment.centerRight), findsNothing,
+          reason: 'No user message bubble should be added before quota load');
+      final textField = tester.widget<TextField>(find.byType(TextField));
+      expect(textField.controller?.text, 'Test race question', reason: 'Input text should not be cleared by disabled send');
+
+      // 3. Now complete quota loading:
+      quotaCompleter.complete();
       await tester.pumpAndSettle();
+
+      // Assert quota is loaded:
       expect(find.textContaining('Domande oggi: 1/3'), findsOneWidget);
+      expect(find.byIcon(Icons.send_rounded), findsOneWidget);
+      final enabledButton = tester.widget<IconButton>(find.byType(IconButton));
+      expect(enabledButton.onPressed, isNotNull, reason: 'Send button must be enabled after quota loads');
+
+      // 4. Now sending works normally:
+      await tester.tap(find.byIcon(Icons.send_rounded));
+      await tester.pumpAndSettle();
+
+      // Check that user message bubble was rendered (finds even if scrolled up by _scrollToBottom) and text field cleared
+      expect(find.text('Test race question', skipOffstage: false), findsOneWidget);
+      final textFieldAfterSend = tester.widget<TextField>(find.byType(TextField));
+      expect(textFieldAfterSend.controller?.text, '', reason: 'Input text should be cleared once sent');
 
       await tester.pumpWidget(const SizedBox());
     });

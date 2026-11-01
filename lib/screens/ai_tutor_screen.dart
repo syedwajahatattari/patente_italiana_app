@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -36,6 +37,10 @@ class AiTutorMessage {
 
 class AiTutorScreen extends StatefulWidget {
   final String? initialQuery;
+
+  /// Optional completer to delay quota loading for deterministic race testing
+  @visibleForTesting
+  static Completer<void>? testQuotaLoadBlocker;
 
   const AiTutorScreen({super.key, this.initialQuery});
 
@@ -92,6 +97,9 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
   }
 
   Future<void> _loadDailyQuota() async {
+    if (AiTutorScreen.testQuotaLoadBlocker != null) {
+      await AiTutorScreen.testQuotaLoadBlocker!.future;
+    }
     final prefs = await SharedPreferences.getInstance();
     final today = DateTime.now().toIso8601String().substring(0, 10);
     final savedDate = prefs.getString(_prefKeyTutorDate) ?? '';
@@ -632,7 +640,7 @@ URDU: [La tua spiegazione in urdu]
                     prompt,
                     style: GoogleFonts.outfit(fontSize: 12, fontWeight: FontWeight.w500),
                   ),
-                  onPressed: () => _handleSend(prompt),
+                  onPressed: _quotaLoaded ? () => _handleSend(prompt) : null,
                 );
               },
             ),
@@ -917,18 +925,29 @@ URDU: [La tua spiegazione in urdu]
                           borderSide: BorderSide.none,
                         ),
                       ),
-                      onSubmitted: _handleSend,
+                      onSubmitted: _quotaLoaded ? _handleSend : null,
                     ),
                   ),
                   const SizedBox(width: 8),
                   Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)]),
+                    decoration: BoxDecoration(
+                      gradient: _quotaLoaded
+                          ? const LinearGradient(colors: [Color(0xFF6366F1), Color(0xFF8B5CF6)])
+                          : LinearGradient(colors: [Colors.grey.shade400, Colors.grey.shade500]),
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      icon: const Icon(Icons.send_rounded, color: Colors.white, size: 20),
-                      onPressed: () => _handleSend(_controller.text),
+                      icon: _quotaLoaded
+                          ? const Icon(Icons.send_rounded, color: Colors.white, size: 20)
+                          : const SizedBox(
+                              width: 18,
+                              height: 18,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white70),
+                              ),
+                            ),
+                      onPressed: _quotaLoaded ? () => _handleSend(_controller.text) : null,
                     ),
                   ),
                 ],

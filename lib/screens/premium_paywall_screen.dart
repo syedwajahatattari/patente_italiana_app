@@ -352,15 +352,43 @@ class _PremiumPaywallScreenState extends State<PremiumPaywallScreen> {
                     HapticFeedback.lightImpact();
                     final restored = await subProvider.restorePurchases();
                     if (!context.mounted) return;
+
+                    final String snackMessage;
+                    final Color snackColor;
+
+                    if (subProvider.lastRestoreWasVerified) {
+                      if (restored) {
+                        snackMessage = isUrdu
+                            ? "آپ کی خریداریاں بحال ہو گئیں! 🎉"
+                            : "Acquisti ripristinati con successo! 🎉";
+                        snackColor = AppColors.passedGreen;
+                      } else {
+                        snackMessage = isUrdu
+                            ? "کوئی فعال خریداری نہیں ملی۔"
+                            : "Nessun acquisto precedente trovato.";
+                        snackColor = Colors.orange.shade800;
+                      }
+                    } else {
+                      if (restored) {
+                        snackMessage = isUrdu
+                            ? "آف لائن موڈ: آپ کا PRO فعال رکھا گیا ہے۔"
+                            : "Modalità offline: abbonamento PRO attivo mantenuto.";
+                        snackColor = AppColors.passedGreen;
+                      } else {
+                        snackMessage = isUrdu
+                            ? "کوئی فعال خریداری نہیں ملی۔"
+                            : "Nessun acquisto precedente trovato.";
+                        snackColor = Colors.orange.shade800;
+                      }
+                    }
+
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
                         content: Text(
-                          restored
-                            ? (isUrdu ? "آپ کی خریداریاں بحال ہو گئیں! 🎉" : "Acquisti ripristinati con successo! 🎉")
-                            : (isUrdu ? "کوئی فعال خریداری نہیں ملی۔" : "Nessun acquisto precedente trovato."),
+                          snackMessage,
                           style: isUrdu ? AppTheme.urduStyle(fontSize: 14, color: Colors.white) : null,
                         ),
-                        backgroundColor: restored ? AppColors.passedGreen : Colors.orange.shade800,
+                        backgroundColor: snackColor,
                         behavior: SnackBarBehavior.floating,
                       ),
                     );

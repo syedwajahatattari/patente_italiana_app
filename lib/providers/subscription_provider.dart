@@ -11,12 +11,14 @@ class SubscriptionProvider extends ChangeNotifier {
   int _dailyExamsTaken = 0;
   final int maxDailyFreeExams = 3;
   bool _isRestoring = false;
+  bool _lastRestoreWasVerified = false;
 
   bool get isPremium => _isPremium;
   int get dailyExamsTaken => _dailyExamsTaken;
   int get remainingDailyExams => _isPremium ? 999 : (maxDailyFreeExams - _dailyExamsTaken).clamp(0, maxDailyFreeExams);
   bool get canTakeExam => _isPremium || _dailyExamsTaken < maxDailyFreeExams;
   bool get isRestoring => _isRestoring;
+  bool get lastRestoreWasVerified => _lastRestoreWasVerified;
 
   SubscriptionProvider() {
     _loadState();
@@ -76,12 +78,16 @@ class SubscriptionProvider extends ChangeNotifier {
     try {
       final restored = await RevenueCatService.restorePurchases();
       if (restored != null) {
+        _lastRestoreWasVerified = true;
         _isPremium = restored;
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool(_prefKeyIsPremium, restored);
+      } else {
+        _lastRestoreWasVerified = false;
       }
       return _isPremium;
     } catch (e) {
+      _lastRestoreWasVerified = false;
       debugPrint("RevenueCat restorePurchases failed, retaining cached PRO status: $e");
       return _isPremium;
     } finally {
