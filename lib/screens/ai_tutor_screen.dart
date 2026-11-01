@@ -47,6 +47,7 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   bool _isLoading = false;
+  bool _quotaLoaded = false;
   int _queriesAskedToday = 0;
   static const int _freeDailyLimit = 3;
   static const String _prefKeyTutorCount = 'key_ai_tutor_count';
@@ -71,8 +72,13 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
     _initWelcomeMessage();
 
     if (widget.initialQuery != null && widget.initialQuery!.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _handleSend(widget.initialQuery!);
+      WidgetsBinding.instance.addPostFrameCallback((_) async {
+        if (!_quotaLoaded) {
+          await _loadDailyQuota();
+        }
+        if (mounted) {
+          _handleSend(widget.initialQuery!);
+        }
       });
     }
   }
@@ -94,6 +100,7 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
       if (mounted) {
         setState(() {
           _queriesAskedToday = count;
+          _quotaLoaded = true;
         });
       }
     } else {
@@ -102,6 +109,7 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
       if (mounted) {
         setState(() {
           _queriesAskedToday = 0;
+          _quotaLoaded = true;
         });
       }
     }
@@ -140,6 +148,7 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
   }
 
   Future<void> _handleSend(String input) async {
+    if (!_quotaLoaded) return;
     final query = input.trim();
     if (query.isEmpty) return;
 
@@ -228,7 +237,7 @@ URDU: [La tua spiegazione in urdu]
             // ONLY increment daily quota on actual successful online AI response!
             _queriesAskedToday++;
           });
-          _persistDailyQuota();
+          await _persistDailyQuota();
         }
       } else {
         // Online call failed (e.g. timeout / network error / rate limit) — fallback to offline rule with real diagnostics!

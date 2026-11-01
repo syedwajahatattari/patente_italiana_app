@@ -75,10 +75,15 @@ class SubscriptionProvider extends ChangeNotifier {
 
     try {
       final restored = await RevenueCatService.restorePurchases();
-      _isPremium = restored;
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool(_prefKeyIsPremium, restored);
-      return restored;
+      if (restored != null) {
+        _isPremium = restored;
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool(_prefKeyIsPremium, restored);
+      }
+      return _isPremium;
+    } catch (e) {
+      debugPrint("RevenueCat restorePurchases failed, retaining cached PRO status: $e");
+      return _isPremium;
     } finally {
       _isRestoring = false;
       notifyListeners();

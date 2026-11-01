@@ -13,9 +13,11 @@ class RevenueCatService {
   static bool _isConfigured = false;
   static bool get isConfigured => _isConfigured;
 
-  /// Optional mock override for testing
+  /// Optional mock overrides for testing
   @visibleForTesting
   static Future<bool?> Function()? testPremiumStatusProvider;
+  @visibleForTesting
+  static Future<bool?> Function()? testRestorePurchasesProvider;
 
   static Future<void> init() async {
     if (kIsWeb) return; // RevenueCat does not support Web currently
@@ -60,18 +62,22 @@ class RevenueCatService {
     return status ?? false;
   }
 
-  /// Restores previous purchases (required for App Store compliance)
-  static Future<bool> restorePurchases() async {
+  /// Restores previous purchases (required for App Store compliance).
+  /// Returns null if RevenueCat is not configured or if an error occurred (e.g. offline).
+  static Future<bool?> restorePurchases() async {
+    if (testRestorePurchasesProvider != null) {
+      return testRestorePurchasesProvider!();
+    }
     if (!_isConfigured) {
       debugPrint("Restore purchases skipped: RevenueCat is not configured.");
-      return false;
+      return null;
     }
     try {
       CustomerInfo customerInfo = await Purchases.restorePurchases();
       return customerInfo.entitlements.all[entitlementId]?.isActive == true;
     } catch (e) {
       debugPrint("Failed to restore purchases: $e");
-      return false;
+      return null;
     }
   }
 

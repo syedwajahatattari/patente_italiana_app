@@ -13,6 +13,7 @@ void main() {
   group('SubscriptionProvider Offline Survival Tests', () {
     tearDown(() {
       RevenueCatService.testPremiumStatusProvider = null;
+      RevenueCatService.testRestorePurchasesProvider = null;
     });
 
     test('SubscriptionProvider reads cached is_premium_active=true and survives failing/unconfigured RevenueCat', () async {
@@ -70,6 +71,68 @@ void main() {
 
       final prefs = await SharedPreferences.getInstance();
       expect(prefs.getBool('is_premium_active'), isFalse);
+    });
+
+    test('SubscriptionProvider.restorePurchases retains cached PRO when RevenueCat fails or throws offline', () async {
+      SharedPreferences.setMockInitialValues({
+        'is_premium_active': true,
+      });
+
+      // Simulate offline network failure during restore
+      RevenueCatService.testRestorePurchasesProvider = () async {
+        throw Exception('Network unreachable / offline');
+      };
+
+      final provider = SubscriptionProvider();
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(provider.isPremium, isTrue);
+
+      final restored = await provider.restorePurchases();
+      expect(restored, isTrue, reason: 'restorePurchases must return current PRO status on offline error');
+      expect(provider.isPremium, isTrue, reason: 'Cached PRO status must not be wiped when restore fails offline');
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getBool('is_premium_active'), isTrue, reason: 'SharedPreferences must retain is_premium_active=true');
+    });
+
+    test('SubscriptionProvider.restorePurchases retains cached PRO when RevenueCat is unconfigured (returns null)', () async {
+      SharedPreferences.setMockInitialValues({
+        'is_premium_active': true,
+      });
+
+      // Simulate unconfigured RevenueCat returning null
+      RevenueCatService.testRestorePurchasesProvider = () async => null;
+
+      final provider = SubscriptionProvider();
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(provider.isPremium, isTrue);
+
+      final restored = await provider.restorePurchases();
+      expect(restored, isTrue);
+      expect(provider.isPremium, isTrue);
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getBool('is_premium_active'), isTrue);
+    });
+
+    test('SubscriptionProvider.restorePurchases overwrites cache only when RevenueCat successfully returns server response (false)', () async {
+      SharedPreferences.setMockInitialValues({
+        'is_premium_active': true,
+      });
+
+      // Simulate verified server response that no active subscription exists
+      RevenueCatService.testRestorePurchasesProvider = () async => false;
+
+      final provider = SubscriptionProvider();
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      expect(provider.isPremium, isTrue);
+
+      final restored = await provider.restorePurchases();
+      expect(restored, isFalse, reason: 'Verified server false must update restore result to false');
+      expect(provider.isPremium, isFalse, reason: 'Verified server false must overwrite provider PRO status to false');
+
+      final prefs = await SharedPreferences.getInstance();
+      expect(prefs.getBool('is_premium_active'), isFalse, reason: 'Verified server false must overwrite SharedPreferences cache');
     });
   });
 
@@ -139,5 +202,34 @@ void main() {
 
       await tester.pumpWidget(const SizedBox());
     });
+
+    testWidgets('AiTutorScreen loads quota and handles query safely', (WidgetTester tester) async {
+      final today = DateTime.now().toIso8601String().substring(0, 10);
+      SharedPreferences.setMockInitialValues({
+        'key_ai_tutor_count': 1,
+        'key_ai_tutor_date': today,
+      });
+
+      final subProvider = SubscriptionProvider();
+      final langProvider = LanguageProvider();
+
+      await tester.pumpWidget(
+        MultiProvider(
+          providers: [
+            ChangeNotifierProvider<SubscriptionProvider>.value(value: subProvider),
+            ChangeNotifierProvider<LanguageProvider>.value(value: langProvider),
+          ],
+          child: const MaterialApp(
+            home: AiTutorScreen(),
+          ),
+        ),
+      );
+
+      await tester.pumpAndSettle();
+      expect(find.textContaining('Domande oggi: 1/3'), findsOneWidget);
+
+      await tester.pumpWidget(const SizedBox());
+    });
   });
 }
+
