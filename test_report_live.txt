@@ -23,37 +23,36 @@ Try `flutter pub outdated` for more information.
 
 ============================================================
 LIVE AI TUTOR QUESTION 1: Qual è la differenza tra segnale di STOP e Dare Precedenza?
-Elapsed: 12663 ms
+Elapsed: 12782 ms
 Status: 200, Error: AiErrorType.none
 ------------------------------------------------------------
-ITA: Il segnale di STOP impone l'arresto completo del veicolo prima di procedere, obbligando l'utente a verificare la presenza di altri veicoli e a cedere il passaggio. Il segnale "Dare Precedenza" (o "Cedere il passaggio") impone solo la riduzione della velocità e la cessione del passaggio ai veicoli che hanno la precedenza, senza l'obbligo di fermata completa se la strada è libera. La differenza principale è quindi l'obbligo di arresto totale per il STOP, mentre per il Dare Precedenza la fermata è facoltativa. Secondo il Codice della Strada italiano, il segnale STOP è regolato dall'Articolo 145, mentre il "Dare Precedenza" è rappresentato dal segnale di forma triangolare con il punto esclamativo.
-
-URDU: STOP کا نشان اپنی گاڑی کو مکمل طور پر روکنے کا اجوب دیتا ہے، اس سے پہلے دوسری گاڑیوں کو دیکھ کر انہیں راستہ دینے کی ضرورت ہوتی ہے۔ "precedence دینے" کا نشان صرف رفتار کم کرنے اور اگر کوئی گاڑی آئے تو اسے راستہ دینے کا اجوب دیتا ہے، مکمل روکنے کی ضرورت نہیں ہوتی۔ اصل فرق یہ ہے کہ STOP میں مکمل روکنا لازم ہے جبکہ precedence دینے میں روکنا اختیاری ہے۔ اٹلی کے قانونِ راستہ (Codice della Strada) کے مطابق، STOP کا نشان آرٹیکل 145 سے، جبکہ "precedence دینے" کا نشان ٹرائلٹ شکل میں ہوتا ہے۔
+ITA: Il segnale di STOP obbliga il conducente a fermarsi completamente prima della linea di arresto, anche se la carreggiata è libera, per verificare l'assenza di pericoli; la precedenza (art. 41) richiede di cedere il passo al traffico in transito su strada principale, riducendo la velocità e, se necessario, fermandosi per lasciare il diritto di passaggio. Il STOP è un obbligo di arresto totale, mentre la precedenza è un obbligo di cederlo al traffico in movimento, senza necessariamente fermarsi se la strada è libera.  
+URDU: STOP کا نشانہ اس پر لازمی ہے کہ ڈرائیور مکمل طور پر سٹاپ کرے، لائن پر قبل از کوئی خطرہ چیک کرے؛ precedance (art. 41) کا مطلب ہے کہ وہ سڑک پر چلنے والے ٹریفک کو راستے دیں، رفتار کم کرے اور ضرورت پڑے تو سٹاپ کر کے اسے راستے دیں۔ STOP مکمل وقف کی تقاضا کرتا ہے، جبکہ precedance صرف دینے کا حکم ہے، جس میں وقف لازمی نہیں ہے اگر راستہ واضح ہو۔
 ============================================================
 
 00:12 +1: Live OpenRouter AI Tutor Verification Question 2: Autostrada speed limits for neopatentati live query returns HTTP 200 with Italian and Urdu explanation
 
 ============================================================
 LIVE AI TUTOR QUESTION 2: Quali sono i limiti di velocità per i neopatentati in autostrada?
-Elapsed: 5743 ms
+Elapsed: 14763 ms
 Status: 200, Error: AiErrorType.none
 ------------------------------------------------------------
-ITA: I neopatentati (per i primi 3 anni) devono rispettare un limite di velocità di 130 km/h in autostrada. Tuttavia, se guidano un veicolo con il limite di 110 km/h, devono attenersi a quest'ultimo. Non vi sono riduzioni specifiche per i neopatentati in autostrada, a differenza delle strade extraurbane secondarie.
+ITA: Nei primi tre anni dal conseguimento della patente B, i neopatentati devono rispettare limiti di velocità ridotti. In autostrada, la velocità massima consentita è di 100 km/h. Questa regola è stabilita dall'articolo 117, comma 2, del Codice della Strada. Il limite vale anche sulle strade extraurbane principali (90 km/h). La violazione comporta sanzioni pecuniarie e decurtazione punti.
 
-URDU: نئے لائسنس رکھنے والوں کے لیے ہائی وے (Autostrada) پر رفتار کی حد 130 کلومیٹر فی گھنٹہ ہے۔ لیکن اگر گاڑی کی حد 110 کلومیٹر ہے، تو وہی مانی جائے گی۔
+URDU: پیتے بی لائسنس حاصل کرنے کے بعد پہلے تین سالوں تک نئے ڈرائیور مخصوص رفتار کی حد پر عمل کرے گا۔ آٹوسٹراڈے پر زیادہ سے زیادہ رفتار 100 کلومیٹر فی گھنٹہ ہے۔ یہ قاعدہ کوڈیکے دلا سترادے کی مادة 117، بند 2 میں طے کیا گیا ہے۔ اس قانون کے تحت بڑے بیرونی سڑکوں پر بھی 90 کلومیٹر فی گھنٹہ کی حد ہے۔ خلاف ورزی پر جرمانہ اور پوائنٹس کا کٹوتی ہوگی۔
 ============================================================
 
-00:18 +2: Live OpenRouter AI Tutor Verification Live Fallback Execution: When primary model fails live, fallback model cohere/north-mini-code:free returns HTTP 200
+00:27 +2: Live OpenRouter AI Tutor Verification Live Fallback Execution: When primary model fails live, fallback model cohere/north-mini-code:free returns HTTP 200
 Primary AI model (nonexistent-model-to-trigger-live-fallback:free) failed (AiErrorType.serverError). Switching to fallback model: cohere/north-mini-code:free
 
 ============================================================
 LIVE AI TUTOR FALLBACK TEST: Cosa indica la luce gialla lampeggiante del semaforo?
-Elapsed: 8894 ms
+Elapsed: 8176 ms
 Status: 200, Error: AiErrorType.none
 ------------------------------------------------------------
-ITA: La luce gialla lampeggiante del semaforo ha valore di segnale di avvertimento; occorre rallentare, procedere con prudenza e fermarsi se necessario, dando priorità ai pedoni e agli altri veicoli. (Codice della Strada, art. 45).
+**ITA:** La luce gialla lampeggiante indica “attenzione”. Secondo l’articolo 145, comma 5, del Codice della Strada, il conducente deve transitare con cautela e senza fretta e, se necessario, arrestarsi per dare la precedenza ai veicoli o ai pedoni che hanno diritto di passaggio. In pratica, si procede solo dopo aver verificato che non vi siano ostacoli e si cede il passo quando richiesto. Ignorare la luce può comportare una sanzione per violazione del diritto di precedenza.
 
-URDU: پیلی ٹمٹماتی ہوئی روشنی کا مطلب ہے کہ آپ کو محتاط رہنا چاہیے، رفتار کم کرنی چاہیے اور ضرورت پڑنے پر رکنا چاہیے، پیدل چلنے والوں کو ترجیح دینی چاہیے۔ (ہائی وے کوڈ، آرٹیکل ۴۵)
+**URDU:** فلکٹنگ پیلای سگنل یہ بتاتا ہے کہ "اہمکارتنا ضروری ہے۔" اطالوی قانون کے آرٹیکل 145، پیراگراف 5 کے مطابق، ڈرائیور کو احتیاط سے اور جلدی کے بغیر آگے بڑھنا چاہیے اور اگر ضرورت ہو تو رک جانا چاہیے اور پیشگی دیدنی کا حق رکھنے والے دیگر گاڑیوں یا پیدل چلنے والوں کو راستہ دینا چاہیے۔ عملی طور پر، کسی رکاوٹ کے نہ ہونے کا یقین کرنے کے بعد ہی آگے بڑھیں اور ضرورت پڑنے پر پیشگی دیدیں۔ اس روشنی کو نظر انداز کرنا پیشگی دیدنی کے حق کی خلاف ورزی پر جرمانے کا سبب بن سکتا ہے۔
 ============================================================
 
-00:27 +3: All tests passed!
+00:35 +3: All tests passed!

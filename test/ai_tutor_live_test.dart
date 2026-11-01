@@ -74,6 +74,7 @@ void main() {
           reason: 'Response must contain genuine Urdu/Arabic script characters',
         );
       },
+      timeout: const Timeout(Duration(seconds: 90)),
       skip: !OpenRouterService.isConfigured ? 'OPENROUTER_API_KEY not passed via --dart-define' : false,
     );
 
@@ -114,11 +115,16 @@ void main() {
           reason: 'Response must include Urdu section tag (URDU:)',
         );
 
-        // Content assertion: Must mention 100 km/h or neopatentati rule
+        // Content assertion: Must strictly require the 100 km/h limit (CdS art. 117)
         expect(
-          RegExp(r'100|neopatentat', caseSensitive: false).hasMatch(text),
+          RegExp(r'\b100\b').hasMatch(text),
           isTrue,
-          reason: 'Response must mention 100 km/h or neopatentati limit',
+          reason: 'Response must explicitly mention the 100 km/h autostrada speed limit',
+        );
+        expect(
+          RegExp(r'neopatentat|patente', caseSensitive: false).hasMatch(text),
+          isTrue,
+          reason: 'Response must mention neopatentati or patente context',
         );
 
         // Language assertion: Urdu section must contain Arabic/Urdu script
@@ -128,6 +134,7 @@ void main() {
           reason: 'Response must contain genuine Urdu/Arabic script characters',
         );
       },
+      timeout: const Timeout(Duration(seconds: 90)),
       skip: !OpenRouterService.isConfigured ? 'OPENROUTER_API_KEY not passed via --dart-define' : false,
     );
 
@@ -165,6 +172,7 @@ void main() {
           reason: 'Fallback response must also contain genuine Urdu/Arabic script',
         );
       },
+      timeout: const Timeout(Duration(seconds: 90)),
       skip: !OpenRouterService.isConfigured ? 'OPENROUTER_API_KEY not passed via --dart-define' : false,
     );
   });

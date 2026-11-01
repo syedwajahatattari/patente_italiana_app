@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../providers/quiz_provider.dart';
 import '../providers/language_provider.dart';
 import '../providers/subscription_provider.dart';
@@ -20,7 +21,7 @@ class TimeAttackScreen extends StatefulWidget {
 }
 
 class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerProviderStateMixin {
-  late List<Question> _questions;
+  List<Question> _questions = [];
   int _currentIndex = 0;
   int _score = 0;
   int _combo = 0;
@@ -56,6 +57,9 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
         Navigator.pop(context);
       }
       return;
+    }
+    if (mounted) {
+      setState(() {});
     }
     _startTimer();
   }
@@ -245,6 +249,57 @@ class _TimeAttackScreenState extends State<TimeAttackScreen> with SingleTickerPr
                                   ],
                                 ),
                                 const SizedBox(height: 12),
+                                if (currentQ.imageUrl != null && currentQ.imageUrl!.isNotEmpty) ...[
+                                  Container(
+                                    height: 160,
+                                    margin: const EdgeInsets.only(bottom: 12),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(16),
+                                      border: Border.all(color: Colors.grey.withValues(alpha: 0.2)),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(alpha: 0.04),
+                                          blurRadius: 8,
+                                          offset: const Offset(0, 3),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(16),
+                                      child: Center(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8),
+                                          child: CachedNetworkImage(
+                                            imageUrl: currentQ.imageUrl!,
+                                            key: ValueKey("img_${currentQ.id}"),
+                                            fit: BoxFit.contain,
+                                            placeholder: (context, url) => const Center(
+                                              child: SizedBox(
+                                                width: 28,
+                                                height: 28,
+                                                child: CircularProgressIndicator(strokeWidth: 2),
+                                              ),
+                                            ),
+                                            errorWidget: (context, url, error) => Center(
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.center,
+                                                children: [
+                                                  Icon(Icons.broken_image_rounded, size: 36, color: Colors.grey.shade400),
+                                                  const SizedBox(height: 4),
+                                                  Text(
+                                                    'Image not available',
+                                                    style: TextStyle(fontSize: 10, color: Colors.grey.shade500),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                                 Text(
                                   currentQ.questionIt,
                                   textAlign: TextAlign.center,
