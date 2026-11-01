@@ -13,6 +13,10 @@ class RevenueCatService {
   static bool _isConfigured = false;
   static bool get isConfigured => _isConfigured;
 
+  /// Optional mock override for testing
+  @visibleForTesting
+  static Future<bool?> Function()? testPremiumStatusProvider;
+
   static Future<void> init() async {
     if (kIsWeb) return; // RevenueCat does not support Web currently
 
@@ -34,16 +38,26 @@ class RevenueCatService {
     }
   }
 
-  /// Checks if the user is currently PRO based on the RevenueCat servers
-  static Future<bool> isUserPremium() async {
-    if (!_isConfigured) return false;
+  /// Checks if the user is currently PRO based on the RevenueCat servers.
+  /// Returns null if RevenueCat is not configured or if an error occurred (e.g. offline).
+  static Future<bool?> checkUserPremiumStatus() async {
+    if (testPremiumStatusProvider != null) {
+      return testPremiumStatusProvider!();
+    }
+    if (!_isConfigured) return null;
     try {
       CustomerInfo customerInfo = await Purchases.getCustomerInfo();
       return customerInfo.entitlements.all[entitlementId]?.isActive == true;
     } catch (e) {
       debugPrint("Failed to fetch customer info: $e");
-      return false;
+      return null;
     }
+  }
+
+  /// Checks if the user is currently PRO based on the RevenueCat servers
+  static Future<bool> isUserPremium() async {
+    final status = await checkUserPremiumStatus();
+    return status ?? false;
   }
 
   /// Restores previous purchases (required for App Store compliance)

@@ -25,10 +25,8 @@ class SubscriptionProvider extends ChangeNotifier {
   Future<void> _loadState() async {
     final prefs = await SharedPreferences.getInstance();
 
-    // 1. Sync subscription state with RevenueCat servers in background
-    bool isPremiumActive = await RevenueCatService.isUserPremium();
-    _isPremium = isPremiumActive;
-    await prefs.setBool(_prefKeyIsPremium, isPremiumActive);
+    // 1. Immediately read cached PRO status so features work instantly, including offline
+    _isPremium = prefs.getBool(_prefKeyIsPremium) ?? false;
 
     final today = DateTime.now().toIso8601String().substring(0, 10);
     final savedDate = prefs.getString(_prefKeyExamDate) ?? '';
@@ -40,15 +38,34 @@ class SubscriptionProvider extends ChangeNotifier {
       await prefs.setInt(_prefKeyExamCount, 0);
     }
     notifyListeners();
+
+    // 2. Sync subscription state with RevenueCat servers in background;
+    // only overwrite cached state when the call succeeds with a verified server response.
+    try {
+      final status = await RevenueCatService.checkUserPremiumStatus();
+      if (status != null) {
+        _isPremium = status;
+        await prefs.setBool(_prefKeyIsPremium, status);
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("RevenueCat background sync failed, retaining cached PRO status: $e");
+    }
   }
 
   /// Refreshes state explicitly from RevenueCat
   Future<void> refreshSubscriptionStatus() async {
-    bool isPremiumActive = await RevenueCatService.isUserPremium();
-    _isPremium = isPremiumActive;
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool(_prefKeyIsPremium, isPremiumActive);
-    notifyListeners();
+    try {
+      final status = await RevenueCatService.checkUserPremiumStatus();
+      if (status != null) {
+        _isPremium = status;
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool(_prefKeyIsPremium, status);
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint("RevenueCat refresh failed, retaining cached PRO status: $e");
+    }
   }
 
   /// Restore previous purchases (required for App Store compliance)

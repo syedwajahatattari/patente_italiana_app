@@ -10,6 +10,16 @@
       ]
     },
     {
+      "name": "Patente App (Release with AI & RevenueCat)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release",
+      "args": [
+        "--dart-define=OPENROUTER_API_KEY=${env:OPENROUTER_API_KEY}",
+        "--dart-define=REVENUECAT_GOOGLE_KEY=${env:REVENUECAT_GOOGLE_KEY}"
+      ]
+    },
+    {
       "name": "Patente App (Offline / Safe Mode)",
       "request": "launch",
       "type": "dart"

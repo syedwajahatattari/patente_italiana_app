@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/language_provider.dart';
 import '../providers/subscription_provider.dart';
 import '../screens/premium_paywall_screen.dart';
@@ -48,6 +49,8 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
   bool _isLoading = false;
   int _queriesAskedToday = 0;
   static const int _freeDailyLimit = 3;
+  static const String _prefKeyTutorCount = 'key_ai_tutor_count';
+  static const String _prefKeyTutorDate = 'key_ai_tutor_date';
 
   final List<AiTutorMessage> _messages = [];
 
@@ -64,6 +67,7 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
   void initState() {
     super.initState();
     TTSService.init();
+    _loadDailyQuota();
     _initWelcomeMessage();
 
     if (widget.initialQuery != null && widget.initialQuery!.isNotEmpty) {
@@ -79,6 +83,35 @@ class _AiTutorScreenState extends State<AiTutorScreen> {
     _controller.dispose();
     _scrollController.dispose();
     super.dispose();
+  }
+
+  Future<void> _loadDailyQuota() async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateTime.now().toIso8601String().substring(0, 10);
+    final savedDate = prefs.getString(_prefKeyTutorDate) ?? '';
+    if (savedDate == today) {
+      final count = prefs.getInt(_prefKeyTutorCount) ?? 0;
+      if (mounted) {
+        setState(() {
+          _queriesAskedToday = count;
+        });
+      }
+    } else {
+      await prefs.setString(_prefKeyTutorDate, today);
+      await prefs.setInt(_prefKeyTutorCount, 0);
+      if (mounted) {
+        setState(() {
+          _queriesAskedToday = 0;
+        });
+      }
+    }
+  }
+
+  Future<void> _persistDailyQuota() async {
+    final prefs = await SharedPreferences.getInstance();
+    final today = DateTime.now().toIso8601String().substring(0, 10);
+    await prefs.setString(_prefKeyTutorDate, today);
+    await prefs.setInt(_prefKeyTutorCount, _queriesAskedToday);
   }
 
   void _initWelcomeMessage() {
@@ -195,6 +228,7 @@ URDU: [La tua spiegazione in urdu]
             // ONLY increment daily quota on actual successful online AI response!
             _queriesAskedToday++;
           });
+          _persistDailyQuota();
         }
       } else {
         // Online call failed (e.g. timeout / network error / rate limit) — fallback to offline rule with real diagnostics!

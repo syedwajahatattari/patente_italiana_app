@@ -1,5 +1,5 @@
 name: patente_italiana_app
-description: "A new Flutter project."
+description: "Italian driving licence theory (Patente B) preparation with official ministerial quizzes in Italian, Urdu, Roman Urdu, and English."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
