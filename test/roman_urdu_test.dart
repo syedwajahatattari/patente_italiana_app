@@ -61,6 +61,43 @@ void main() {
       expect(emptyExplanationRoman, 0, reason: "All 7,139 questions must have non-empty explanation_roman_urdu");
     });
 
+    test('Real dataset contains zero crude phonetic markers and zero Urdu script in Roman fields', () {
+      final file = File('assets/data/quiz_questions.json');
+      final raw = file.readAsStringSync();
+      final List<dynamic> list = json.decode(raw);
+
+      final crudePatterns = [
+        RegExp(r'\bstric\b', caseSensitive: false),
+        RegExp(r'\bmin\b', caseSensitive: false),
+        RegExp(r'\bhay\b', caseSensitive: false),
+        RegExp(r'\bdarist\b', caseSensitive: false),
+        RegExp(r'\baartecl\b', caseSensitive: false),
+        RegExp(r'\bscien\b', caseSensitive: false),
+        RegExp(r'\bbalkal\b', caseSensitive: false),
+        RegExp(r'\bnihen\b', caseSensitive: false),
+        RegExp(r'\bgadi\b', caseSensitive: false),
+      ];
+      final urduScriptPattern = RegExp(r'[\u0600-\u06FF]');
+
+      int crudeFound = 0;
+      int urduScriptFound = 0;
+
+      for (final item in list) {
+        final qRom = (item['question_roman_urdu'] as String?) ?? '';
+        final expRom = (item['explanation_roman_urdu'] as String?) ?? '';
+
+        for (final p in crudePatterns) {
+          if (p.hasMatch(qRom) || p.hasMatch(expRom)) crudeFound++;
+        }
+        if (urduScriptPattern.hasMatch(qRom) || urduScriptPattern.hasMatch(expRom)) {
+          urduScriptFound++;
+        }
+      }
+
+      expect(crudeFound, 0, reason: "Dataset must contain zero crude phonetic artifacts");
+      expect(urduScriptFound, 0, reason: "Roman Urdu fields must contain zero Urdu script characters");
+    });
+
     test('Translation fallback correctly handles Roman Urdu empty/non-empty states', () {
       // Helper simulating _getTranslation logic in exam and quiz screens
       String getTranslation(Question q, String langCode) {
@@ -157,3 +194,4 @@ void main() {
     });
   });
 }
+

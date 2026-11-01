@@ -43,9 +43,9 @@ class OpenRouterService {
 
   // Configurable models with automatic fallback
   // Primary: Official OpenRouter Free Models Router (auto-selects available free models)
-  // Fallback: Llama 3.2 3B Instruct Free tier
+  // Fallback: Cohere North Mini Code Free tier (verified active free model)
   static const String _primaryModel = 'openrouter/free';
-  static const String _fallbackModel = 'meta-llama/llama-3.2-3b-instruct:free';
+  static const String _fallbackModel = 'cohere/north-mini-code:free';
 
   /// Optional client injection for unit tests
   @visibleForTesting
