@@ -34,11 +34,11 @@ Primary AI model (openrouter/free) failed (AiErrorType.noInternet). Switching to
 Primary AI model (openrouter/free) failed (AiErrorType.timeout). Switching to fallback model: cohere/north-mini-code:free
 00:00 +8: /Users/syedwajahatshah/develop/patente_italiana_app/test/ai_tutor_flow_test.dart: AI Tutor Key Path & Service Tests OpenRouterService fast-fails on 401 without making redundant fallback call
 00:00 +9: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart
-00:02 +9: /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart: App load test
-00:03 +10: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart
-00:03 +10: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Question.fromJson and toJson parse and serialize Roman Urdu fields correctly
-00:03 +11: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset has non-empty question_roman_urdu and explanation_roman_urdu for all 7,139 questions
-00:03 +12: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset contains zero crude phonetic markers and zero Urdu script in Roman fields
-00:03 +13: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Translation fallback correctly handles Roman Urdu empty/non-empty states
-00:03 +14: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests LanguageProvider maps and persists AppLanguage.romanUrdu to "roman"
-00:03 +15: All tests passed!
+00:01 +9: /Users/syedwajahatshah/develop/patente_italiana_app/test/widget_test.dart: App load test
+00:01 +10: loading /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart
+00:02 +10: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Question.fromJson and toJson parse and serialize Roman Urdu fields correctly
+00:02 +11: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset has non-empty question_roman_urdu and explanation_roman_urdu for all 7,139 questions
+00:02 +12: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Real dataset contains zero crude phonetic markers and zero Urdu script in Roman fields
+00:02 +13: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests Translation fallback correctly handles Roman Urdu empty/non-empty states
+00:02 +14: /Users/syedwajahatshah/develop/patente_italiana_app/test/roman_urdu_test.dart: Roman Urdu End-to-End Tests LanguageProvider maps and persists AppLanguage.romanUrdu to "roman"
+00:02 +15: All tests passed!

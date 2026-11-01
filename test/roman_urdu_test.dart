@@ -83,8 +83,9 @@ void main() {
         RegExp(r'\blaaif\b', caseSensitive: false),
         RegExp(r'\bsiyor\b', caseSensitive: false),
         RegExp(r'\bcyclein\b', caseSensitive: false),
-        RegExp(r'\bya\s+(ailaan|batata|waqia|yaqeeni|asafalt)\b', caseSensitive: false),
+        RegExp(r'\bya\s+(ailaan|batata|waqia|yaqeeni|asafalt|janchana)\b', caseSensitive: false),
         RegExp(r'\b(nishan|jahan|mutalab)\s+ya\b', caseSensitive: false),
+        RegExp(r'\bliye,\s*ya\b', caseSensitive: false),
       ];
       final urduScriptPattern = RegExp(r'[\u0600-\u06FF]');
 
