@@ -47,6 +47,13 @@ class OpenRouterService {
   static const String _primaryModel = 'openrouter/free';
   static const String _fallbackModel = 'cohere/north-mini-code:free';
 
+  /// Optional primary model override for testing live fallback paths
+  @visibleForTesting
+  static String? testPrimaryModel;
+
+  static String get primaryModel => testPrimaryModel ?? _primaryModel;
+  static String get fallbackModel => _fallbackModel;
+
   /// Optional client injection for unit tests
   @visibleForTesting
   static http.Client? testHttpClient;
@@ -80,7 +87,7 @@ class OpenRouterService {
     }
 
     // Attempt 1: Primary Model
-    final attempt1 = await _requestModel(_primaryModel, systemPrompt, userMessage, key);
+    final attempt1 = await _requestModel(primaryModel, systemPrompt, userMessage, key);
     if (attempt1.success) return attempt1;
 
     // Fast-fail: If the failure is due to an invalid/unauthorized API key (401/403),
@@ -91,9 +98,9 @@ class OpenRouterService {
 
     // Attempt 2: Fallback Model
     debugPrint(
-      "Primary AI model ($_primaryModel) failed (${attempt1.errorType}). Switching to fallback model: $_fallbackModel",
+      "Primary AI model ($primaryModel) failed (${attempt1.errorType}). Switching to fallback model: $fallbackModel",
     );
-    final attempt2 = await _requestModel(_fallbackModel, systemPrompt, userMessage, key);
+    final attempt2 = await _requestModel(fallbackModel, systemPrompt, userMessage, key);
     if (attempt2.success) return attempt2;
 
     // Return the most specific failure reason from the attempts
@@ -128,7 +135,7 @@ class OpenRouterService {
                 ],
               }),
             )
-            .timeout(const Duration(seconds: 15));
+            .timeout(const Duration(seconds: 25));
       } finally {
         if (shouldClose) client.close();
       }

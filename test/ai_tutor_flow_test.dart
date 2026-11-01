@@ -11,6 +11,7 @@ void main() {
     tearDown(() {
       OpenRouterService.testApiKey = null;
       OpenRouterService.testHttpClient = null;
+      OpenRouterService.testPrimaryModel = null;
     });
 
     test('OpenRouterService detects missing key and returns 401 without network call', () async {

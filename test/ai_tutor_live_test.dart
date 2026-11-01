@@ -14,11 +14,14 @@ URDU: [La tua spiegazione in urdu]
 
 void main() {
   group('Live OpenRouter AI Tutor Verification', () {
+    tearDown(() {
+      OpenRouterService.testPrimaryModel = null;
+    });
+
     test(
       'Question 1: STOP vs Dare Precedenza live query returns HTTP 200 with Italian and Urdu explanation',
       () async {
         if (!OpenRouterService.isConfigured) {
-          // Gracefully skip when running in non-networked CI / sandbox without key
           return;
         }
 
@@ -38,7 +41,38 @@ void main() {
         expect(result.success, isTrue, reason: 'Live OpenRouter call must succeed');
         expect(result.statusCode, 200);
         expect(result.text, isNotNull);
-        expect(result.text!.length, greaterThan(20));
+        final text = result.text!;
+
+        // Format assertion: Must contain ITA: and URDU: tags
+        expect(
+          RegExp(r'\bITA\b|\bITALIANO\b', caseSensitive: false).hasMatch(text),
+          isTrue,
+          reason: 'Response must include Italian section tag (ITA:)',
+        );
+        expect(
+          RegExp(r'\bURDU\b', caseSensitive: false).hasMatch(text),
+          isTrue,
+          reason: 'Response must include Urdu section tag (URDU:)',
+        );
+
+        // Content assertion: Must discuss STOP and precedenza rules
+        expect(
+          RegExp(r'STOP', caseSensitive: false).hasMatch(text),
+          isTrue,
+          reason: 'Response must mention STOP',
+        );
+        expect(
+          RegExp(r'precedenza', caseSensitive: false).hasMatch(text),
+          isTrue,
+          reason: 'Response must mention precedenza',
+        );
+
+        // Language assertion: Urdu section must contain Arabic/Urdu script
+        expect(
+          RegExp(r'[\u0600-\u06FF]').hasMatch(text),
+          isTrue,
+          reason: 'Response must contain genuine Urdu/Arabic script characters',
+        );
       },
       skip: !OpenRouterService.isConfigured ? 'OPENROUTER_API_KEY not passed via --dart-define' : false,
     );
@@ -66,7 +100,70 @@ void main() {
         expect(result.success, isTrue, reason: 'Live OpenRouter call must succeed');
         expect(result.statusCode, 200);
         expect(result.text, isNotNull);
-        expect(result.text!.length, greaterThan(20));
+        final text = result.text!;
+
+        // Format assertion: Must contain ITA: and URDU: tags
+        expect(
+          RegExp(r'\bITA\b|\bITALIANO\b', caseSensitive: false).hasMatch(text),
+          isTrue,
+          reason: 'Response must include Italian section tag (ITA:)',
+        );
+        expect(
+          RegExp(r'\bURDU\b', caseSensitive: false).hasMatch(text),
+          isTrue,
+          reason: 'Response must include Urdu section tag (URDU:)',
+        );
+
+        // Content assertion: Must mention 100 km/h or neopatentati rule
+        expect(
+          RegExp(r'100|neopatentat', caseSensitive: false).hasMatch(text),
+          isTrue,
+          reason: 'Response must mention 100 km/h or neopatentati limit',
+        );
+
+        // Language assertion: Urdu section must contain Arabic/Urdu script
+        expect(
+          RegExp(r'[\u0600-\u06FF]').hasMatch(text),
+          isTrue,
+          reason: 'Response must contain genuine Urdu/Arabic script characters',
+        );
+      },
+      skip: !OpenRouterService.isConfigured ? 'OPENROUTER_API_KEY not passed via --dart-define' : false,
+    );
+
+    test(
+      'Live Fallback Execution: When primary model fails live, fallback model cohere/north-mini-code:free returns HTTP 200',
+      () async {
+        if (!OpenRouterService.isConfigured) {
+          return;
+        }
+
+        // Force primary failure against the real live OpenRouter API
+        OpenRouterService.testPrimaryModel = 'nonexistent-model-to-trigger-live-fallback:free';
+
+        const query = 'Cosa indica la luce gialla lampeggiante del semaforo?';
+        final stopwatch = Stopwatch()..start();
+        final result = await OpenRouterService.getAiResponseDetailed(_tutorSystemPrompt, query);
+        stopwatch.stop();
+
+        print('\n============================================================');
+        print('LIVE AI TUTOR FALLBACK TEST: $query');
+        print('Elapsed: ${stopwatch.elapsedMilliseconds} ms');
+        print('Status: ${result.statusCode}, Error: ${result.errorType}');
+        print('------------------------------------------------------------');
+        print(result.text);
+        print('============================================================\n');
+
+        expect(result.success, isTrue, reason: 'Live fallback call must succeed with HTTP 200');
+        expect(result.statusCode, 200);
+        expect(result.text, isNotNull);
+        final text = result.text!;
+
+        expect(
+          RegExp(r'[\u0600-\u06FF]').hasMatch(text),
+          isTrue,
+          reason: 'Fallback response must also contain genuine Urdu/Arabic script',
+        );
       },
       skip: !OpenRouterService.isConfigured ? 'OPENROUTER_API_KEY not passed via --dart-define' : false,
     );
